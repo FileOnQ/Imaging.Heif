@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+		<!-- NuGet Package Properties -->
+		<PackageId>FileOnQ.Imaging.Heif</PackageId>
+		<Summary>FileOnQ Open Source library template</Summary>
+		<PackageTag>fileonq, open-source</PackageTag>
+		<Title>FileOnQ.Imaging.Heif</Title>
+		<Description>FileOnQ Open Source library template</Description>
+		<PackageIcon>fileonq.png</PackageIcon>
+		<Product>$(AssemblyName) ($(TargetFramework))</Product>
+		<PackageVersion>$(Version)$(VersionSuffix)</PackageVersion>
+		<Authors>FileOnQ</Authors>
+		<Owners>fileonq</Owners>
+		<NeutralLanguage>en</NeutralLanguage>
+		<Copyright>© FileOnQ, Inc. All rights reserved.</Copyright>
+		<License>MIT</License>
+		<RepositoryUrl>https://github.com/FileOnQ/FileOnQ.Imaging.Heif</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<!-- End NuGet Package Properties -->
+  </PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\images\fileonq.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+</Project>
