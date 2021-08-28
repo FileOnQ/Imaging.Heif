@@ -68,7 +68,7 @@ namespace FileOnQ.Imaging.Heif
 		internal static extern IntPtr heif_context_alloc();
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern IntPtr heif_context_free(IntPtr context);
+		internal static extern void heif_context_free(IntPtr context);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern Error heif_context_read_from_file(IntPtr context, string filename, IntPtr options);
