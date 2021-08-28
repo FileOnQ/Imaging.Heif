@@ -5,15 +5,18 @@
 		<ThirdPartyDir>$(RootDir)/third-party</ThirdPartyDir>
 	</PropertyGroup>
 
-	<Target Name="LibHeif" BeforeTargets="DispatchToInnerBuilds" Condition="!Exists('heif.dll') and !Exists('libde265.dll') !Exists('libx265.dll')">
-		<Exec Command="git clone https://github.com/microsoft/vcpkg" WorkingDirectory="$(ThirdPartyDir)" />
-		<Exec Command="bootstrap-vcpkg.bat" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
+	<Target Name="LibHeif" BeforeTargets="DispatchToInnerBuilds" DependsOnTargets="Vcpkg" Condition="!Exists('heif.dll') and !Exists('libde265.dll') and !Exists('libx265.dll')">
 		<Exec Command="vcpkg.exe install libheif:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
 		<Exec Command="vcpkg.exe export libheif:x64-windows --output=libheif --output-dir=../ --raw" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
 
-		<Copy SourceFiles="$(ThirdPartyDir)/libheif/installed/x64-windows/bin/heif.dll" DestinationFiles="." />
-		<Copy SourceFiles="$(ThirdPartyDir)/libheif/installed/x64-windows/bin/libde265.dll" DestinationFiles="." />
-		<Copy SourceFiles="$(ThirdPartyDir)/libheif/installed/x64-windows/bin/libx265.dll" DestinationFiles="." />
+		<Copy SourceFiles="$(ThirdPartyDir)/libheif/installed/x64-windows/bin/heif.dll" DestinationFolder="." />
+		<Copy SourceFiles="$(ThirdPartyDir)/libheif/installed/x64-windows/bin/libde265.dll" DestinationFolder="." />
+		<Copy SourceFiles="$(ThirdPartyDir)/libheif/installed/x64-windows/bin/libx265.dll" DestinationFolder="." />
+	</Target>
+
+	<Target Name="Vcpkg" Condition="!Exists('$(ThirdPartyDir)/vcpkg/vcpkg.exe')">
+		<Exec Command="git clone https://github.com/microsoft/vcpkg" WorkingDirectory="$(ThirdPartyDir)" />
+		<Exec Command="bootstrap-vcpkg.bat" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
 	</Target>
 
 	<Target Name="CleanLibHeif" BeforeTargets="Clean">

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworks>net48;net5.0</TargetFrameworks>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
 		<!-- NuGet Package Properties -->
@@ -33,4 +33,5 @@
 	  </None>
 	</ItemGroup>
 
+	<Import Project="Build\libheif.targets" />
 </Project>
