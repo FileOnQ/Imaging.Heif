@@ -13,21 +13,21 @@ namespace FileOnQ.Imaging.Heif
 			if (error.Code != LibHeifContext.ErrorCode.Ok)
 				throw new Exception(Marshal.PtrToStringAnsi(error.Message));
 
-			var numberOfThumbnails = LibHeifContext.heif_image_handle_get_number_of_thumbnails(heifContext);
+			LibHeifContext.ImageHandle* imageHandle;
+			var imageError = LibHeifContext.heif_context_get_primary_image_handle(heifContext, &imageHandle);
+
+			var numberOfThumbnails = LibHeifContext.heif_image_handle_get_number_of_thumbnails(imageHandle);
 			if (numberOfThumbnails > 0)
 			{
 				var itemIds = new uint[numberOfThumbnails];
 				fixed (uint* ptr = itemIds)
 				{
-					LibHeifContext.heif_image_handle_get_list_of_thumbnail_IDs(heifContext, (IntPtr)ptr, numberOfThumbnails);
+					LibHeifContext.heif_image_handle_get_list_of_thumbnail_IDs(imageHandle, ptr, numberOfThumbnails);
 				}
-
-				LibHeifContext.ImageHandle* imageHandle;
-				var imageError = LibHeifContext.heif_context_get_primary_image_handle(heifContext, &imageHandle);
 
 				// no idea why this is failing
 				LibHeifContext.ImageHandle* thumbHandle;
-				var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(heifContext, itemIds[0], &thumbHandle);
+				var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(imageHandle, itemIds[0], &thumbHandle);
 			}
 		}
 
@@ -74,13 +74,13 @@ namespace FileOnQ.Imaging.Heif
 		internal static extern Error heif_context_read_from_file(IntPtr context, string filename, IntPtr options);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int heif_image_handle_get_number_of_thumbnails(IntPtr context);
+		internal static extern int heif_image_handle_get_number_of_thumbnails(ImageHandle* handle);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int heif_image_handle_get_list_of_thumbnail_IDs(IntPtr context, IntPtr itemIds, int count);
+		internal static extern int heif_image_handle_get_list_of_thumbnail_IDs(ImageHandle* handle, uint *itemIds, int count);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern Error heif_image_handle_get_thumbnail(IntPtr context, uint itemId, ImageHandle** output);
+		internal static extern Error heif_image_handle_get_thumbnail(ImageHandle* handle, uint itemId, ImageHandle** output);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern Error heif_context_get_primary_image_handle(IntPtr context, ImageHandle** output);
