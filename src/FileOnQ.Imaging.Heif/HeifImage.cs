@@ -20,14 +20,14 @@ namespace FileOnQ.Imaging.Heif
 				fixed (uint* ptr = itemIds)
 				{
 					LibHeifContext.heif_image_handle_get_list_of_thumbnail_IDs(heifContext, (IntPtr)ptr, numberOfThumbnails);
-
-					LibHeifContext.ImageHandle* imageHandle;
-					var imageError = LibHeifContext.heif_context_get_primary_image_handle(heifContext, &imageHandle);
-
-					// no idea why this is failing
-					LibHeifContext.ImageHandle* thumbHandle;
-					var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(heifContext, itemIds[0], &thumbHandle);
 				}
+
+				LibHeifContext.ImageHandle* imageHandle;
+				var imageError = LibHeifContext.heif_context_get_primary_image_handle(heifContext, &imageHandle);
+
+				// no idea why this is failing
+				LibHeifContext.ImageHandle* thumbHandle;
+				var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(heifContext, itemIds[0], &thumbHandle);
 			}
 		}
 
