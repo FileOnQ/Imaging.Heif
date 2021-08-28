@@ -5,28 +5,28 @@ namespace FileOnQ.Imaging.Heif
 {
 	public unsafe class HeifImage : IDisposable
     {
-		IntPtr heifHandle;
+		IntPtr heifContext;
 		public HeifImage(string file)
 		{
-			heifHandle = LibHeifContext.heif_context_alloc();
-			var error = LibHeifContext.heif_context_read_from_file(heifHandle, file, IntPtr.Zero);
+			heifContext = LibHeifContext.heif_context_alloc();
+			var error = LibHeifContext.heif_context_read_from_file(heifContext, file, IntPtr.Zero);
 			if (error.Code != LibHeifContext.ErrorCode.Ok)
 				throw new Exception(Marshal.PtrToStringAnsi(error.Message));
 
-			var numberOfThumbnails = LibHeifContext.heif_image_handle_get_number_of_thumbnails(heifHandle);
+			var numberOfThumbnails = LibHeifContext.heif_image_handle_get_number_of_thumbnails(heifContext);
 			if (numberOfThumbnails > 0)
 			{
 				var itemIds = new uint[numberOfThumbnails];
 				fixed (uint* ptr = itemIds)
 				{
-					LibHeifContext.heif_image_handle_get_list_of_thumbnail_IDs(heifHandle, (IntPtr)ptr, numberOfThumbnails);
+					LibHeifContext.heif_image_handle_get_list_of_thumbnail_IDs(heifContext, (IntPtr)ptr, numberOfThumbnails);
 
 					LibHeifContext.ImageHandle* imageHandle;
-					var imageError = LibHeifContext.heif_context_get_primary_image_handle(heifHandle, &imageHandle);
+					var imageError = LibHeifContext.heif_context_get_primary_image_handle(heifContext, &imageHandle);
 
 					// no idea why this is failing
 					LibHeifContext.ImageHandle* thumbHandle;
-					var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(heifHandle, itemIds[0], &thumbHandle);
+					var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(heifContext, itemIds[0], &thumbHandle);
 				}
 			}
 		}
@@ -50,10 +50,10 @@ namespace FileOnQ.Imaging.Heif
 				// free managed resources
 			}
 
-			if (heifHandle != IntPtr.Zero)
+			if (heifContext != IntPtr.Zero)
 			{
-				LibHeifContext.heif_context_free(heifHandle);
-				heifHandle = IntPtr.Zero;
+				LibHeifContext.heif_context_free(heifContext);
+				heifContext = IntPtr.Zero;
 			}
 
 			isDisposed = true;
@@ -68,22 +68,22 @@ namespace FileOnQ.Imaging.Heif
 		internal static extern IntPtr heif_context_alloc();
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern IntPtr heif_context_free(IntPtr handle);
+		internal static extern IntPtr heif_context_free(IntPtr context);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern Error heif_context_read_from_file(IntPtr handle, string filename, IntPtr options);
+		internal static extern Error heif_context_read_from_file(IntPtr context, string filename, IntPtr options);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int heif_image_handle_get_number_of_thumbnails(IntPtr handle);
+		internal static extern int heif_image_handle_get_number_of_thumbnails(IntPtr context);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int heif_image_handle_get_list_of_thumbnail_IDs(IntPtr handle, IntPtr itemIds, int count);
+		internal static extern int heif_image_handle_get_list_of_thumbnail_IDs(IntPtr context, IntPtr itemIds, int count);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern Error heif_image_handle_get_thumbnail(IntPtr handle, uint itemId, ImageHandle** output);
+		internal static extern Error heif_image_handle_get_thumbnail(IntPtr context, uint itemId, ImageHandle** output);
 
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern Error heif_context_get_primary_image_handle(IntPtr handle, ImageHandle** output);
+		internal static extern Error heif_context_get_primary_image_handle(IntPtr context, ImageHandle** output);
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
 		public struct ImageHandle
