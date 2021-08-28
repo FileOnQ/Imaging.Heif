@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
 		<!-- NuGet Package Properties -->
 		<PackageId>FileOnQ.Imaging.Heif</PackageId>
@@ -20,14 +21,6 @@
 		<RepositoryUrl>https://github.com/FileOnQ/FileOnQ.Imaging.Heif</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<!-- End NuGet Package Properties -->
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
 	<ItemGroup>

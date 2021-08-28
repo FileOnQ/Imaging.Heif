@@ -19,17 +19,21 @@ namespace FileOnQ.Imaging.Heif
 				var itemIds = new uint[numberOfThumbnails];
 				var arrayHandle = GCHandle.Alloc(itemIds, GCHandleType.Pinned);
 
+				 
 				try
 				{
-					LibHeifContext.heif_image_handle_get_list_of_thumbnail_IDs(heifHandle, arrayHandle.AddrOfPinnedObject(), numberOfThumbnails);
-					
+					fixed (uint* ptr = itemIds)
+					{
+						LibHeifContext.heif_image_handle_get_list_of_thumbnail_IDs(heifHandle, (IntPtr)ptr, numberOfThumbnails);
 
-					LibHeifContext.ImageHandle* imageHandle;
-					var imageError = LibHeifContext.heif_context_get_primary_image_handle(heifHandle, &imageHandle);
 
-					// no idea why this is failing
-					LibHeifContext.ImageHandle* thumbHandle;
-					var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(heifHandle, itemIds[0], &thumbHandle);
+						LibHeifContext.ImageHandle* imageHandle;
+						var imageError = LibHeifContext.heif_context_get_primary_image_handle(heifHandle, &imageHandle);
+
+						// no idea why this is failing
+						LibHeifContext.ImageHandle* thumbHandle;
+						var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(heifHandle, itemIds[0], &thumbHandle);
+					}
 				}
 				finally
 				{

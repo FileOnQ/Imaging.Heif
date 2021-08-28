@@ -357,3 +357,6 @@ MigrationBackup/
 .build/
 *.jar
 *.aar
+
+# Exclude third-party
+third-party/
