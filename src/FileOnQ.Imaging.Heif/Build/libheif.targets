@@ -2,16 +2,31 @@
 <Project ToolsVersion="15.0">
 	<PropertyGroup>
 		<RootDir>$(ProjectDir)../../</RootDir>
-		<ThirdPartyDir>$(RootDir)/third-party</ThirdPartyDir>
+		<ThirdPartyDir>$(RootDir)third-party</ThirdPartyDir>
 	</PropertyGroup>
 
-	<Target Name="LibHeif" BeforeTargets="DispatchToInnerBuilds" DependsOnTargets="Vcpkg" Condition="!Exists('heif.dll') and !Exists('libde265.dll') and !Exists('libx265.dll')">
-		<Exec Command="vcpkg.exe install libheif:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
-		<Exec Command="vcpkg.exe export libheif:x64-windows --output=libheif --output-dir=../ --raw" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
+	<Target Name="LibHeif" BeforeTargets="DispatchToInnerBuilds" DependsOnTargets="LibHeif-Clone;LibHeif-Dependencies" Condition="!Exists('heif.dll')">
+		<PropertyGroup>
+			<_Path>$([System.IO.Path]::GetFullPath($(ThirdPartyDir)))</_Path>
+		</PropertyGroup>
 
-		<Copy SourceFiles="$(ThirdPartyDir)/libheif/installed/x64-windows/bin/heif.dll" DestinationFolder="." />
-		<Copy SourceFiles="$(ThirdPartyDir)/libheif/installed/x64-windows/bin/libde265.dll" DestinationFolder="." />
-		<Copy SourceFiles="$(ThirdPartyDir)/libheif/installed/x64-windows/bin/libx265.dll" DestinationFolder="." />
+		<Exec Command="libheif.bat x64 &quot;$(_Path)&quot;" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Copy SourceFiles="$(ThirdPartyDir)/libheif/libheif/Release/heif.dll" DestinationFolder="." />
+	</Target>
+
+	<Target Name="LibHeif-Dependencies" DependsOnTargets="Vcpkg;libjpeg-turbo" Condition="!Exists('dav1d.dll') and !Exists('libde265.dll') and !Exists('libx265.dll')">
+		<Exec Command="vcpkg.exe install dav1d:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
+		<Exec Command="vcpkg.exe install libde265:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
+		<Exec Command="vcpkg.exe install x265:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
+
+		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/dav1d.dll" DestinationFolder="." />
+		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/libde265.dll" DestinationFolder="." />
+		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/libx265.dll" DestinationFolder="." />
+	</Target>
+
+	<Target Name="LibHeif-Clone" Condition="!Exists('$(ThirdPartyDir)/libheif/README.md')">
+		<Exec Command="git clone https://github.com/strukturag/libheif.git" WorkingDirectory="$(ThirdPartyDir)" />
+		<Exec Command="git checkout v1.12.0" WorkingDirectory="$(ThirdPartyDir)/libheif" />
 	</Target>
 
 	<Target Name="Vcpkg" Condition="!Exists('$(ThirdPartyDir)/vcpkg/vcpkg.exe')">
@@ -19,8 +34,32 @@
 		<Exec Command="bootstrap-vcpkg.bat" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
 	</Target>
 
+	<Target Name="libjpeg-turbo-clone" Condition="!Exists('$(ThirdPartyDir)/libjpeg-turbo/README.md')">
+		<Exec Command="git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git" WorkingDirectory="$(ThirdPartyDir)" />
+		<Exec Command="git checkout 2.1.1" WorkingDirectory="$(ThirdPartyDir)/libjpeg-turbo" />
+	</Target>
+
+	<Target Name="libjpeg-turbo" DependsOnTargets="libjpeg-turbo-clone" Condition="!Exists('$(ThirdPartyDir)/libjpeg-turbo/Release/jpeg62.dll')">
+		<Exec Command="libjpeg-turbo.bat x64" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Copy SourceFiles="$(ThirdPartyDir)/libjpeg-turbo/Release/jpeg62.dll" DestinationFolder="." />
+	</Target>
+
+	<Target Name="LibHeif-Clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/libheif/README.md')">
+		<Exec Command="rmdir /s /q libheif" WorkingDirectory="$(ThirdPartyDir)" />
+	</Target>
+
+	<Target Name="libjpeg-turbo-clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/libjpeg-turbo/README.md')">
+		<Exec Command="rmdir /s /q libjpeg-turbo" WorkingDirectory="$(ThirdPartyDir)" />
+	</Target>
+
+	<Target Name="vcpkg-clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/vcpkg/vcpkg.exe')">
+		<Exec Command="rmdir /s /q vcpkg" WorkingDirectory="$(ThirdPartyDir)" />
+	</Target>
+
 	<Target Name="CleanLibHeif" BeforeTargets="Clean">
+		<Delete Files="dav1d.dll" />
 		<Delete Files="heif.dll" />
+		<Delete Files="jpeg62.dll" />
 		<Delete Files="libde265.dll" />
 		<Delete Files="libx265.dll" />
 	</Target>

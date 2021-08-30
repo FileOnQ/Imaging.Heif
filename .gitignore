@@ -360,3 +360,10 @@ MigrationBackup/
 
 # Exclude third-party
 third-party/
+
+# Exclude libheif generated assemblies
+dav1d.dll
+heif.dll
+jpeg62.dll
+libde265.dll
+libx265.dll
