@@ -28,6 +28,8 @@ namespace FileOnQ.Imaging.Heif
 				// no idea why this is failing
 				LibHeifContext.ImageHandle* thumbHandle;
 				var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(imageHandle, itemIds[0], &thumbHandle);
+				if (thumbError.Code != LibHeifContext.ErrorCode.Ok)
+					throw new Exception(Marshal.PtrToStringAnsi(thumbError.Message));
 			}
 		}
 
