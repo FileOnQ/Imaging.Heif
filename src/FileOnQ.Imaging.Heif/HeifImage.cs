@@ -41,9 +41,9 @@ namespace FileOnQ.Imaging.Heif
 			void Encode(LibHeifContext.ImageHandle* handle)
 			{
 				var hasAlpha = LibHeifContext.heif_image_handle_has_alpha_channel(handle) == 1;
-				var encoder = LibEncoder.encoder_jpeg_init(90);
+				var encoder = LibEncoder.InitJpegEncoder(90);
 				var options = LibHeifContext.heif_decoding_options_alloc();
-				LibEncoder.encoder_update_decoding_options(encoder, handle, options);
+				LibEncoder.UpdateDecodingOptions(encoder, handle, options);
 
 				var bitDepth = LibHeifContext.heif_image_handle_get_luma_bits_per_pixel(handle);
 				if (bitDepth < 0)
@@ -57,8 +57,8 @@ namespace FileOnQ.Imaging.Heif
 				var decodeError = LibHeifContext.heif_decode_image(
 					handle,
 					&outputImage,
-					LibEncoder.encoder_colorspace(encoder, hasAlpha),
-					LibEncoder.encoder_chroma(encoder, hasAlpha, bitDepth),
+					LibEncoder.GetColorSpace(encoder, hasAlpha),
+					LibEncoder.GetChroma(encoder, hasAlpha, bitDepth),
 					options);
 
 				LibHeifContext.heif_decoding_options_free(options);
@@ -71,12 +71,12 @@ namespace FileOnQ.Imaging.Heif
 
 				if ((IntPtr)outputImage != IntPtr.Zero)
 				{
-					bool saved = LibEncoder.encode(encoder, handle, outputImage, "output.jpeg");
+					bool saved = LibEncoder.Encode(encoder, handle, outputImage, "output.jpeg");
 					if (!saved)
 						throw new Exception("Unable to save");
 				}
 
-				LibEncoder.encoder_free(encoder);
+				LibEncoder.Free(encoder);
 			}
 		}
 
