@@ -30,6 +30,44 @@ namespace FileOnQ.Imaging.Heif
 				var thumbError = LibHeifContext.heif_image_handle_get_thumbnail(imageHandle, itemIds[0], &thumbHandle);
 				if (thumbError.Code != LibHeifContext.ErrorCode.Ok)
 					throw new Exception(Marshal.PtrToStringAnsi(thumbError.Message));
+
+				var hasAlpha = LibHeifContext.heif_image_handle_has_alpha_channel(imageHandle) == 1;
+				var encoder = LibEncoder.encoder_jpeg_init(90);
+				var options = LibHeifContext.heif_decoding_options_alloc();
+				LibEncoder.encoder_update_decoding_options(encoder, imageHandle, options);
+
+				var bitDepth = LibHeifContext.heif_image_handle_get_luma_bits_per_pixel(imageHandle);
+				if (bitDepth < 0)
+				{
+					LibHeifContext.heif_decoding_options_free(options);
+					LibHeifContext.heif_image_handle_release(imageHandle);
+					throw new Exception("Input image has undefined bit-dept");
+				}
+
+				LibHeifContext.Image* outputImage;
+				var decodeError = LibHeifContext.heif_decode_image(
+					imageHandle,
+					&outputImage,
+					LibEncoder.encoder_colorspace(encoder, hasAlpha),
+					LibEncoder.encoder_chroma(encoder, hasAlpha, bitDepth),
+					options);
+
+				LibHeifContext.heif_decoding_options_free(options);
+
+				if (decodeError.Code != LibHeifContext.ErrorCode.Ok)
+				{
+					LibHeifContext.heif_image_handle_release(imageHandle);
+					throw new Exception(Marshal.PtrToStringAnsi(decodeError.Message));
+				}
+
+				if ((IntPtr)outputImage != IntPtr.Zero)
+				{
+					bool saved = LibEncoder.encode(encoder, imageHandle, outputImage, "output.jpeg");
+					if (!saved)
+						throw new Exception("Unable to save");
+				}
+
+				LibEncoder.encoder_free(encoder);
 			}
 		}
 
@@ -87,6 +125,24 @@ namespace FileOnQ.Imaging.Heif
 		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern Error heif_context_get_primary_image_handle(Context* context, ImageHandle** output);
 
+		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern IntPtr heif_decoding_options_alloc();
+
+		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int heif_image_handle_has_alpha_channel(ImageHandle* handle);
+
+		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int heif_image_handle_get_luma_bits_per_pixel(ImageHandle* handle);
+
+		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern Error heif_decode_image(ImageHandle* inputImage, Image** outputImage, ColorSpace colorSpace, Chroma chroma, IntPtr decodingOptions);
+
+		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern void heif_decoding_options_free(IntPtr decodingOptions);
+
+		[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern void heif_image_handle_release(ImageHandle* handle);
+
 		[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
 		public struct Context
 		{
@@ -107,6 +163,25 @@ namespace FileOnQ.Imaging.Heif
 			public ErrorCode Code;
 			public SubErrorCode SubCode;
 			public IntPtr Message;
+		}
+
+		[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
+		public struct EncoderDescriptor
+		{
+			public EncoderPlugin* Plugin;
+		}
+
+		[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
+		public struct EncoderPlugin
+		{
+			public int ApiVersion;
+			public CompressionFormat CompressionFormat;
+		}
+
+		[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
+		public struct Image
+		{
+			public IntPtr PixelImage;
 		}
 
 		public enum ErrorCode
@@ -307,6 +382,38 @@ namespace FileOnQ.Imaging.Heif
 			// --- Encoding_error ---
 
 			heif_suberror_Cannot_write_output_data = 5000,
+		}
+
+		public enum CompressionFormat
+		{
+			Undefined = 0,
+			Hevc = 1,
+			Avc = 2,
+			Jpeg = 3,
+			Av1 = 4
+		}
+
+		public enum ColorSpace
+		{
+			Undefined = 99,
+			YCbCr = 0,
+			Rgb = 1,
+			MonoChrome = 2
+		}
+
+		public enum Chroma
+		{
+			Undefined = 99,
+			Monochrome = 0,
+			Chroma_420 = 1,
+			Chroma_422 = 2,
+			Chroma_444 = 3,
+			Interleaved_RGB = 10,
+			Interleaved_RGBA = 11,
+			Interleaved_RRGGBB_BE = 12,
+			Interleaved_RRGGBBAA_BE = 13,
+			Interleaved_RRGGBB_LE = 14,
+			Interleaved_RRGGBBAA_LE = 15
 		}
 	}
 }

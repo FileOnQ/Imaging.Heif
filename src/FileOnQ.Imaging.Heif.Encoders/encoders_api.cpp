@@ -7,9 +7,9 @@
 #include "encoder.h"
 #include "encoder_jpeg.h"
 
-void encoder_jpeg_init(int quality, Encoder* encoder)
+Encoder* encoder_jpeg_init(int quality)
 {
-	encoder = new JpegEncoder(quality);
+	return new JpegEncoder(quality);
 }
 
 heif_colorspace encoder_colorspace(Encoder* encoder, bool has_alpha)
@@ -22,9 +22,14 @@ heif_chroma encoder_chroma(Encoder* encoder, bool has_alpha, int bit_depth)
 	return encoder->chroma(has_alpha, bit_depth);
 }
 
-bool encode(Encoder* encoder, const struct heif_image_handle* handle, const struct heif_image* image, const std::string& filename)
+bool encode(Encoder* encoder, const struct heif_image_handle* handle, const struct heif_image* image, char* filename)
 {
 	return encoder->Encode(handle, image, filename);
+}
+
+void encoder_update_decoding_options(Encoder* encoder, const struct heif_image_handle* handle, struct heif_decoding_options* options)
+{
+	encoder->UpdateDecodingOptions(handle, options);
 }
 
 void encoder_free(Encoder* encoder)
