@@ -31,22 +31,31 @@ namespace FileOnQ.Imaging.Heif
 				if (thumbError.Code != LibHeifContext.ErrorCode.Ok)
 					throw new Exception(Marshal.PtrToStringAnsi(thumbError.Message));
 
-				var hasAlpha = LibHeifContext.heif_image_handle_has_alpha_channel(imageHandle) == 1;
+				Encode(thumbHandle);
+			}
+			else
+			{
+				Encode(imageHandle);
+			}
+
+			void Encode(LibHeifContext.ImageHandle* handle)
+			{
+				var hasAlpha = LibHeifContext.heif_image_handle_has_alpha_channel(handle) == 1;
 				var encoder = LibEncoder.encoder_jpeg_init(90);
 				var options = LibHeifContext.heif_decoding_options_alloc();
-				LibEncoder.encoder_update_decoding_options(encoder, imageHandle, options);
+				LibEncoder.encoder_update_decoding_options(encoder, handle, options);
 
-				var bitDepth = LibHeifContext.heif_image_handle_get_luma_bits_per_pixel(imageHandle);
+				var bitDepth = LibHeifContext.heif_image_handle_get_luma_bits_per_pixel(handle);
 				if (bitDepth < 0)
 				{
 					LibHeifContext.heif_decoding_options_free(options);
-					LibHeifContext.heif_image_handle_release(imageHandle);
+					LibHeifContext.heif_image_handle_release(handle);
 					throw new Exception("Input image has undefined bit-dept");
 				}
 
 				LibHeifContext.Image* outputImage;
 				var decodeError = LibHeifContext.heif_decode_image(
-					imageHandle,
+					handle,
 					&outputImage,
 					LibEncoder.encoder_colorspace(encoder, hasAlpha),
 					LibEncoder.encoder_chroma(encoder, hasAlpha, bitDepth),
@@ -56,13 +65,13 @@ namespace FileOnQ.Imaging.Heif
 
 				if (decodeError.Code != LibHeifContext.ErrorCode.Ok)
 				{
-					LibHeifContext.heif_image_handle_release(imageHandle);
+					LibHeifContext.heif_image_handle_release(handle);
 					throw new Exception(Marshal.PtrToStringAnsi(decodeError.Message));
 				}
 
 				if ((IntPtr)outputImage != IntPtr.Zero)
 				{
-					bool saved = LibEncoder.encode(encoder, imageHandle, outputImage, "output.jpeg");
+					bool saved = LibEncoder.encode(encoder, handle, outputImage, "output.jpeg");
 					if (!saved)
 						throw new Exception("Unable to save");
 				}
