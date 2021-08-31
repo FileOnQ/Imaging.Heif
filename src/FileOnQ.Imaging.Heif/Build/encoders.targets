@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="15.0">
-	<PropertyGroup>
-		<RootDir>$(ProjectDir)../../</RootDir>
-		<ThirdPartyDir>$(RootDir)third-party</ThirdPartyDir>
-	</PropertyGroup>
-
+	
 	<Target Name="Encoders" AfterTargets="LibHeif">
 		<MSBuild Projects="../FileOnQ.Imaging.Heif.Encoders/FileOnQ.Imaging.Heif.Encoders.vcxproj" Properties="Platform=x64;Configuration=$(Configuration)" />
 		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/Debug/x64/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="." />

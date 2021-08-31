@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="15.0">
+
+	<Target Name="libjpeg-turbo-clone" Condition="!Exists('$(ThirdPartyDir)/libjpeg-turbo/README.md')">
+		<Exec Command="git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git" WorkingDirectory="$(ThirdPartyDir)" />
+		<Exec Command="git checkout 2.1.1" WorkingDirectory="$(ThirdPartyDir)/libjpeg-turbo" />
+	</Target>
+
+	<Target Name="libjpeg-turbo" DependsOnTargets="libjpeg-turbo-clone" Condition="!Exists('$(ThirdPartyDir)/libjpeg-turbo/Debug/jpeg62.dll')">
+		<Exec Command="libjpeg-turbo.bat x64" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Copy SourceFiles="$(ThirdPartyDir)/libjpeg-turbo/Debug/jpeg62.dll" DestinationFolder="." />
+	</Target>
+
+	<Target Name="libjpeg-turbo-clean" BeforeTargets="Clean">
+		<Exec Command="rmdir /s /q libjpeg-turbo" WorkingDirectory="$(ThirdPartyDir)" Condition="Exists('$(ThirdPartyDir)/libjpeg-turbo/README.md')" />
+		<Delete Files="jpeg62.dll" />
+	</Target>
+</Project>

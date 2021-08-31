@@ -33,6 +33,9 @@
 	  </None>
 	</ItemGroup>
 
-	<Import Project="Build\libheif.targets" />
+	<Import Project="Build\build-properties.props" />
 	<Import Project="Build\encoders.targets" />
+	<Import Project="Build\libheif.targets" />
+	<Import Project="Build\libjpeg-turbo.targets" />
+
 </Project>

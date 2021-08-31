@@ -1,9 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="15.0">
-	<PropertyGroup>
-		<RootDir>$(ProjectDir)../../</RootDir>
-		<ThirdPartyDir>$(RootDir)third-party</ThirdPartyDir>
-	</PropertyGroup>
 
 	<Target Name="LibHeif" BeforeTargets="DispatchToInnerBuilds" DependsOnTargets="LibHeif-Clone;LibHeif-Dependencies" Condition="!Exists('heif.dll')">
 		<PropertyGroup>
@@ -34,22 +30,8 @@
 		<Exec Command="bootstrap-vcpkg.bat" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
 	</Target>
 
-	<Target Name="libjpeg-turbo-clone" Condition="!Exists('$(ThirdPartyDir)/libjpeg-turbo/README.md')">
-		<Exec Command="git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git" WorkingDirectory="$(ThirdPartyDir)" />
-		<Exec Command="git checkout 2.1.1" WorkingDirectory="$(ThirdPartyDir)/libjpeg-turbo" />
-	</Target>
-
-	<Target Name="libjpeg-turbo" DependsOnTargets="libjpeg-turbo-clone" Condition="!Exists('$(ThirdPartyDir)/libjpeg-turbo/Debug/jpeg62.dll')">
-		<Exec Command="libjpeg-turbo.bat x64" WorkingDirectory="$(ThirdPartyDir)/../build" />
-		<Copy SourceFiles="$(ThirdPartyDir)/libjpeg-turbo/Debug/jpeg62.dll" DestinationFolder="." />
-	</Target>
-
 	<Target Name="LibHeif-Clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/libheif/README.md')">
 		<Exec Command="rmdir /s /q libheif" WorkingDirectory="$(ThirdPartyDir)" />
-	</Target>
-
-	<Target Name="libjpeg-turbo-clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/libjpeg-turbo/README.md')">
-		<Exec Command="rmdir /s /q libjpeg-turbo" WorkingDirectory="$(ThirdPartyDir)" />
 	</Target>
 
 	<Target Name="vcpkg-clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/vcpkg/vcpkg.exe')">
@@ -59,7 +41,6 @@
 	<Target Name="CleanLibHeif" BeforeTargets="Clean">
 		<Delete Files="dav1d.dll" />
 		<Delete Files="heif.dll" />
-		<Delete Files="jpeg62.dll" />
 		<Delete Files="libde265.dll" />
 		<Delete Files="libx265.dll" />
 	</Target>
