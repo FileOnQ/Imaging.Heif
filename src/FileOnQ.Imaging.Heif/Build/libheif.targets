@@ -39,9 +39,9 @@
 		<Exec Command="git checkout 2.1.1" WorkingDirectory="$(ThirdPartyDir)/libjpeg-turbo" />
 	</Target>
 
-	<Target Name="libjpeg-turbo" DependsOnTargets="libjpeg-turbo-clone" Condition="!Exists('$(ThirdPartyDir)/libjpeg-turbo/Release/jpeg62.dll')">
+	<Target Name="libjpeg-turbo" DependsOnTargets="libjpeg-turbo-clone" Condition="!Exists('$(ThirdPartyDir)/libjpeg-turbo/Debug/jpeg62.dll')">
 		<Exec Command="libjpeg-turbo.bat x64" WorkingDirectory="$(ThirdPartyDir)/../build" />
-		<Copy SourceFiles="$(ThirdPartyDir)/libjpeg-turbo/Release/jpeg62.dll" DestinationFolder="." />
+		<Copy SourceFiles="$(ThirdPartyDir)/libjpeg-turbo/Debug/jpeg62.dll" DestinationFolder="." />
 	</Target>
 
 	<Target Name="LibHeif-Clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/libheif/README.md')">
