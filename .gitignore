@@ -367,3 +367,6 @@ heif.dll
 jpeg62.dll
 libde265.dll
 libx265.dll
+
+# Exclude other generated assemblies
+FileOnQ.Imaging.Heif.Encoders.dll

@@ -34,4 +34,5 @@
 	</ItemGroup>
 
 	<Import Project="Build\libheif.targets" />
+	<Import Project="Build\encoders.targets" />
 </Project>
