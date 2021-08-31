@@ -18,7 +18,7 @@ namespace FileOnQ.Imaging.Heif
 			}
 		}
 
-		internal static LibHeifContext.ColorSpace GetColorSpace(IntPtr encoder, bool hasAlpha)
+		internal static LibHeif.ColorSpace GetColorSpace(IntPtr encoder, bool hasAlpha)
 		{
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
@@ -31,7 +31,7 @@ namespace FileOnQ.Imaging.Heif
 			}
 		}
 
-		internal static LibHeifContext.Chroma GetChroma(IntPtr encoder, bool hasAlpha, int bitDepth)
+		internal static LibHeif.Chroma GetChroma(IntPtr encoder, bool hasAlpha, int bitDepth)
 		{
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
@@ -44,7 +44,7 @@ namespace FileOnQ.Imaging.Heif
 			}
 		}
 
-		internal static bool Encode(IntPtr encoder, LibHeifContext.ImageHandle* handle, LibHeifContext.Image* image, string filename)
+		internal static bool Encode(IntPtr encoder, LibHeif.ImageHandle* handle, LibHeif.Image* image, string filename)
 		{
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
@@ -72,7 +72,7 @@ namespace FileOnQ.Imaging.Heif
 			}
 		}
 
-		internal static void UpdateDecodingOptions(IntPtr encoder, LibHeifContext.ImageHandle* handle, IntPtr decodingOptions)
+		internal static void UpdateDecodingOptions(IntPtr encoder, LibHeif.ImageHandle* handle, IntPtr decodingOptions)
 		{
 			switch (RuntimeInformation.ProcessArchitecture)
 			{

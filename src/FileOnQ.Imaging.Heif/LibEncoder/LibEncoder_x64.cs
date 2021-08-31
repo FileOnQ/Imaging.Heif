@@ -13,19 +13,19 @@ namespace FileOnQ.Imaging.Heif
 			internal static extern IntPtr encoder_jpeg_init(int quality);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-			internal static extern LibHeifContext.ColorSpace encoder_colorspace(IntPtr encoder, bool hasAlpha);
+			internal static extern LibHeif.ColorSpace encoder_colorspace(IntPtr encoder, bool hasAlpha);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-			internal static extern LibHeifContext.Chroma encoder_chroma(IntPtr encoder, bool hasAlpha, int bitDepth);
+			internal static extern LibHeif.Chroma encoder_chroma(IntPtr encoder, bool hasAlpha, int bitDepth);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-			internal static extern bool encode(IntPtr encoder, LibHeifContext.ImageHandle* handle, LibHeifContext.Image* image, string filename);
+			internal static extern bool encode(IntPtr encoder, LibHeif.ImageHandle* handle, LibHeif.Image* image, string filename);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 			internal static extern IntPtr encoder_free(IntPtr encoder);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-			internal static extern void encoder_update_decoding_options(IntPtr encoder, LibHeifContext.ImageHandle* handle, IntPtr decodingOptions);
+			internal static extern void encoder_update_decoding_options(IntPtr encoder, LibHeif.ImageHandle* handle, IntPtr decodingOptions);
 		}
 	}
 }

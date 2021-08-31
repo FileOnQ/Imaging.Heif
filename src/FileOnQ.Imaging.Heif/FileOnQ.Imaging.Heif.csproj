@@ -33,10 +33,6 @@
 	  </None>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="LibHeif\" />
-	</ItemGroup>
-
 	<Import Project="Build\libheif.targets" />
 	<Import Project="Build\encoders.targets" />
 </Project>
