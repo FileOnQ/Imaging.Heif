@@ -8,8 +8,9 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
 			using (var image = new HeifImage(@"20210821_095129.heic"))
+			using (var thumb = image.Thumbnail())
 			{
-
+				thumb.Save("output", 90);
 			}
         }
     }

@@ -151,7 +151,7 @@ namespace FileOnQ.Imaging.Heif
 			}
 		}
 
-		internal static void FreeDecodingOptinos(IntPtr decodingOptions)
+		internal static void FreeDecodingOptions(IntPtr decodingOptions)
 		{
 			switch (RuntimeInformation.ProcessArchitecture)
 			{

@@ -3,8 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace FileOnQ.Imaging.Heif
 {
-	public unsafe class HeifImage : IDisposable
-    {
+	public unsafe class HeifImage : IHeifImage
+	{
 		LibHeif.Context* heifContext;
 		public HeifImage(string file)
 		{
@@ -12,72 +12,52 @@ namespace FileOnQ.Imaging.Heif
 			var error = LibHeif.ReadFromFile(heifContext, file, IntPtr.Zero);
 			if (error.Code != LibHeif.ErrorCode.Ok)
 				throw new Exception(Marshal.PtrToStringAnsi(error.Message));
+		}
 
-			LibHeif.ImageHandle* imageHandle;
-			var imageError = LibHeif.GetPrimaryImageHandle(heifContext, &imageHandle);
+		public IImage Thumbnail()
+		{
+			LibHeif.ImageHandle* primaryImageHandle;
+			var error = LibHeif.GetPrimaryImageHandle(heifContext, &primaryImageHandle);
+			if (error.Code != LibHeif.ErrorCode.Ok)
+				throw new Exception(Marshal.PtrToStringAnsi(error.Message));
 
-			var numberOfThumbnails = LibHeif.GetNumberOfThumbnails(imageHandle);
-			if (numberOfThumbnails > 0)
+			try
 			{
-				var itemIds = new uint[numberOfThumbnails];
-				fixed (uint* ptr = itemIds)
+				var numberOfThumbnails = LibHeif.GetNumberOfThumbnails(primaryImageHandle);
+				if (numberOfThumbnails > 0)
 				{
-					LibHeif.GetListOfThumbnailIds(imageHandle, ptr, numberOfThumbnails);
+					var itemIds = new uint[numberOfThumbnails];
+					fixed (uint* ptr = itemIds)
+					{
+						LibHeif.GetListOfThumbnailIds(primaryImageHandle, ptr, numberOfThumbnails);
+					}
+
+					LibHeif.ImageHandle* thumbHandle;
+					var thumbError = LibHeif.GetThumbnail(primaryImageHandle, itemIds[0], &thumbHandle);
+					if (thumbError.Code != LibHeif.ErrorCode.Ok)
+						throw new Exception(Marshal.PtrToStringAnsi(thumbError.Message));
+
+					return new Image(thumbHandle);
 				}
-
-				// no idea why this is failing
-				LibHeif.ImageHandle* thumbHandle;
-				var thumbError = LibHeif.GetThumbnail(imageHandle, itemIds[0], &thumbHandle);
-				if (thumbError.Code != LibHeif.ErrorCode.Ok)
-					throw new Exception(Marshal.PtrToStringAnsi(thumbError.Message));
-
-				Encode(thumbHandle);
+				else
+					throw new Exception("No thumbnail found");
 			}
-			else
+			finally
 			{
-				Encode(imageHandle);
+				// REVIEW - will this hide exceptions being thrown above?
+				// the goal is to make sure that we always release memory
+				LibHeif.ReleaseImageHandle(primaryImageHandle);
 			}
+		}
 
-			void Encode(LibHeif.ImageHandle* handle)
-			{
-				var hasAlpha = LibHeif.HasAlphaChannel(handle);
-				var encoder = LibEncoder.InitJpegEncoder(90);
-				var options = LibHeif.DecodingOptionsAllocate();
-				LibEncoder.UpdateDecodingOptions(encoder, handle, options);
+		public IImage PrimaryImage()
+		{
+			LibHeif.ImageHandle* primaryImageHandle;
+			var error = LibHeif.GetPrimaryImageHandle(heifContext, &primaryImageHandle);
+			if (error.Code != LibHeif.ErrorCode.Ok)
+				throw new Exception(Marshal.PtrToStringAnsi(error.Message));
 
-				var bitDepth = LibHeif.GetLumaBitsPerPixel(handle);
-				if (bitDepth < 0)
-				{
-					LibHeif.FreeDecodingOptinos(options);
-					LibHeif.ReleaseImageHandle(handle);
-					throw new Exception("Input image has undefined bit-dept");
-				}
-
-				LibHeif.Image* outputImage;
-				var decodeError = LibHeif.DecodeImage(
-					handle,
-					&outputImage,
-					LibEncoder.GetColorSpace(encoder, hasAlpha),
-					LibEncoder.GetChroma(encoder, hasAlpha, bitDepth),
-					options);
-
-				LibHeif.FreeDecodingOptinos(options);
-
-				if (decodeError.Code != LibHeif.ErrorCode.Ok)
-				{
-					LibHeif.ReleaseImageHandle(handle);
-					throw new Exception(Marshal.PtrToStringAnsi(decodeError.Message));
-				}
-
-				if ((IntPtr)outputImage != IntPtr.Zero)
-				{
-					bool saved = LibEncoder.Encode(encoder, handle, outputImage, "output.jpeg");
-					if (!saved)
-						throw new Exception("Unable to save");
-				}
-
-				LibEncoder.Free(encoder);
-			}
+			return new Image(primaryImageHandle);
 		}
 
 		~HeifImage() => Dispose(false);
@@ -99,7 +79,7 @@ namespace FileOnQ.Imaging.Heif
 				// free managed resources
 			}
 
-			if (heifContext != null)
+			if ((IntPtr)heifContext != IntPtr.Zero)
 			{
 				LibHeif.FreeContext(heifContext);
 				heifContext = null;
