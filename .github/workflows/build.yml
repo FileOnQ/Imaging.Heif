@@ -19,12 +19,19 @@ jobs:
       with:
         dotnet-version: 5.0.302
 
-    - name: Install meson
-      shell: powershell
-      run: |
-        wget https://github.com/mesonbuild/meson/releases/download/0.59.1/meson-0.59.1-64.msi -o meson-0.59.1-64.msi
-        msiexec /norestart /passive /i meson-0.59.1-64.msi
-        meson
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    
+    - name: Install meson and ninja
+      run: pip install meson ninja
+
+    - name: Test meson
+      run: meson
+
+    - name: test ninja
+      run: ninja
 
     # - name: Build
     #   run: dotnet build src/FileOnQ.Imaging.Raw/FileOnQ.Imaging.Raw.csproj
