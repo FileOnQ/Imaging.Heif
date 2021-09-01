@@ -8,6 +8,11 @@ A C#/.NET wrapper around [libheif](https://github.com/strukturag/libheif) to sim
 ## Project Status
 The project is only in a proof of concept stage and is not fully featured.
 
+## Contributing
+⭐ Pull Requests and Issues are always welcomed ⭐
+* Get Involved - [contributing.md](contributing.md)
+* How to Compile - [building](building.md)
+
 ## Setup
 TBD
 
