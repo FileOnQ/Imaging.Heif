@@ -20,11 +20,9 @@ jobs:
         dotnet-version: 5.0.302
 
     - name: install nasm
-      shell: powershell
       run: |
-        wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-installer-x64.exe -o nasm-2.15.05-installer-x64.exe
-        .\nasm-2.15.05-installer-x64.exe
-        nasm
+        choco install nasm
+        echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: Setup Python (meson & ninja)
       uses: actions/setup-python@v2
