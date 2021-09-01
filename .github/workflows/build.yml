@@ -48,6 +48,39 @@ jobs:
     - name: Pack
       run: dotnet pack src/FileOnQ.Imaging.Heif/FileOnQ.Imaging.Heif.csproj -c Release -o . /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
       
+    - name: Test - ConsoleApp - Update NuGet
+      run: |
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.AnyCPU.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X86.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X64.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.AnyCPU.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x86.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x64.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+
+    - name: Test - ConsoleApp Run - net48 - AnyCPU
+      run: dotnet run
+      working-directory: ./samples/ConsoleApp/ConsoleApp.net48.AnyCPU
+
+    - name: Test - ConsoleApp Run - net48 - x86
+      run: dotnet run
+      working-directory: ./samples/ConsoleApp/ConsoleApp.net48.x86
+      
+    - name: Test - ConsoleApp Run - net48 - x64
+      run: dotnet run
+      working-directory: ./samples/ConsoleApp/ConsoleApp.net48.x64
+      
+    - name: Test - ConsoleApp Run - net5 - AnyCPU
+      run: dotnet run
+      working-directory: ./samples/ConsoleApp/ConsoleApp.net5.AnyCPU
+
+    - name: Test - ConsoleApp Run - net5 - x86
+      run: dotnet run
+      working-directory: ./samples/ConsoleApp/ConsoleApp.net5.x86
+
+    - name: Test - ConsoleApp Run - net5 - x64
+      run: dotnet run
+      working-directory: ./samples/ConsoleApp/ConsoleApp.net5.x64
+  
     - name: Upload NuGet Package
       uses: actions/upload-artifact@v2
       with:
