@@ -2,8 +2,8 @@
 <Project ToolsVersion="15.0">
 	
 	<Target Name="Encoders" AfterTargets="LibHeif-copy-includes" Condition="!Exists('runtimes/win-x64/native/FileOnQ.Imaging.Heif.Encoders.dll') and !Exists('runtimes/win-x86/native/FileOnQ.Imaging.Heif.Encoders.dll')">
-		<MSBuild Projects="../FileOnQ.Imaging.Heif.Encoders/FileOnQ.Imaging.Heif.Encoders.vcxproj" Properties="Platform=x64;Configuration=$(Configuration)" />
-		<MSBuild Projects="../FileOnQ.Imaging.Heif.Encoders/FileOnQ.Imaging.Heif.Encoders.vcxproj" Properties="Platform=Win32;Configuration=$(Configuration)" />
+		<Exec Command="encoders.bat x64 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Exec Command="encoders.bat x86 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
 
 		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/$(Configuration)/x64/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x64/native" />
 		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/$(Configuration)/Win32/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x86/native" />
