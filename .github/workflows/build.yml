@@ -23,7 +23,7 @@ jobs:
       shell: powershell
       run: |
         wget https://github.com/mesonbuild/meson/releases/download/0.59.1/meson-0.59.1-64.msi -o meson-0.59.1-64.msi
-        msiexec /quiet /i meson-0.59.1-64.msi
+        msiexec /i meson-0.59.1-64.msi
         meson
 
     # - name: Build
