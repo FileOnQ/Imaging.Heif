@@ -23,7 +23,7 @@ jobs:
       shell: powershell
       run: |
         wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-installer-x64.exe
-        nasm-2.15.05-installer-x64.exe
+        .\nasm-2.15.05-installer-x64.exe
         nasm
 
     - name: Setup Python (meson & ninja)
