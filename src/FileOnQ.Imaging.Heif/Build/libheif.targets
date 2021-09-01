@@ -1,28 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="15.0">
 
-	<Target Name="LibHeif" BeforeTargets="DispatchToInnerBuilds" DependsOnTargets="LibHeif-Clone;LibHeif-Dependencies" Condition="!Exists('heif.dll')">
+	<Target Name="LibHeif" BeforeTargets="DispatchToInnerBuilds" DependsOnTargets="LibHeif-Clone-x86;LibHeif-Clone-x64;LibHeif-Dependencies" Condition="!Exists('runtimes/win-x64/native/heif.dll') and !Exists('runtimes/win-x86/native/heif.dll')">
 		<PropertyGroup>
 			<_Path>$([System.IO.Path]::GetFullPath($(ThirdPartyDir)))</_Path>
 		</PropertyGroup>
 
 		<Exec Command="libheif.bat x64 &quot;$(_Path)&quot;" WorkingDirectory="$(ThirdPartyDir)/../build" />
-		<Copy SourceFiles="$(ThirdPartyDir)/libheif/libheif/Release/heif.dll" DestinationFolder="." />
+		<Copy SourceFiles="$(ThirdPartyDir)/libheif-x64/build/libheif/heif.dll" DestinationFolder="runtimes/win-x64/native" />
+
+		<Exec Command="libheif.bat x86 &quot;$(_Path)&quot;" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Copy SourceFiles="$(ThirdPartyDir)/libheif-x64/build/libheif/heif.dll" DestinationFolder="runtimes/win-x86/native" />
 	</Target>
 
-	<Target Name="LibHeif-Dependencies" DependsOnTargets="Vcpkg;libjpeg-turbo" Condition="!Exists('dav1d.dll') and !Exists('libde265.dll') and !Exists('libx265.dll')">
-		<Exec Command="vcpkg.exe install dav1d:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
+	<Target Name="LibHeif-copy-includes" AfterTargets="LibHeif">
+		<ItemGroup>
+			<IncludeFiles_x86 Include="$(ThirdPartyDir)/libheif-x86/build/libheif/**/*.h" />
+			<IncludeFiles_x64 Include="$(ThirdPartyDir)/libheif-x64/build/libheif/**/*.h" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(IncludeFiles_x86)" DestinationFiles="@(IncludeFiles_x86->'$(ThirdPartyDir)/libheif-x86/libheif/%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(IncludeFiles_x64)" DestinationFiles="@(IncludeFiles_x64->'$(ThirdPartyDir)/libheif-x64/libheif/%(RecursiveDir)%(Filename)%(Extension)')" />
+	</Target>
+
+	<Target Name="LibHeif-Dependencies" DependsOnTargets="Vcpkg;libjpeg-turbo;dav1d" Condition="!Exists('dav1d.dll') and !Exists('libde265.dll') and !Exists('libx265.dll')">
 		<Exec Command="vcpkg.exe install libde265:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
 		<Exec Command="vcpkg.exe install x265:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
 
-		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/dav1d.dll" DestinationFolder="." />
-		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/libde265.dll" DestinationFolder="." />
-		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/libx265.dll" DestinationFolder="." />
+		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/libde265.dll" DestinationFolder="runtimes/win-x64/native" />
+		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/libx265.dll" DestinationFolder="runtimes/win-x64/native" />
+
+		<Exec Command="vcpkg.exe install libde265:x86-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
+		<Exec Command="vcpkg.exe install x265:x86-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
+
+		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x86-windows/bin/libde265.dll" DestinationFolder="runtimes/win-x86/native" />
+		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x86-windows/bin/libx265.dll" DestinationFolder="runtimes/win-x86/native" />
 	</Target>
 
-	<Target Name="LibHeif-Clone" Condition="!Exists('$(ThirdPartyDir)/libheif/README.md')">
-		<Exec Command="git clone https://github.com/strukturag/libheif.git" WorkingDirectory="$(ThirdPartyDir)" />
-		<Exec Command="git checkout v1.12.0" WorkingDirectory="$(ThirdPartyDir)/libheif" />
+	<Target Name="LibHeif-Clone-x86" Condition="!Exists('$(ThirdPartyDir)/libheif-x86/README.md')">
+		<Exec Command="git clone https://github.com/strukturag/libheif.git libheif-x86" WorkingDirectory="$(ThirdPartyDir)" />
+		<Exec Command="git checkout v1.12.0" WorkingDirectory="$(ThirdPartyDir)/libheif-x86" />
+	</Target>
+
+	<Target Name="LibHeif-Clone-x64" Condition="!Exists('$(ThirdPartyDir)/libheif-x64/README.md')">
+		<Exec Command="git clone https://github.com/strukturag/libheif.git libheif-x64" WorkingDirectory="$(ThirdPartyDir)" />
+		<Exec Command="git checkout v1.12.0" WorkingDirectory="$(ThirdPartyDir)/libheif-x64" />
 	</Target>
 
 	<Target Name="Vcpkg" Condition="!Exists('$(ThirdPartyDir)/vcpkg/vcpkg.exe')">
@@ -30,8 +52,9 @@
 		<Exec Command="bootstrap-vcpkg.bat" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
 	</Target>
 
-	<Target Name="LibHeif-Clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/libheif/README.md')">
-		<Exec Command="rmdir /s /q libheif" WorkingDirectory="$(ThirdPartyDir)" />
+	<Target Name="LibHeif-Clean" BeforeTargets="Clean" >
+		<Exec Command="rmdir /s /q libheif-x86" WorkingDirectory="$(ThirdPartyDir)" Condition="Exists('$(ThirdPartyDir)/libheif-x86/README.md')" />
+		<Exec Command="rmdir /s /q libheif-x64" WorkingDirectory="$(ThirdPartyDir)" Condition="Exists('$(ThirdPartyDir)/libheif-x64/README.md')" />
 	</Target>
 
 	<Target Name="vcpkg-clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/vcpkg/vcpkg.exe')">
@@ -39,9 +62,14 @@
 	</Target>
 
 	<Target Name="CleanLibHeif" BeforeTargets="Clean">
-		<Delete Files="dav1d.dll" />
-		<Delete Files="heif.dll" />
-		<Delete Files="libde265.dll" />
-		<Delete Files="libx265.dll" />
+		<Delete Files="runtimes/win-x86/native/dav1d.dll" />
+		<Delete Files="runtimes/win-x86/native/heif.dll" />
+		<Delete Files="runtimes/win-x86/native/libde265.dll" />
+		<Delete Files="runtimes/win-x86/native/libx265.dll" />
+
+		<Delete Files="runtimes/win-x64/native/dav1d.dll" />
+		<Delete Files="runtimes/win-x64/native/heif.dll" />
+		<Delete Files="runtimes/win-x64/native/libde265.dll" />
+		<Delete Files="runtimes/win-x64/native/libx265.dll" />
 	</Target>
 </Project>

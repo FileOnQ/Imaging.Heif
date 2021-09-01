@@ -28,12 +28,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="*.dll">
+	  <None Update="runtimes\**\native\*.dll">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 
 	<Import Project="Build\build-properties.props" />
+	<Import Project="Build\dav1d.targets" />
 	<Import Project="Build\encoders.targets" />
 	<Import Project="Build\libheif.targets" />
 	<Import Project="Build\libjpeg-turbo.targets" />

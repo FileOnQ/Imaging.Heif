@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Build", ".Build", "{4457DF
 	ProjectSection(SolutionItems) = preProject
 		build.cake = build.cake
 		build\clean.cake = build\clean.cake
+		build\dav1d.bat = build\dav1d.bat
 		build\libheif.bat = build\libheif.bat
 		build\libjpeg-turbo.bat = build\libjpeg-turbo.bat
 		build\pack.cake = build\pack.cake
