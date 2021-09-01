@@ -27,6 +27,7 @@ jobs:
       run: |
         7z x nasm-2.15.05-win64.zip
         set PATH="%PATH%;%cd%\nasm-2.15.05-win64"
+        echo "%PATH%"
         nasm
 
     - name: Setup Python (meson & ninja)
