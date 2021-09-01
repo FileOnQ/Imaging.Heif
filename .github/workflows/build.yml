@@ -27,11 +27,5 @@ jobs:
     - name: Install meson and ninja
       run: pip install meson ninja
 
-    - name: Test meson
-      run: meson
-
-    - name: test ninja
-      run: ninja
-
-    # - name: Build
-    #   run: dotnet build src/FileOnQ.Imaging.Raw/FileOnQ.Imaging.Raw.csproj
+    - name: Build
+      run: dotnet build src/FileOnQ.Imaging.Raw/FileOnQ.Imaging.Raw.csproj
