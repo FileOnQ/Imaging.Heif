@@ -19,15 +19,11 @@ jobs:
       with:
         dotnet-version: 5.0.302
 
-    - name: Download nasm
+    - name: install nasm
       shell: powershell
-      run: wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-win64.zip -o nasm-2.15.05-win64.zip
-
-    - name: Setup nasm
       run: |
-        7z x nasm-2.15.05-win64.zip
-        set PATH="%PATH%;%cd%\nasm-2.15.05-win64"
-        echo "%PATH%"
+        wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-installer-x64.exe
+        nasm-2.15.05-installer-x64.exe
         nasm
 
     - name: Setup Python (meson & ninja)
