@@ -19,7 +19,14 @@ jobs:
       with:
         dotnet-version: 5.0.302
 
-    - name: Setup Python
+    - name: Setup nasm
+      run: |
+        wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-win64.zip -o nasm-2.15.05-win64.zip
+        7z x nasm-2.15.05-win64.zip
+        set PATH="%PATH%;%cd%\nasm-2.15.05-win64"
+        nasm
+
+    - name: Setup Python (meson & ninja)
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
