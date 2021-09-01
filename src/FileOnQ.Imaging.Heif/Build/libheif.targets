@@ -10,7 +10,7 @@
 		<Copy SourceFiles="$(ThirdPartyDir)/libheif-x64/build/libheif/heif.dll" DestinationFolder="runtimes/win-x64/native" />
 
 		<Exec Command="libheif.bat x86 &quot;$(_Path)&quot;" WorkingDirectory="$(ThirdPartyDir)/../build" />
-		<Copy SourceFiles="$(ThirdPartyDir)/libheif-x64/build/libheif/heif.dll" DestinationFolder="runtimes/win-x86/native" />
+		<Copy SourceFiles="$(ThirdPartyDir)/libheif-x86/build/libheif/heif.dll" DestinationFolder="runtimes/win-x86/native" />
 	</Target>
 
 	<Target Name="LibHeif-copy-includes" AfterTargets="LibHeif">
