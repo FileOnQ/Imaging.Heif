@@ -10,7 +10,7 @@ namespace ConsoleApp
 			using (var image = new HeifImage(@"20210821_095129.heic"))
 			using (var thumb = image.Thumbnail())
 			{
-				thumb.Save("output", 90);
+				thumb.Save("output.jpeg", 90);
 			}
         }
     }
