@@ -24,7 +24,8 @@ jobs:
         choco install meson
         choco install ninja
         choco install nasm
-#        echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        echo "C:\Program Files\Meson" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: Build
       run: dotnet build src/FileOnQ.Imaging.Heif/FileOnQ.Imaging.Heif.csproj
