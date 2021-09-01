@@ -28,4 +28,4 @@ jobs:
       run: pip install meson ninja
 
     - name: Build
-      run: dotnet build src/FileOnQ.Imaging.Raw/FileOnQ.Imaging.Raw.csproj
+      run: dotnet build src/FileOnQ.Imaging.Heif/FileOnQ.Imaging.Heif.csproj
