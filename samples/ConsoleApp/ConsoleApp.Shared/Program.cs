@@ -13,5 +13,5 @@ namespace ConsoleApp
 				thumb.Save("output.jpeg", 90);
 			}
         }
-    }
+	}
 }

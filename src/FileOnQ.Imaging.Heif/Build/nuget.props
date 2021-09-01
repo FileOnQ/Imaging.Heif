@@ -33,8 +33,8 @@
 
 	<ItemGroup>
 		<None Include="..\..\images\fileonq.png" Pack="true" PackagePath="" />
-		<Content Include="runtimes\win-x86\native\*.dll" Pack="True" PackagePath="runtimes\win-x86\native\" />
-		<Content Include="runtimes\win-x64\native\*.dll" Pack="True" PackagePath="runtimes\win-x64\native\" />
+		<Content Include="runtimes\win-x86\native\*.dll" Pack="True" PackagePath="runtimes\win-x86\native\" CopyToOutputDirectory="Always" />
+		<Content Include="runtimes\win-x64\native\*.dll" Pack="True" PackagePath="runtimes\win-x64\native\" CopyToOutputDirectory="Always" />
 		<Content Include="Build\FileOnQ.Imaging.Heif.targets" Pack="true" PackagePath="build\net48" />
 	</ItemGroup>
 
