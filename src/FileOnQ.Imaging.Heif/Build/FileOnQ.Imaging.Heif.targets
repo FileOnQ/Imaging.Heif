@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<Target Name="CopyNativeDlls" BeforeTargets="Build">
+		<ItemGroup>
+			<AssemblyFiles_x86 Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\native\*.dll" />
+			<AssemblyFiles_x64 Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\*.dll" />
+		</ItemGroup>
+
+		<Delete Files="$(ProjectDir)\$(OutDir)\dav1d.dll" />
+		<Delete Files="$(ProjectDir)\$(OutDir)\FileOnQ.Imaging.Heif.Encoders.dll" />
+		<Delete Files="$(ProjectDir)\$(OutDir)\heif.dll" />
+		<Delete Files="$(ProjectDir)\$(OutDir)\jpeg62.dll" />
+		<Delete Files="$(ProjectDir)\$(OutDir)\libde265.dll" />
+		<Delete Files="$(ProjectDir)\$(OutDir)\libx265.dll" />
+
+		<Copy SourceFiles="@(AssemblyFiles_x86)" DestinationFiles="@(AssemblyFiles_x86->'$(ProjectDir)\$(OutDir)\runtimes\win-x86\native\%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(AssemblyFiles_x64)" DestinationFiles="@(AssemblyFiles_x64->'$(ProjectDir)\$(OutDir)\runtimes\win-x64\native\%(Filename)%(Extension)')" />
+	</Target>
+
+</Project>

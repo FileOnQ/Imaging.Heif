@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="15.0">
+	<PropertyGroup>
+		<!-- NuGet Package Properties -->
+		<PackageId>FileOnQ.Imaging.Heif</PackageId>
+		<Summary>FileOnQ Open Source library template</Summary>
+		<PackageTag>fileonq, open-source</PackageTag>
+		<Title>FileOnQ.Imaging.Heif</Title>
+		<Description>FileOnQ Open Source library template</Description>
+		<PackageIcon>fileonq.png</PackageIcon>
+		<Product>$(AssemblyName) ($(TargetFramework))</Product>
+		<PackageVersion>$(Version)$(VersionSuffix)</PackageVersion>
+		<Authors>FileOnQ</Authors>
+		<Owners>fileonq</Owners>
+		<NeutralLanguage>en</NeutralLanguage>
+		<Copyright>© FileOnQ, Inc. All rights reserved.</Copyright>
+		<License>MIT</License>
+		<RepositoryUrl>https://github.com/FileOnQ/FileOnQ.Imaging.Heif</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<!-- End NuGet Package Properties -->
+
+		<!-- Start NuGet Symbols Package Properties -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<!-- End NuGet Symbols Package Properties -->
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\images\fileonq.png" Pack="true" PackagePath="" />
+		<Content Include="runtimes\win-x86\native\*.dll" Pack="True" PackagePath="runtimes\win-x86\native\" />
+		<Content Include="runtimes\win-x64\native\*.dll" Pack="True" PackagePath="runtimes\win-x64\native\" />
+		<Content Include="Build\FileOnQ.Imaging.Heif.targets" Pack="true" PackagePath="build\net48" />
+	</ItemGroup>
+
+</Project>

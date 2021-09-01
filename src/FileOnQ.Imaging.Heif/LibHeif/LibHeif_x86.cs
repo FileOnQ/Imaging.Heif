@@ -7,7 +7,7 @@ namespace FileOnQ.Imaging.Heif
 	{
 		private unsafe class x86
 		{
-			const string DllName = "heif32.dll";
+			const string DllName = "heif.dll";
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 			internal static extern Context* heif_context_alloc();

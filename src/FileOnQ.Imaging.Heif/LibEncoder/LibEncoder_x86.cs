@@ -7,7 +7,7 @@ namespace FileOnQ.Imaging.Heif
 	{
 		private unsafe class x86
 		{
-			const string DllName = "FileOnQ.Imaging.Heif.Encoders32.dll";
+			const string DllName = "FileOnQ.Imaging.Heif.Encoders.dll";
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 			internal static extern IntPtr encoder_jpeg_init(int quality);
