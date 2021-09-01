@@ -1,0 +1,30 @@
+name: FileOnQ.Imaging.Heif
+
+on:
+  push:
+    branches: [ build ]
+  # pull_request:
+  #   branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.302
+
+    - name: Install meson
+      shell: powershell
+      run: |
+        wget https://github.com/mesonbuild/meson/releases/download/0.59.1/meson-0.59.1-64.msi -o meson-0.59.1-64.msi
+        msiexec /quiet /i meson-0.59.1-64.msi
+        meson
+
+    # - name: Build
+    #   run: dotnet build src/FileOnQ.Imaging.Raw/FileOnQ.Imaging.Raw.csproj
