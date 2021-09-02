@@ -18,7 +18,7 @@ namespace FileOnQ.Imaging.Heif
 
 			var loaded = SetDllDirectory(nativePath);
 			if (!loaded)
-				throw new Exception("Unable to set native path");
+				throw new HeifInteropException("Unable to set native path");
 		}
 	}
 }

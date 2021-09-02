@@ -15,7 +15,7 @@ namespace FileOnQ.Imaging.Heif
 			heifContext = LibHeif.ContextAllocate();
 			var error = LibHeif.ReadFromFile(heifContext, file, IntPtr.Zero);
 			if (error.Code != LibHeif.ErrorCode.Ok)
-				throw new Exception(Marshal.PtrToStringAnsi(error.Message));
+				throw new HeifException(error);
 		}
 
 		public IImage Thumbnail()
@@ -23,7 +23,7 @@ namespace FileOnQ.Imaging.Heif
 			LibHeif.ImageHandle* primaryImageHandle;
 			var error = LibHeif.GetPrimaryImageHandle(heifContext, &primaryImageHandle);
 			if (error.Code != LibHeif.ErrorCode.Ok)
-				throw new Exception(Marshal.PtrToStringAnsi(error.Message));
+				throw new HeifException(error);
 
 			try
 			{
@@ -39,17 +39,22 @@ namespace FileOnQ.Imaging.Heif
 					LibHeif.ImageHandle* thumbHandle;
 					var thumbError = LibHeif.GetThumbnail(primaryImageHandle, itemIds[0], &thumbHandle);
 					if (thumbError.Code != LibHeif.ErrorCode.Ok)
-						throw new Exception(Marshal.PtrToStringAnsi(thumbError.Message));
+						throw new HeifException(error);
 
 					return new Image(thumbHandle);
 				}
 				else
-					throw new Exception("No thumbnail found");
+				{
+					throw new HeifException(new HeifException.Error
+					{
+						Code = LibHeif.ErrorCode.NoThumbnail,
+						SubCode = LibHeif.SubErrorCode.heif_suberror_Auxiliary_image_type_unspecified,
+						Message = "No thumbnail found in file"
+					});
+				}
 			}
 			finally
 			{
-				// REVIEW - will this hide exceptions being thrown above?
-				// the goal is to make sure that we always release memory
 				LibHeif.ReleaseImageHandle(primaryImageHandle);
 			}
 		}
@@ -59,7 +64,7 @@ namespace FileOnQ.Imaging.Heif
 			LibHeif.ImageHandle* primaryImageHandle;
 			var error = LibHeif.GetPrimaryImageHandle(heifContext, &primaryImageHandle);
 			if (error.Code != LibHeif.ErrorCode.Ok)
-				throw new Exception(Marshal.PtrToStringAnsi(error.Message));
+				throw new HeifException(error);
 
 			return new Image(primaryImageHandle);
 		}
