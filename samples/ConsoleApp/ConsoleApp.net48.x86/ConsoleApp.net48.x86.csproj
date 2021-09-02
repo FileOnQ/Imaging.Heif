@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FileOnQ.Imaging.Heif" Version="1.0.0-local.19" />
+		<PackageReference Include="FileOnQ.Imaging.Heif" Version="1.0.0-dev.2" />
 	</ItemGroup>
 
 	<Import Project="..\ConsoleApp.Shared\ConsoleApp.Shared.projitems" Label="Shared" />
