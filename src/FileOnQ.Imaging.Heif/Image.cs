@@ -23,7 +23,14 @@ namespace FileOnQ.Imaging.Heif
 			
 			var bitDepth = LibHeif.GetLumaBitsPerPixel(handle);
 			if (bitDepth < 0)
-				throw new Exception("Input image has undefined bit-dept, unable to save!");
+			{
+				throw new HeifException(new HeifException.Error
+				{
+					Code = LibHeif.ErrorCode.UnsupportedFileType,
+					SubCode = LibHeif.SubErrorCode.heif_suberror_Unsupported_bit_depth,
+					Message = "Image has undefined bit-depth, unable to save" 
+				});
+			}
 
 			var hasAlpha = LibHeif.HasAlphaChannel(handle);
 			LibHeif.Image* outputImage;
@@ -35,13 +42,20 @@ namespace FileOnQ.Imaging.Heif
 				decodingOptions);
 
 			if (decodeError.Code != LibHeif.ErrorCode.Ok)
-				throw new Exception(Marshal.PtrToStringAnsi(decodeError.Message));
+				throw new HeifException(decodeError);
 
 			if ((IntPtr)outputImage != IntPtr.Zero)
 			{
 				bool saved = LibEncoder.Encode(encoder, handle, outputImage, filename);
 				if (!saved)
-					throw new Exception("Unable to save image");
+				{
+					throw new HeifException(new HeifException.Error
+					{
+						Code = LibHeif.ErrorCode.NoThumbnail,
+						SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
+						Message = "Unable to save image"
+					});
+				}
 			}
 		}
 

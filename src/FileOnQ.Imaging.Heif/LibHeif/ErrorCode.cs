@@ -2,8 +2,22 @@
 {
 	partial class LibHeif
 	{
+		// negative values are custom errors in FileOnQ.Imaging.Heif
+		// positive values are from libheif
+		
 		public enum ErrorCode
 		{
+			/// <summary>
+			/// Unable to save file.
+			/// </summary>
+			UnableToSave = -2,
+			
+			/// <summary>
+			/// No thumbnail found, attempted to retrieve a thumbnail but
+			/// the file does not contain a thumbnail.
+			/// </summary>
+			NoThumbnail = -1,
+			
 			/// <summary>
 			/// Everything ok, no error occurred.
 			/// </summary>
