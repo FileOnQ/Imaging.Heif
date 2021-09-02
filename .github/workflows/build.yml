@@ -46,7 +46,7 @@ jobs:
           *.nupkg
           *.snupkg
 
-  console-app:
+  test-console-app:
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -79,10 +79,12 @@ jobs:
           
       - name: Download Artifacts
         uses: actions/download-artifact@v2
-        with:
-          path: Packages
       
-      - name: View Contents
+      - name: Copy Nupkg
+        shell: powershell
+        run: Copy-Item Packages\* -Destination .
+        
+      - name: View Contents (root)
         shell: powershell
         run: ls
         
