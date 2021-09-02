@@ -15,12 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution Items", ".Solutio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Build", ".Build", "{4457DFF1-DAC5-40AD-8E7B-E72A47AB9D7D}"
 	ProjectSection(SolutionItems) = preProject
-		build.cake = build.cake
-		build\clean.cake = build\clean.cake
 		build\dav1d.bat = build\dav1d.bat
 		build\libheif.bat = build\libheif.bat
 		build\libjpeg-turbo.bat = build\libjpeg-turbo.bat
-		build\pack.cake = build\pack.cake
+		build\encoders.bat = build\encoders.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{3EF903A9-C6EE-4846-919B-0A31F52DFAEC}"

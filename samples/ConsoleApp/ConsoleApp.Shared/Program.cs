@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using FileOnQ.Imaging.Heif;
 
 namespace ConsoleApp
@@ -7,10 +9,17 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-			using (var image = new HeifImage(@"20210821_095129.heic"))
+			using (var image = new HeifImage(GetFilePath()))
 			using (var thumb = image.Thumbnail())
 			{
 				thumb.Save("output.jpeg", 90);
+			}
+
+			string GetFilePath()
+			{
+				var assemblyPath = new Uri(typeof(Program).Assembly.Location).LocalPath;
+				var directory = Path.GetDirectoryName(assemblyPath);
+				return Path.Combine(directory, "20210821_095129.heic");
 			}
         }
 	}
