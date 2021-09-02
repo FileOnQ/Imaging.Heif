@@ -22,14 +22,18 @@ C:\Program Files\Meson
 ```
 
 ## Compile
-The easiest way to compile is to open Visual Studio and select build on `FileOnQ.Imaging.Heif`.
+First time compilation takes a very long time, after you start the build go grab a cup of ☕ or 🍵. Our build agent runs the entire clean build in about 25-35 minutes, your build times may vary. Future builds won't take as long even if you do a clean and rebuild as vcpkg will cache binaries in your user directory. 
 
-Using the cli
+By compiling the main project `FileOnQ.Imaging.Heif` you will be compiling all native dependencies including the C++ encoding library `FileOnQ.Imaging.Heif.Encoders`. No need to run any additional compilation instructions.
+
+### Visual Studio 
+Right click on `FileOnQ.Imaging.Heif` and select build
+
+### CLI
+
 ```
 dotnet build src/FileOnQ.Imaging.Heif/FileOnQ.Imaging.Heif.csproj
 ```
-
-By compiling the main project `FileOnQ.Imaging.Heif` you will be compiling all native dependencies including the C++ encoding library `FileOnQ.Imaging.Heif.Encoders`. No need to run any additional compilation instructions.
 
 ## Build Scripts and Structure
 The entire build process is orchestrated from `FileOnQ.Imaging.Heif.csproj` which includes downloading and compiling third party libraries. During the build you'll need to clone several git repositories and compile them. This leverages a combination of dotnet build targets and bat files. The build targets can be found in the `src/FileOnQ.Imaging.Heif/Build` directory. The build scripts or batch files can be found in the `build` directory.
