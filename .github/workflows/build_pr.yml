@@ -1,6 +1,9 @@
 name: Build PR (1.0.0)
 
 on:
+   # adding direct push trigger, remove prior to merge
+   push:
+     branches: [ tests ]
    pull_request:
      branches: [ main ]
 
