@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: windows-2019
+    outputs:
+      package_version: ${{ env.PACKAGE_VERSION }}
     steps:
     - uses: actions/checkout@v2
       with:
@@ -18,18 +20,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.302
-
-    - name: Install VC++ Redistributable (x86)
-      shell: powershell
-      run: | 
-        wget https://aka.ms/vs/16/release/vc_redist.x86.exe -o vc_redist.x86.exe
-        .\vc_redist.x86.exe
-
-    - name: Install VC++ Redistributable (x64)
-      shell: powershell
-      run: | 
-        wget https://aka.ms/vs/16/release/vc_redist.x64.exe -o vc_redist.x64.exe
-        .\vc_redist.x64.exe
 
     - name: Install Build Dependencies
       run: |
@@ -55,38 +45,51 @@ jobs:
         path: |
           *.nupkg
           *.snupkg
+
+  console-app:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net5'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net5'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net5'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
           
-    - name: Test - ConsoleApp - Update NuGet
-      run: |
-        dotnet add ./samples/ConsoleApp/ConsoleApp.net48.AnyCPU/ConsoleApp.net48.AnyCPU.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add ./samples/ConsoleApp/ConsoleApp.net48.AnyCPU/ConsoleApp.net48.X86.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add ./samples/ConsoleApp/ConsoleApp.net48.AnyCPU/ConsoleApp.net48.X64.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add ./samples/ConsoleApp/ConsoleApp.net48.AnyCPU/ConsoleApp.net5.AnyCPU.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add ./samples/ConsoleApp/ConsoleApp.net48.AnyCPU/ConsoleApp.net5.x86.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add ./samples/ConsoleApp/ConsoleApp.net48.AnyCPU/ConsoleApp.net5.x64.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-          
-    - name: Test - ConsoleApp Run - net48 - AnyCPU
-      run: dotnet run
-      working-directory: ./samples/ConsoleApp/ConsoleApp.net48.AnyCPU
-
-    - name: Test - ConsoleApp Run - net48 - x86
-      run: dotnet run
-      working-directory: ./samples/ConsoleApp/ConsoleApp.net48.x86
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: Packages
       
-    - name: Test - ConsoleApp Run - net48 - x64
-      run: dotnet run
-      working-directory: ./samples/ConsoleApp/ConsoleApp.net48.x64
-      
-    - name: Test - ConsoleApp Run - net5 - AnyCPU
-      run: dotnet run
-      working-directory: ./samples/ConsoleApp/ConsoleApp.net5.AnyCPU
-
-    - name: Test - ConsoleApp Run - net5 - x86
-      run: dotnet run
-      working-directory: ./samples/ConsoleApp/ConsoleApp.net5.x86
-
-    - name: Test - ConsoleApp Run - net5 - x64
-      run: dotnet run
-      working-directory: ./samples/ConsoleApp/ConsoleApp.net5.x64
-  
-    
+      - name: View Contents
+        shell: powershell
+        run: ls
+        
+      - name: Update NuGet
+        run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.build.outputs.package_version }}
+        working-directory: ./samples/ConsoleApp/ConsoleApp.${{ matrix.framework }}.${{ matrix.architecture }}
+        
+      - name: Run Console App
+        run: dotnet run -c Release
+        working-directory: ./samples/ConsoleApp/ConsoleApp.${{ matrix.framework }}.${{ matrix.architecture }}
