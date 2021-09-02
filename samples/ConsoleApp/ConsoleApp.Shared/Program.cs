@@ -17,7 +17,7 @@ namespace ConsoleApp
 
 			string GetFilePath()
 			{
-				var assemblyPath = new Uri(typeof(Program).Assembly.CodeBase).LocalPath;
+				var assemblyPath = new Uri(typeof(Program).Assembly.Location).LocalPath;
 				var directory = Path.GetDirectoryName(assemblyPath);
 				return Path.Combine(directory, "20210821_095129.heic");
 			}
