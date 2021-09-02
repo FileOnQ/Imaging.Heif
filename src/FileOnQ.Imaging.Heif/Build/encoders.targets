@@ -5,8 +5,8 @@
 		<Exec Command="encoders.bat x64 Debug" WorkingDirectory="$(ThirdPartyDir)/../build" />
 		<Exec Command="encoders.bat x86 Debug" WorkingDirectory="$(ThirdPartyDir)/../build" />
 
-		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/$(Configuration)/x64/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x64/native" />
-		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/$(Configuration)/Win32/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x86/native" />
+		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/Debug/x64/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x64/native" />
+		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/Debug/Win32/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x86/native" />
 	</Target>
 
 	<Target Name="CleanEncoders" BeforeTargets="Clean">
