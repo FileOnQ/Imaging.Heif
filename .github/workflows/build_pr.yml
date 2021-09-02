@@ -90,7 +90,7 @@ jobs:
         working-directory: ./tests/FileOnQ.Imaging.Heif.Tests.${{ matrix.architecture }}
 
       - name: Test ${{ matrix.architecture }}
-        run: dotnet test --logger:"console;verbosity=detailed" --filter TestCategory=Integration
+        run: dotnet test -c Release --logger:"console;verbosity=detailed" --filter TestCategory=Integration
         working-directory: ./tests/FileOnQ.Imaging.Heif.Tests.${{ matrix.architecture }}
           
   test-console-app:
