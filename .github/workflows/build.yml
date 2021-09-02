@@ -58,12 +58,12 @@ jobs:
           
     - name: Test - ConsoleApp - Update NuGet
       run: |
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.AnyCPU.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X86.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X64.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.AnyCPU.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x86.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x64.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.AnyCPU.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X86.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X64.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.AnyCPU.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x86.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x64.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
           
     - name: Test - ConsoleApp Run - net48 - AnyCPU
       run: dotnet run
