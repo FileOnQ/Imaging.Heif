@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net48;net5.0</TargetFrameworks>
+		<Platforms>x64</Platforms>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FileOnQ.Imaging.Heif" Version="0.0.0-local.1" />
+		<PackageReference Include="nunit" Version="3.13.2" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+	</ItemGroup>
+
+	<Import Project="..\FileOnQ.Imaging.Heif.Tests\FileOnQ.Imaging.Heif.Tests.projitems" Label="Shared" />
+
+</Project>
