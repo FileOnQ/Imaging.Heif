@@ -43,9 +43,55 @@ jobs:
         path: |
           *.nupkg
           *.snupkg
-
-  test-console-app:
+          
+  test-integration:
     needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net5'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net5'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net5'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Copy Nupkg
+        shell: powershell
+        run: Copy-Item Packages\* -Destination .
+
+      - name: Update NuGet
+        run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.build.outputs.package_version }}
+        working-directory: ./tests/FileOnQ.Imaging.Heif.Tests.${{ matrix.architecture }}
+
+      - name: Test ${{ matrix.architecture }}
+        run: dotnet test --logger:"console;verbosity=detailed" --filter TestCategory=Integration
+        working-directory: ./tests/FileOnQ.Imaging.Heif.Tests.${{ matrix.architecture }}
+          
+  test-console-app:
+    needs: test-integration
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -81,11 +127,7 @@ jobs:
       - name: Copy Nupkg
         shell: powershell
         run: Copy-Item Packages\* -Destination .
-        
-      - name: View Contents (root)
-        shell: powershell
-        run: ls
-        
+                
       - name: Update NuGet
         run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.build.outputs.package_version }}
         working-directory: ./samples/ConsoleApp/ConsoleApp.${{ matrix.framework }}.${{ matrix.architecture }}
