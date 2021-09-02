@@ -1,10 +1,8 @@
-name: FileOnQ.Imaging.Heif
+name: Build PR (1.0.0)
 
 on:
-  push:
-    branches: [ build ]
-  # pull_request:
-  #   branches: [ main ]
+   pull_request:
+     branches: [ main ]
 
 jobs:
   build:
