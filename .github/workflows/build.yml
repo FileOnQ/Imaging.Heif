@@ -19,17 +19,17 @@ jobs:
       with:
         dotnet-version: 5.0.302
 
-#    - name: Install VC++ Redistributable (x86)
-#      shell: powershell
-#      run: | 
-#        wget https://aka.ms/vs/16/release/vc_redist.x86.exe -o vc_redist.x86.exe
-#        .\vc_redist.x86.exe
-#
-#    - name: Install VC++ Redistributable (x64)
-#      shell: powershell
-#      run: | 
-#        wget https://aka.ms/vs/16/release/vc_redist.x64.exe -o vc_redist.x64.exe
-#        .\vc_redist.x64.exe
+    - name: Install VC++ Redistributable (x86)
+      shell: powershell
+      run: | 
+        wget https://aka.ms/vs/16/release/vc_redist.x86.exe -o vc_redist.x86.exe
+        .\vc_redist.x86.exe
+
+    - name: Install VC++ Redistributable (x64)
+      shell: powershell
+      run: | 
+        wget https://aka.ms/vs/16/release/vc_redist.x64.exe -o vc_redist.x64.exe
+        .\vc_redist.x64.exe
 
     - name: Install Build Dependencies
       run: |
@@ -48,15 +48,23 @@ jobs:
     - name: Pack
       run: dotnet pack src/FileOnQ.Imaging.Heif/FileOnQ.Imaging.Heif.csproj -c Release -o . /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
       
+    - name: Upload NuGet Package
+      uses: actions/upload-artifact@v2
+      with:
+        name: Packages
+        path: |
+          *.nupkg
+          *.snupkg
+          
     - name: Test - ConsoleApp - Update NuGet
       run: |
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.AnyCPU.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X86.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X64.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.AnyCPU.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x86.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x64.csproj package FileOnQ.Imaging.Heif --version ${{ env.PACKAGE_VERSION }}
-
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.AnyCPU.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X86.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net48.X64.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.AnyCPU.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x86.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
+        dotnet add samples\ConsoleApp\ConsoleApp.net48.AnyCPU\ConsoleApp.net5.x64.csproj package FileOnQ.Imaging.Heif --prerelease --version ${{ env.PACKAGE_VERSION }}
+          
     - name: Test - ConsoleApp Run - net48 - AnyCPU
       run: dotnet run
       working-directory: ./samples/ConsoleApp/ConsoleApp.net48.AnyCPU
@@ -81,10 +89,4 @@ jobs:
       run: dotnet run
       working-directory: ./samples/ConsoleApp/ConsoleApp.net5.x64
   
-    - name: Upload NuGet Package
-      uses: actions/upload-artifact@v2
-      with:
-        name: Packages
-        path: |
-          *.nupkg
-          *.snupkg
+    
