@@ -94,7 +94,7 @@ jobs:
         working-directory: ./tests/FileOnQ.Imaging.Heif.Tests.${{ matrix.architecture }}
           
   test-console-app:
-    needs: test-integration
+    needs: build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
