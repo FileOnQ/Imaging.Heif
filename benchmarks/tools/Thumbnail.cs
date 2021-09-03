@@ -10,12 +10,12 @@ namespace FileOnQ.Imaging.Heif.Bechmarks
 	[NativeMemoryProfiler]
 	[MemoryDiagnoser]
 	[JsonExporterAttribute.Full]
-	public class PrimaryImage
+	public class Thumbnail
 	{
 		readonly string filePath;
 		readonly string output;
 
-		public PrimaryImage()
+		public Thumbnail()
 		{
 			var assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
 			filePath = Path.Combine(assemblyDirectory, Program.Input);
@@ -26,12 +26,12 @@ namespace FileOnQ.Imaging.Heif.Bechmarks
 		}
 
 		[Benchmark]
-		public void PrimaryImage_Write()
+		public void Thumbnail_Write()
 		{
 			using (var image = new HeifImage(filePath))
-			using (var primary = image.PrimaryImage())
+			using (var thumbnail = image.Thumbnail())
 			{
-				primary.Write(output);
+				thumbnail.Write(output);
 			}
 
 			File.Delete(output);

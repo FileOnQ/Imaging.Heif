@@ -1,4 +1,5 @@
 ﻿using System;
+using BenchmarkDotNet.Running;
 
 namespace FileOnQ.Imaging.Heif.Bechmarks
 {
@@ -37,7 +38,7 @@ namespace FileOnQ.Imaging.Heif.Bechmarks
 			Console.WriteLine("Benchmark completed");
 		}
 
-		static void PrimaryImage() => BenchmarkRunner.Run<DcrawProcess>();
-		static void Thumbnail() => BenchmarkRunner.Run<DcrawProcess>();
+		static void PrimaryImage() => BenchmarkRunner.Run<PrimaryImage>();
+		static void Thumbnail() => BenchmarkRunner.Run<Thumbnail>();
 	}
 }
