@@ -48,7 +48,7 @@ namespace FileOnQ.Imaging.Heif
 					throw new HeifException(new HeifException.Error
 					{
 						Code = LibHeif.ErrorCode.NoThumbnail,
-						SubCode = LibHeif.SubErrorCode.heif_suberror_Auxiliary_image_type_unspecified,
+						SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
 						Message = "No thumbnail found in file"
 					});
 				}
