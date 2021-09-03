@@ -16,7 +16,7 @@ namespace FileOnQ.Imaging.Heif
 			this.handle = handle;
 		}
 
-		public void Save(string filename, int quality = 90)
+		public void Write(string filename, int quality = 90)
 		{
 			CreateEncoder(quality);
 			CreateDecodingOptions();
