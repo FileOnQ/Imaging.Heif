@@ -5,6 +5,10 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+		<PackageReference Include="System.Memory" Version="4.5.4" />
+	</ItemGroup>
+
 	<Import Project="Build\nuget.props" />
 	<Import Project="Build\build-properties.props" />
 	<Import Project="Build\dav1d.targets" />

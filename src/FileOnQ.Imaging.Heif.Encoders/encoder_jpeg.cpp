@@ -132,27 +132,22 @@ void jpeg_write_icc_profile(j_compress_ptr cinfo, const JOCTET* icc_data_ptr,
 #endif  // !defined(HAVE_JPEG_WRITE_ICC_PROFILE)
 
 bool JpegEncoder::Encode(const struct heif_image_handle* handle,
-	const struct heif_image* image, const std::string& filename)
+	const struct heif_image* image, unsigned char** data, 
+	unsigned long* data_size)
 {
-	FILE* fp = fopen(filename.c_str(), "wb");
-	if (!fp) {
-		fprintf(stderr, "Can't open %s: %s\n", filename.c_str(), strerror(errno));
-		return false;
-	}
-
-	struct jpeg_compress_struct cinfo;
-	struct ErrorHandler jerr;
+	struct jpeg_compress_struct cinfo = {};
+	struct ErrorHandler jerr = {};
+	
 	cinfo.err = jpeg_std_error(reinterpret_cast<struct jpeg_error_mgr*>(&jerr));
 	jerr.pub.error_exit = &JpegEncoder::OnJpegError;
 	if (setjmp(jerr.setjmp_buffer)) {
 		cinfo.err->output_message(reinterpret_cast<j_common_ptr>(&cinfo));
 		jpeg_destroy_compress(&cinfo);
-		fclose(fp);
 		return false;
 	}
 
 	jpeg_create_compress(&cinfo);
-	jpeg_stdio_dest(&cinfo, fp);
+	jpeg_mem_dest(&cinfo, data, data_size);
 
 	cinfo.image_width = heif_image_get_width(image, heif_channel_Y);
 	cinfo.image_height = heif_image_get_height(image, heif_channel_Y);
@@ -181,12 +176,10 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 		free(profile_data);
 	}
 
-
 	if (heif_image_get_bits_per_pixel(image, heif_channel_Y) != 8) {
 		fprintf(stderr, "JPEG writer cannot handle image with >8 bpp.\n");
 		return false;
 	}
-
 
 	int stride_y;
 	const uint8_t* row_y = heif_image_get_plane_readonly(image, heif_channel_Y,
@@ -217,10 +210,11 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 			*bufp++ = start_u[x / 2];
 			*bufp++ = start_v[x / 2];
 		}
+
 		jpeg_write_scanlines(&cinfo, row, 1);
 	}
+
 	jpeg_finish_compress(&cinfo);
-	fclose(fp);
 	jpeg_destroy_compress(&cinfo);
 	return true;
 }

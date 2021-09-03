@@ -18,6 +18,14 @@ namespace FileOnQ.Imaging.Heif
 			Details = error.Message;
 		}
 
+		public HeifException(Exception exception, Error error)
+			: base(string.Format(ErrorMessage, error.Message), exception)
+		{
+			ErrorCode = error.Code;
+			ErrorSubCode = error.SubCode;
+			Details = error.Message;
+		}
+
 		internal HeifException(LibHeif.Error error)
 			: this(new Error
 			{

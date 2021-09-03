@@ -8,6 +8,13 @@
 		public enum ErrorCode
 		{
 			/// <summary>
+			/// Internal library failure, if this is thrown something
+			/// went critically wrong with a native library. See
+			/// inner exception details.
+			/// </summary>
+			Failure = -3,
+
+			/// <summary>
 			/// Unable to save file.
 			/// </summary>
 			UnableToSave = -2,
