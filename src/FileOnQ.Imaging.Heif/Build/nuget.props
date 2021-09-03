@@ -3,10 +3,10 @@
 	<PropertyGroup>
 		<!-- NuGet Package Properties -->
 		<PackageId>FileOnQ.Imaging.Heif</PackageId>
-		<Summary>FileOnQ Open Source library template</Summary>
-		<PackageTag>fileonq, open-source</PackageTag>
+		<Summary>A C#/.NET wrapper around libheif for decoding and processing high efficiency image formats (heif, heic).</Summary>
+		<PackageTag>heif, heic, image, imaging, jpeg, libheif, library, cross-platform</PackageTag>
 		<Title>FileOnQ.Imaging.Heif</Title>
-		<Description>FileOnQ Open Source library template</Description>
+		<Description>a C#/.NET wrapper around libheif for decoding and processing high efficiency image format (heif, heic). FileOnQ.Imaging.Heif provides all the tools needed to easily convert heif files to jpeg and handle various processing algorithms. All native binaries are included in NuGet package, see README.md for current supported runtime identifiers.</Description>
 		<PackageIcon>fileonq.png</PackageIcon>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
 		<PackageVersion>$(Version)$(VersionSuffix)</PackageVersion>
@@ -14,8 +14,8 @@
 		<Owners>fileonq</Owners>
 		<NeutralLanguage>en</NeutralLanguage>
 		<Copyright>© FileOnQ, Inc. All rights reserved.</Copyright>
-		<License>MIT</License>
-		<RepositoryUrl>https://github.com/FileOnQ/FileOnQ.Imaging.Heif</RepositoryUrl>
+		<License>LGPL-3.0</License>
+		<RepositoryUrl>https://github.com/FileOnQ/Imaging.Heif</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
