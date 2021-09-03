@@ -31,10 +31,12 @@ jobs:
       run: echo "PACKAGE_VERSION=1.0.0-dev.${{ GITHUB.RUN_NUMBER }}" >> $env:GITHUB_ENV
 
     - name: Build
-      run: dotnet build src/FileOnQ.Imaging.Heif/FileOnQ.Imaging.Heif.csproj -c Release
+      run: dotnet build -c Release
+      working-directory: ./src/FileOnQ.Imaging.Heif
       
     - name: Pack
-      run: dotnet pack src/FileOnQ.Imaging.Heif/FileOnQ.Imaging.Heif.csproj -c Release -o . /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
+      run: dotnet pack -c Release -o ../../ /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
+      working-directory: ./src/FileOnQ.Imaging.Heif
       
     - name: Upload NuGet Package
       uses: actions/upload-artifact@v2
