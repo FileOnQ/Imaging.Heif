@@ -4,21 +4,17 @@ using NUnit.Framework;
 
 namespace FileOnQ.Imaging.Heif.Tests.Integration
 {
-	[TestFixture(TestData.Image1)]
-	[TestFixture(TestData.Image2)]
-	[TestFixture(TestData.Image3)]
-	[TestFixture(TestData.Image4)]
 	[TestFixture(TestData.Image5)]
 	[Category(Constants.Category.Integration)]
-    public class PrimaryImage_Write_Tests
+    public class Thumbnail_Write_Tests
 	{
 		readonly string input;
 		readonly string output;
 		readonly string hash;
 
-		public PrimaryImage_Write_Tests(string path)
+		public Thumbnail_Write_Tests(string path)
 		{
-			hash = TestData.Integration.PrimaryImageWrite.HashCodes[path];
+			hash = TestData.Integration.ThuumbnailWrite.HashCodes[path];
 
 			var assemblyDirectory = Path.GetDirectoryName(typeof(NoThumbnailTests).Assembly.Location) ?? string.Empty;
 			input = Path.Combine(assemblyDirectory, path);
@@ -32,9 +28,9 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 		public void Execute()
 		{
 			using (var image = new HeifImage(input))
-			using (var primary = image.PrimaryImage())
+			using (var thumbnail = image.Thumbnail())
 			{
-				primary.Write(output);
+				thumbnail.Write(output);
 			}
 		}
 
@@ -46,11 +42,11 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 		}
 
 		[Test]
-		public void PrimaryImage_Write_FileExists_Test() =>
+		public void Thumbnail_Write_FileExists_Test() =>
 			Assert.IsTrue(File.Exists(output));
 
 		[Test]
-		public void PrimaryImage_Write_Match_Test()
+		public void Thumbnail_Write_Match_Test()
 		{
 			var buffer = File.ReadAllBytes(output);
 

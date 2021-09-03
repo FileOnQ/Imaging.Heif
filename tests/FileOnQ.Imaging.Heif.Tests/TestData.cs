@@ -26,6 +26,21 @@ namespace FileOnQ.Imaging.Heif.Tests
 						{ Image5, "0B223CCEE9712EAD50F51E0AE96DA5276DE98D0ED48B60D958B354B228B88B01" }
 					};
 			}
+
+			public static class ThuumbnailWrite
+			{
+				public static IDictionary<string, string> HashCodes => BuildDictionary();
+
+				static IDictionary<string, string> BuildDictionary() =>
+					new Dictionary<string, string>
+					{
+						{ Image1, "FFEA4484A3DE2DBE3D85321EF5ABDFF2C5D4367F6D77F2899CB0D62B270A9388" },
+						{ Image2, "AA9A7640A97AA5824ECBD84C3CDCB23117A7E01BC7A313C6390B0702559579A7" },
+						{ Image3, "D544E3BA40215AE671DE0D4474489F596AA6AFB27F9774E6C3B322242B17634F" },
+						{ Image4, "51BF8E1F356A618E3D86E13560B557B91CB6C6269F0C6298BEBDC447675A4250" },
+						{ Image5, "6D9C8D886B8EC7215233A1E596BFC4B21AB1E51F636E944EAE94582456E0B022" }
+					};
+			}
 		}
 	}
 }
