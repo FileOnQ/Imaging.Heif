@@ -204,10 +204,10 @@ jobs:
 
       - name: GitHub Comment - Benchmark Results
         run: |
-          $thumbnail = Get-Content "Benchmark-thumbnail/FileOnQ.Imaging.Heif.Benchmarking.Thumbnail-report-github.md" -raw
+          $thumbnail = Get-Content "Benchmark-thumbnail/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
           $thumbnail = $thumbnail.replace("``", "\``")
 
-          $primary = Get-Content "Benchmark-dcraw-whitebalance/FileOnQ.Imaging.Heif.Benchmarking.PrimaryImage-report-github.md" -raw
+          $primary = Get-Content "Benchmark-dcraw-whitebalance/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
           $primary = $primary.replace("``", "\``")
 
           $message = "## Benchmark Results`r`n"
