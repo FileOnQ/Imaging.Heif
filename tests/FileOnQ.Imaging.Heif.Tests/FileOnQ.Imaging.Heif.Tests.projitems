@@ -9,6 +9,7 @@
     <Import_RootNamespace>FileOnQ.Imaging.Heif.Tests</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Build\nuget-local.targets" />
     <None Include="$(MSBuildThisFileDirectory)Images\20210224_023830752_iOS.heic">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
