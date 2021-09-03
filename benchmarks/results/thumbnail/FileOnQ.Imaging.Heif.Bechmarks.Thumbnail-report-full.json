@@ -1,0 +1,44 @@
+{
+   "Title":"FileOnQ.Imaging.Heif.Bechmarks.Thumbnail-20210903-125605",
+   "HostEnvironmentInfo":{
+      "BenchmarkDotNetCaption":"BenchmarkDotNet",
+      "BenchmarkDotNetVersion":"0.13.0",
+      "OsVersion":"Windows 10.0.19043.1165 (21H1/May2021Update)",
+      "ProcessorName":"AMD Ryzen 9 3950X",
+      "PhysicalProcessorCount":1,
+      "PhysicalCoreCount":16,
+      "LogicalCoreCount":32,
+      "RuntimeVersion":".NET 5.0.7 (5.0.721.25508)",
+      "Architecture":"X64",
+      "HasAttachedDebugger":false,
+      "HasRyuJit":true,
+      "Configuration":"RELEASE",
+      "DotNetCliVersion":"6.0.100-preview.6.21355.2",
+      "ChronometerFrequency":{
+         "Hertz":10000000
+      },
+      "HardwareTimerKind":"Unknown"
+   },
+   "Benchmarks":[
+      {
+         "DisplayInfo":"Thumbnail.Thumbnail_Write: Job-GHTVJT(Runtime=.NET Framework 4.8, InvocationCount=1, LaunchCount=1, UnrollFactor=1)",
+         "Namespace":"FileOnQ.Imaging.Heif.Bechmarks",
+         "Type":"Thumbnail",
+         "Method":"Thumbnail_Write",
+         "MethodTitle":"Thumbnail_Write",
+         "Parameters":"",
+         "FullName":"FileOnQ.Imaging.Heif.Bechmarks.Thumbnail.Thumbnail_Write",
+         "Statistics":null,
+         "Memory":{
+            "Gen0Collections":0,
+            "Gen1Collections":0,
+            "Gen2Collections":0,
+            "TotalOperations":0,
+            "BytesAllocatedPerOperation":0
+         },
+         "Measurements":[
+            
+         ]
+      }
+   ]
+}
