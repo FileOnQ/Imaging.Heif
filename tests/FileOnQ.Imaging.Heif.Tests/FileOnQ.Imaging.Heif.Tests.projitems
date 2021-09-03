@@ -29,5 +29,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integration\NoThumbnailTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\PrimaryImage_Write_Tests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\AssertUtilities.cs" />
   </ItemGroup>
 </Project>
