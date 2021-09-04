@@ -50,7 +50,7 @@ Saves the primary image as a jpeg
 using (var image = new HeifImage("image.heic"))
 using (var primary = image.Primary())
 {
-    primary.Save("output.jpeg", 90);
+    primary.Write("output.jpeg", 90);
 }
 ```
 
@@ -60,7 +60,7 @@ Saves the embedded thumbnail as a jpeg
 using (var image = new HeifImage("image.heic"))
 using (var thumbnail = image.Thumbnail())
 {
-    thumbnail.Save("output.jpeg", 90);
+    thumbnail.Write("output.jpeg", 90);
 }
 ```
 
