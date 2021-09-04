@@ -4,7 +4,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnostics.Windows.Configs;
 using BenchmarkDotNet.Jobs;
 
-namespace FileOnQ.Imaging.Heif.Bechmarks
+namespace FileOnQ.Imaging.Heif.Benchmarks
 {
 	[SimpleJob(RuntimeMoniker.Net50, launchCount: 1, invocationCount: 1)]
 	[NativeMemoryProfiler]

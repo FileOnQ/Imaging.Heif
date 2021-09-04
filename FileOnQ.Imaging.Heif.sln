@@ -54,7 +54,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileOnQ.Imaging.Heif.Tests.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{A4396AB5-9EE2-4B42-AB2A-0D9A12927E92}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileOnQ.Imaging.Heif.Bechmarks", "benchmarks\tools\FileOnQ.Imaging.Heif.Bechmarks.csproj", "{91D2759F-7A60-438C-84C6-2097BBBE950B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileOnQ.Imaging.Heif.Benchmarks", "benchmarks\tools\FileOnQ.Imaging.Heif.Benchmarks.csproj", "{91D2759F-7A60-438C-84C6-2097BBBE950B}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

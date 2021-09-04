@@ -1,7 +1,7 @@
 ﻿using System;
 using BenchmarkDotNet.Running;
 
-namespace FileOnQ.Imaging.Heif.Bechmarks
+namespace FileOnQ.Imaging.Heif.Benchmarks
 {
     class Program
     {
