@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <Import Project="..\ConsoleApp.Shared\ConsoleApp.Shared.projitems" Label="Shared" />
-	<Import Project="..\..\..\build\nuget-local.targets" />
+	<Import Project="..\..\..\build\nuget-local.props" />
+	<Import Project="..\ConsoleApp.Shared\Build\nuget-local.targets" />
 
 </Project>

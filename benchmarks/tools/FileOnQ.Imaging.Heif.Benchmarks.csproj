@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.0" />
+		<PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FileOnQ.Imaging.Heif" Version="0.0.0-local.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Images\*" CopyToOutputDirectory="Always" />
+	</ItemGroup>
+
+	<Import Project="..\..\build\nuget-local.props" />
+	<Import Project="Build\nuget-local.targets" />
+
+</Project>

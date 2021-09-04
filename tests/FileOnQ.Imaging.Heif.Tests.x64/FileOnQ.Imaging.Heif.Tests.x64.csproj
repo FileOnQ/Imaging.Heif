@@ -13,6 +13,7 @@
 	</ItemGroup>
 
 	<Import Project="..\FileOnQ.Imaging.Heif.Tests\FileOnQ.Imaging.Heif.Tests.projitems" Label="Shared" />
-	<Import Project="..\..\build\nuget-local.targets" />
+	<Import Project="..\..\build\nuget-local.props" />
+	<Import Project="..\FileOnQ.Imaging.Heif.Tests\Build\nuget-local.targets" />
 
 </Project>

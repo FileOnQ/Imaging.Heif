@@ -15,6 +15,7 @@
     <None Include="$(MSBuildThisFileDirectory)20210821_095129.heic">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)Build\nuget-local.targets" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Program.cs" />
