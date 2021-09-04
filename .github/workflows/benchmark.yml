@@ -1,6 +1,8 @@
 name: Benchmark
 
 on:
+  push:
+    branches: [ benchmarking ]
   pull_request:
     branches: [ main ]
     types: [ opened ]
@@ -195,7 +197,7 @@ jobs:
           $message += "thumbnail`r`n"
           $message += "\``\``\``ini `r`n $thumbnail `r`n \``\``\``"
           $message += "`r`n`r`nprimary`r`n"
-          $message += "\``\``\``ini `r`n $dprimary `r`n \``\``\``"
+          $message += "\``\``\``ini `r`n $primary `r`n \``\``\``"
           echo $message
           echo "PR_COMMENT_COMPARISON<<EOF" >> $env:GITHUB_ENV
           echo "$message" >> $env:GITHUB_ENV
@@ -207,7 +209,7 @@ jobs:
           $thumbnail = Get-Content "Benchmark-thumbnail/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
           $thumbnail = $thumbnail.replace("``", "\``")
 
-          $primary = Get-Content "Benchmark-dcraw-whitebalance/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
+          $primary = Get-Content "Benchmark-primary/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
           $primary = $primary.replace("``", "\``")
 
           $message = "## Benchmark Results`r`n"
