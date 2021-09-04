@@ -7,12 +7,12 @@ A C#/.NET wrapper around [libheif](https://github.com/strukturag/libheif) to sim
 [![Build (1.0.0)](https://github.com/FileOnQ/Imaging.Heif/actions/workflows/build_main.yml/badge.svg?branch=main)](https://github.com/FileOnQ/Imaging.Heif/actions/workflows/build_main.yml)
 [![FileOnQ.Imaging.heif](https://img.shields.io/badge/NuGet-FileOnQ.Imaging.Heif-blue.svg)](https://www.nuget.org/packages/FileOnQ.Imaging.Heif)
 
-## ⭐ Contributing ⭐
-Pull Requests and Issues are always welcomed
+## Contributing
+⭐ Pull Requests and Issues are always welcomed ⭐
 * Get Involved - [contributing.md](contributing.md)
 * How to Compile - [building](building.md)
 
-## 📝 Setup 📝
+## Setup
 Install the NuGet package into your target head and any shared projects.
 
 [![FileOnQ.Imaging.heif](https://img.shields.io/badge/NuGet-FileOnQ.Imaging.Heif-blue.svg)](https://www.nuget.org/packages/FileOnQ.Imaging.Heif)
