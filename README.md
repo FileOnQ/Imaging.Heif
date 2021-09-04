@@ -9,8 +9,9 @@ A C#/.NET wrapper around [libheif](https://github.com/strukturag/libheif) to sim
 
 ## Contributing
 ⭐ Pull Requests and Issues are always welcomed ⭐
-* Get Involved - [contributing.md](contributing.md)
-* How to Compile - [building](building.md)
+* [Contributing](CONTRIBUTING.md)
+* [Developer Guide](DEVELOPER_GUIDE.md)
+* [Building](BUILDING.md)
 
 ## Setup
 Install the NuGet package into your target head and any shared projects.
