@@ -1,0 +1,231 @@
+name: Benchmark
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened ]
+  issue_comment:
+    types: [ created ]
+
+jobs:
+  check-command:
+    runs-on: windows-2019
+    permissions:
+      pull-requests: write
+    outputs:
+      benchmark: ${{ steps.check.outputs.triggered }}
+      ref: ${{ env.CUSTOM_REF }}
+    steps:
+      - name: Print Event Name
+        run: echo "${{ github.EVENT_NAME }}"
+
+      - name: Check Benchmark Trigger
+        if: ${{ github.EVENT_NAME != 'pull_request' }}
+        uses: khan/pull-request-comment-trigger@master
+        id: check
+        with:
+          trigger: '/benchmark'
+          reaction: eyes
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Set Triggered Variable
+        run: |
+          $triggered = 'false'
+          if ('${{ github.EVENT_NAME }}' -ne 'pull_request') {
+            $triggered = '${{ steps.check.outputs.triggered }}'
+          }
+          echo "COMMAND_TRIGGERED=$($triggered)" >> $env:GITHUB_ENV
+
+      - name: Find Branch
+        if: ${{ env.COMMAND_TRIGGERED == 'true' }}
+        uses: actions/github-script@v3
+        id: find-branch
+        with:
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+            try {
+              const result = await github.pulls.get(request)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+
+      - name: Set Branch - Comment
+        if: ${{ env.COMMAND_TRIGGERED == 'true' }}
+        run: |
+          $triggered = '${{ env.COMMAND_TRIGGERED }}'
+          $ref = '${{ fromJSON(steps.find-branch.outputs.result).head.ref }}'
+          echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
+
+      - name: Set Branch - Comment
+        if: ${{ env.COMMAND_TRIGGERED == 'false' }}
+        run: |
+          $triggered = '${{ env.COMMAND_TRIGGERED }}'
+          $ref = '${{ github.REF }}'
+          echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
+
+  benchmark-build:
+    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request' }}
+    needs: check-command
+    runs-on: windows-2019
+    outputs:
+      ref: ${{ needs.check-command.outputs.ref }}
+      package_version: ${{ env.PACKAGE_VERSION }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+          ref: ${{ needs.check-command.outputs.ref }}
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
+
+      - name: Install Build Dependencies
+        run: |
+          choco install meson
+          choco install ninja
+          choco install nasm
+          echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "C:\Program Files\Meson" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          
+      - name: Set NuGet Version
+        run: echo "PACKAGE_VERSION=1.0.0-benchmark.${{ GITHUB.RUN_NUMBER }}" >> $env:GITHUB_ENV
+          
+      - name: Build
+        run: dotnet build -c Release
+        working-directory: ./src/FileOnQ.Imaging.Heif
+        
+      - name: Pack
+        run: dotnet pack -c Release -o ../../ /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
+        working-directory: ./src/FileOnQ.Imaging.Heif
+        
+      - name: Upload NuGet Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: Benchmark-Packages
+          path: |
+            *.nupkg
+            *.snupkg
+    
+  benchmark-run:
+    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request' }}
+    needs: benchmark-build
+    runs-on: ${{ matrix.os }}
+    outputs:
+      ref: ${{ needs.benchmark-build.outputs.ref }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-2019
+            benchmark: 'thumbnail'
+          - os: windows-2019
+            benchmark: 'primary'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+          ref: ${{ needs.benchmark-build.outputs.ref }}
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Copy Nupkg
+        shell: powershell
+        run: Copy-Item Benchmark-Packages\* -Destination .
+        
+      - name: Update NuGet
+        run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.benchmark-build.outputs.package_version }}
+        working-directory: ./benchmarks/tools
+
+      - name: Benchmark
+        run: dotnet run -c Release -b ${{ matrix.benchmark }}
+        working-directory: ./benchmarks/tools
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: Benchmark-${{ matrix.benchmark }}
+          path: ./benchmarks/tools/BenchmarkDotNet.Artifacts/results
+
+  benchmark-compare:
+    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request' }}
+    needs: benchmark-run
+    runs-on: windows-2019
+    steps:
+      - name: Clone fileonq/imaging.heif
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.benchmark-run.outputs.ref }}
+          path: fileonq.imaging.heif
+
+      - name: Clone dotnet/performance
+        uses: actions/checkout@v2
+        with:
+          repository: dotnet/performance
+          path: dotnet.performance
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+
+      - name: Compare - thumbnail
+        run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/thumbnail" --diff "../../../../artifacts/Benchmark-thumbnail" --threshold 10% --top 10 > thumbnail.output.txt
+        working-directory: ./dotnet.performance/src/tools/ResultsComparer
+
+      - name: Compare - primary
+        run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/primary" --diff "../../../../artifacts/Benchmark-primary" --threshold 10% --top 10 > primary.output.txt
+        working-directory: ./dotnet.performance/src/tools/ResultsComparer
+
+      - name: GitHub Comment - Comparison
+        run: |
+          $thumbnail = Get-Content "thumbnail.output.txt" -raw
+          $primary = Get-Content "primary.output.txt" -raw
+
+          $message = "## Benchmark Comparison`r`n"
+          $message += "Benchmarking comparison between this Pull Request and the comitted values at benchmarks/results `r`n`r`n"
+          $message += "thumbnail`r`n"
+          $message += "\``\``\``ini `r`n $thumbnail `r`n \``\``\``"
+          $message += "`r`n`r`nprimary`r`n"
+          $message += "\``\``\``ini `r`n $primary `r`n \``\``\``"
+          echo $message
+          echo "PR_COMMENT_COMPARISON<<EOF" >> $env:GITHUB_ENV
+          echo "$message" >> $env:GITHUB_ENV
+          echo "EOF" >> $env:GITHUB_ENV
+        working-directory: ./dotnet.performance/src/tools/ResultsComparer
+
+      - name: GitHub Comment - Benchmark Results
+        run: |
+          $thumbnail = Get-Content "Benchmark-thumbnail/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
+          $thumbnail = $thumbnail.replace("``", "\``")
+
+          $primary = Get-Content "Benchmark-primary/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
+          $primary = $primary.replace("``", "\``")
+
+          $message = "## Benchmark Results`r`n"
+          $message += "<details><summary>thumbnail</summary><p>`r`n`r`n $thumbnail </p></details>`r`n"
+          $message += "<details><summary>primary</summary><p>`r`n`r`n $primary </p></details>`r`n"
+          echo $message
+          echo "PR_COMMENT_RESULTS<<EOF" >> $env:GITHUB_ENV
+          echo "$message" >> $env:GITHUB_ENV
+          echo "EOF" >> $env:GITHUB_ENV
+        working-directory: ./artifacts
+
+      - name: GitHub Comment - Post
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${{ env.PR_COMMENT_COMPARISON }}\r\n\r\n${{ env.PR_COMMENT_RESULTS }}`
+            })

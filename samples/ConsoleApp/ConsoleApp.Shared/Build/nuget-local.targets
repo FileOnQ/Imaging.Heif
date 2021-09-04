@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="15.0">
+
+	<Target Name="ClearPackageCache" BeforeTargets="Build" Condition="'$(CI)' == 'false'">
+		<Exec Command="rmdir /s /q %UserProfile%\.nuget\packages\FileOnQ.Imaging.Heif\0.0.0-local.1" />
+	</Target>
+
+	<Target Name="CreatePackage" AfterTargets="ClearPackageCache" Condition="'$(CI)' == 'false'">
+		<Exec Command="dotnet pack -o ../../ /p:Configuration=$(Configuration) /p:Version=0.0.0-local.1 /p:PackageVersion=0.0.0-local.1" WorkingDirectory="$(ProjectDir)../../../src/FileOnQ.Imaging.Heif" />
+		<Exec Command="dotnet restore" WorkingDirectory="$(ProjectDir)" />
+	</Target>
+
+</Project>
