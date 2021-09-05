@@ -22,7 +22,7 @@ namespace FileOnQ.Imaging.Heif
 			internal static extern bool encode(IntPtr encoder, LibHeif.ImageHandle* handle, LibHeif.Image* image, byte** buffer, ulong* buffer_size);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-			internal static extern IntPtr encoder_free(IntPtr encoder);
+			internal static extern IntPtr free_pointer(IntPtr pointer);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 			internal static extern void encoder_update_decoding_options(IntPtr encoder, LibHeif.ImageHandle* handle, IntPtr decodingOptions);
