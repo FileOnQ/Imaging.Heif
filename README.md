@@ -4,17 +4,21 @@
 A C#/.NET wrapper around [libheif](https://github.com/strukturag/libheif) to simplify opening heic images and retrieving thumbnails.
 
 <!-- Add all badges here such as CI Build, wiki, etc. -->
+[![Build (1.0.0)](https://github.com/FileOnQ/Imaging.Heif/actions/workflows/build_main.yml/badge.svg?branch=main)](https://github.com/FileOnQ/Imaging.Heif/actions/workflows/build_main.yml)
+[![FileOnQ.Imaging.heif](https://img.shields.io/badge/NuGet-FileOnQ.Imaging.Heif-blue.svg)](https://www.nuget.org/packages/FileOnQ.Imaging.Heif)
 
-## Project Status
-The project is only in a proof of concept stage and is not fully featured.
+## Contributing
+⭐ Pull Requests and Issues are always welcomed ⭐
+* [Contributing](CONTRIBUTING.md)
+* [Developer Guide](DEVELOPER_GUIDE.md)
+* [Building](BUILDING.md)
 
 ## Setup
-TBD
+Install the NuGet package into your target head and any shared projects.
 
-<!-- Short description on how to setup and initialize. Such as NuGet Downloads -->
-Add the NuGet to all shared code and platform code.
+[![FileOnQ.Imaging.heif](https://img.shields.io/badge/NuGet-FileOnQ.Imaging.Heif-blue.svg)](https://www.nuget.org/packages/FileOnQ.Imaging.Heif)
 
-<!-- Update NuGet package link -->
+*The NuGet package must be included in the entry point or target head, otherwise the native assemblies won't be copied over to the bin directory correctly.*
 
 ## Supported Target Frameworks
 FileOnQ.Imaging.Heif is available for use in the following target frameworks
@@ -39,18 +43,37 @@ FileOnQ.Imaging.Heif is available for use in the following runtime identifiers
 | osx-x64          | ❌        | Planned                 |
 | linux-x64        | ❌        | Planned                 |
 
-# Usage
-<!-- Add usage and basic documentation for library -->
+## Usage
+Saves the primary image as a jpeg
 
-# Documentation
-For complete documentation visit the official documentation
+```c#
+using (var image = new HeifImage("image.heic"))
+using (var primary = image.Primary())
+{
+    primary.Write("output.jpeg", 90);
+}
+```
 
-<!-- Add documentation link if applicable -->
+Saves the embedded thumbnail as a jpeg
+
+```c#
+using (var image = new HeifImage("image.heic"))
+using (var thumbnail = image.Thumbnail())
+{
+    thumbnail.Write("output.jpeg", 90);
+}
+```
+
+## Documentation
+We don't have a wiki or full API documentation. If you are interested in helping, create an issue so we can discuss.
 
 # Dependencies
-<!-- If there are any dependencies cite them and their locations -->
-This plugin depends on the following dependencies and SDKs to function correctly
+FileOnQ.Imaging.Heif uses several native C/C++ dependent libraries
 * [libheif](https://github.com/strukturag/libheif)
+* [dav1d](https://code.videolan.org/videolan/dav1d)
+* [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo)
+* [libde265](https://github.com/strukturag/libde265)
+* [x265](https://github.com/videolan/x265)
 
 # Created By FileOnQ
 This library was created by FileOnQ and donated to the open source community.

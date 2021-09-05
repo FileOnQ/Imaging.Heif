@@ -6,7 +6,7 @@
 		<Summary>A C#/.NET wrapper around libheif for decoding and processing high efficiency image formats (heif, heic).</Summary>
 		<PackageTag>heif, heic, image, imaging, jpeg, libheif, library, cross-platform</PackageTag>
 		<Title>FileOnQ.Imaging.Heif</Title>
-		<Description>a C#/.NET wrapper around libheif for decoding and processing high efficiency image format (heif, heic). FileOnQ.Imaging.Heif provides all the tools needed to easily convert heif files to jpeg and handle various processing algorithms. All native binaries are included in NuGet package, see README.md for current supported runtime identifiers.</Description>
+		<Description>A C#/.NET wrapper around libheif for decoding and processing high efficiency image format (heif, heic). FileOnQ.Imaging.Heif provides all the tools needed to easily convert heif files to jpeg and handle various processing algorithms. All native binaries are included in NuGet package, see README.md for current supported runtime identifiers.</Description>
 		<PackageIcon>fileonq.png</PackageIcon>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
 		<PackageVersion>$(Version)$(VersionSuffix)</PackageVersion>
