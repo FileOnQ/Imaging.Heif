@@ -16,14 +16,28 @@ Add the NuGet to all shared code and platform code.
 
 <!-- Update NuGet package link -->
 
-## Supported Platforms
-FileOnQ.Imaging.Heif is available for use in the following platforms
+## Supported Target Frameworks
+FileOnQ.Imaging.Heif is available for use in the following target frameworks
 
-<!-- Fill out the table below -->
 | Platform         | Supported | Version                 |
 |------------------|-----------|-------------------------|
-| net48            | TBD       | n/a                     |
-| net5.0           | TBD       | n/a                     |
+| net48            | ✅        | 1.0.0                   |
+| net5.0           | ✅        | 1.0.0                   |
+| Xamarin.iOS      | ❌        | Planned                 |
+| Xamarin.Mac      | ❌        | Planned                 |
+| MonoAndroid      | ❌        | Planned                 |
+
+
+## Supported Runtime Identifiers
+FileOnQ.Imaging.Heif is available for use in the following runtime identifiers
+
+| Platform         | Supported | Version                 |
+|------------------|-----------|-------------------------|
+| win-x86          | ✅        | 1.0.0                   |
+| win-x64          | ✅        | 1.0.0                   |
+| win-ARM64        | ❌        | Planned                 |
+| osx-x64          | ❌        | Planned                 |
+| linux-x64        | ❌        | Planned                 |
 
 # Usage
 <!-- Add usage and basic documentation for library -->

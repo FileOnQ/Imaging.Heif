@@ -26,7 +26,7 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 				using (var image = new HeifImage(input))
 				using (var thumbnail = image.Thumbnail())
 				{
-					thumbnail.Save("output.jpeg");
+					thumbnail.Write("output.jpeg");
 				}
 			});
 

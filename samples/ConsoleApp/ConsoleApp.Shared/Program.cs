@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using FileOnQ.Imaging.Heif;
 
 namespace ConsoleApp
 {
-    class Program
+	class Program
     {
         static void Main(string[] args)
         {
@@ -15,7 +14,7 @@ namespace ConsoleApp
 		        {
 			        using (var thumb = image.Thumbnail())
 			        {
-				        thumb.Save("output.jpeg", 90);
+				        thumb.Write("output.jpeg", 90);
 			        }
 		        }
 		        catch (HeifException ex)
@@ -25,7 +24,7 @@ namespace ConsoleApp
 
 			        using (var primaryImage = image.PrimaryImage())
 			        {
-				        primaryImage.Save("output.jpeg", 90);
+				        primaryImage.Write("output.jpeg", 90);
 			        }
 		        }
 	        }

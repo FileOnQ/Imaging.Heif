@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FileOnQ.Imaging.Heif" Version="1.0.0-dev.2" />
+    <PackageReference Include="FileOnQ.Imaging.Heif" Version="0.0.0-local.1" />
   </ItemGroup>
 
   <Import Project="..\ConsoleApp.Shared\ConsoleApp.Shared.projitems" Label="Shared" />
+	<Import Project="..\..\..\build\nuget-local.props" />
+	<Import Project="..\ConsoleApp.Shared\Build\nuget-local.targets" />
 
 </Project>

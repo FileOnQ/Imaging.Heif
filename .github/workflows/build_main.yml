@@ -31,10 +31,12 @@ jobs:
       run: echo "PACKAGE_VERSION=1.0.0-dev.${{ GITHUB.RUN_NUMBER }}" >> $env:GITHUB_ENV
 
     - name: Build
-      run: dotnet build src/FileOnQ.Imaging.Heif/FileOnQ.Imaging.Heif.csproj -c Release
+      run: dotnet build -c Release
+      working-directory: ./src/FileOnQ.Imaging.Heif
       
     - name: Pack
-      run: dotnet pack src/FileOnQ.Imaging.Heif/FileOnQ.Imaging.Heif.csproj -c Release -o . /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
+      run: dotnet pack -c Release -o ../../ /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
+      working-directory: ./src/FileOnQ.Imaging.Heif
       
     - name: Upload NuGet Package
       uses: actions/upload-artifact@v2
@@ -43,6 +45,52 @@ jobs:
         path: |
           *.nupkg
           *.snupkg
+          
+  test-integration:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net5'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net5'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net5'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Copy Nupkg
+        shell: powershell
+        run: Copy-Item Packages\* -Destination .
+
+      - name: Update NuGet
+        run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.build.outputs.package_version }}
+        working-directory: ./tests/FileOnQ.Imaging.Heif.Tests.${{ matrix.architecture }}
+
+      - name: Test ${{ matrix.architecture }}
+        run: dotnet test -c Release --logger:"console;verbosity=detailed" --filter TestCategory=Integration
+        working-directory: ./tests/FileOnQ.Imaging.Heif.Tests.${{ matrix.architecture }}
 
   test-console-app:
     needs: build
@@ -81,11 +129,7 @@ jobs:
       - name: Copy Nupkg
         shell: powershell
         run: Copy-Item Packages\* -Destination .
-        
-      - name: View Contents (root)
-        shell: powershell
-        run: ls
-        
+                
       - name: Update NuGet
         run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.build.outputs.package_version }}
         working-directory: ./samples/ConsoleApp/ConsoleApp.${{ matrix.framework }}.${{ matrix.architecture }}
@@ -95,7 +139,7 @@ jobs:
         working-directory: ./samples/ConsoleApp/ConsoleApp.${{ matrix.framework }}.${{ matrix.architecture }}
         
   nuget-publish:
-    needs: test-console-app
+    needs: [test-integration, test-console-app]
     runs-on: windows-2019
     steps:
       - name: Download Packages
