@@ -46,10 +46,11 @@ namespace FileOnQ.Imaging.Heif
 
 			if ((IntPtr)outputImage != IntPtr.Zero)
 			{
+				byte* buffer = (byte*)IntPtr.Zero;
+				ulong size;
+
 				try
 				{
-					byte* buffer;
-					ulong size;
 					bool saved = LibEncoder.Encode(encoder, handle, outputImage, &buffer, &size);
 					if (saved)
 					{
@@ -81,6 +82,13 @@ namespace FileOnQ.Imaging.Heif
 						SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
 						Message = "See native exception details"
 					});
+				}
+				finally
+				{
+					if ((IntPtr)buffer != IntPtr.Zero)
+					{
+						LibEncoder.Free((IntPtr)buffer);
+					}
 				}
 			}
 		}
