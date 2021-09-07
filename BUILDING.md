@@ -1,6 +1,13 @@
 # How to Compile
 FileOnQ.Imaging.Heif uses a mix of .NET Framework, .NET and native C/C++ projects. You will need to have additional build tools installed to properly build this locally. This readme serves as a guide for new developers to contribute.
 
+## Visual Studio and .NET
+This project uses a combination of Visual Studio and .NET CLI tools for building and developing.
+* Visual Studio 2019 (16.10.3) or newer
+* .NET CLI 5.0.300 or newer
+
+If you are using an older version of Visual Studio or .NET CLI you won't have access to the `_OR_GREATER` preprocessor directives. This will result in runtime issues when running the library locally.
+
 ## Build Dependencies
 * Visual Studio 2019 for C++ Development
 * [meson](https://mesonbuild.com/) (0.47 or higher)
