@@ -8,6 +8,8 @@ namespace FileOnQ.Imaging.Heif
 		LibHeif.ImageHandle* handle;
 		IntPtr encoder;
 		IntPtr decodingOptions;
+		IntPtr dataBuffer;
+
 		internal Image(LibHeif.ImageHandle* handle)
 		{
 			if ((IntPtr)handle == IntPtr.Zero)
@@ -77,6 +79,16 @@ namespace FileOnQ.Imaging.Heif
 					LibEncoder.Free(buffer.Data);
 				}
 			}
+		}
+
+		public ReadOnlySpan<byte> ToSpan(int quality = 90)
+		{
+			var buffer = GetImageBuffer(quality);
+			if (buffer.Size <= 0)
+				return new ReadOnlySpan<byte>();
+
+			dataBuffer = buffer.Data;
+			return new ReadOnlySpan<byte>((void*)buffer.Data, buffer.Size);
 		}
 
 		(IntPtr Data, int Size) GetImageBuffer(int quality)
@@ -209,6 +221,12 @@ namespace FileOnQ.Imaging.Heif
 			{
 				LibEncoder.Free(encoder);
 				encoder = IntPtr.Zero;
+			}
+
+			if (dataBuffer != IntPtr.Zero)
+			{
+				LibEncoder.Free(dataBuffer);
+				dataBuffer = IntPtr.Zero;
 			}
 			
 

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnostics.Windows.Configs;
@@ -35,6 +36,26 @@ namespace FileOnQ.Imaging.Heif.Benchmarks
 			}
 
 			File.Delete(output);
+		}
+
+		[Benchmark]
+		public byte[] PrimaryImage_ToArray()
+		{
+			using (var image = new HeifImage(filePath))
+			using (var primary = image.PrimaryImage())
+			{
+				return primary.ToArray();
+			}
+		}
+
+		[Benchmark]
+		public ReadOnlySpan<byte> PrimaryImage_ToSpan()
+		{
+			using (var image = new HeifImage(filePath))
+			using (var primary = image.PrimaryImage())
+			{
+				return primary.ToSpan();
+			}
 		}
 	}
 }
