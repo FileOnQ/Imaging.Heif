@@ -10,7 +10,8 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 	[TestFixture(TestData.Image4)]
 	[TestFixture(TestData.Image5)]
 	[Category(Constants.Category.Integration)]
-    public class PrimaryImage_Write_Tests
+	[Category(Constants.Category.FileIO)]
+	public class PrimaryImage_Write_Tests
 	{
 		readonly string input;
 		readonly string output;
