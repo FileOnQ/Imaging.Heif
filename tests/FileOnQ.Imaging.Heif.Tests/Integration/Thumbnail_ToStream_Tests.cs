@@ -39,13 +39,13 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 		}
 
 		[Test]
-		public void PrimaryImage_ToStream_NotNull_Test()
+		public void Thumbnail_ToStream_NotNull_Test()
 		{
 			Assert.IsNotNull(output);
 		}
 
 		[Test]
-		public void PrimaryImage_ToArray_Match_Test()
+		public void Thumbnail_ToArray_Match_Test()
 		{
 			byte[] buffer = new byte[0];
 			using (var stream = new MemoryStream())
