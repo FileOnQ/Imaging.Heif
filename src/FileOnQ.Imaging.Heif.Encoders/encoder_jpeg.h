@@ -55,7 +55,8 @@ public:
 		struct heif_decoding_options* options) const override;
 
 	bool Encode(const struct heif_image_handle* handle,
-		const struct heif_image* image, const std::string& filename) override;
+		const struct heif_image* image, unsigned char** buffer, 
+		unsigned long* buffer_size) override;
 
 private:
 	static const int kDefaultQuality = 90;

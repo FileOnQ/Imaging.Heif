@@ -22,9 +22,9 @@ heif_chroma encoder_chroma(Encoder* encoder, bool has_alpha, int bit_depth)
 	return encoder->chroma(has_alpha, bit_depth);
 }
 
-bool encode(Encoder* encoder, const struct heif_image_handle* handle, const struct heif_image* image, char* filename)
+bool encode(Encoder* encoder, const struct heif_image_handle* handle, const struct heif_image* image, unsigned char** buffer, unsigned long* buffer_size)
 {
-	return encoder->Encode(handle, image, filename);
+	return encoder->Encode(handle, image, buffer, buffer_size);
 }
 
 void encoder_update_decoding_options(Encoder* encoder, const struct heif_image_handle* handle, struct heif_decoding_options* options)
@@ -32,7 +32,10 @@ void encoder_update_decoding_options(Encoder* encoder, const struct heif_image_h
 	encoder->UpdateDecodingOptions(handle, options);
 }
 
-void encoder_free(Encoder* encoder)
+void free_pointer(void* pointer)
 {
-	free(encoder);
+	if (!pointer)
+		return;
+
+	free(pointer);
 }

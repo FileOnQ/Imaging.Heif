@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="15.0">
 	
-	<Target Name="Encoders" AfterTargets="LibHeif-copy-includes" Condition="!Exists('runtimes/win-x64/native/FileOnQ.Imaging.Heif.Encoders.dll') and !Exists('runtimes/win-x86/native/FileOnQ.Imaging.Heif.Encoders.dll')">
-		<Exec Command="encoders.bat x64 Debug" WorkingDirectory="$(ThirdPartyDir)/../build" />
-		<Exec Command="encoders.bat x86 Debug" WorkingDirectory="$(ThirdPartyDir)/../build" />
+	<Target Name="Encoders" AfterTargets="LibHeif-copy-includes">
+		<Exec Command="encoders.bat x64 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Exec Command="encoders.bat x86 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
 
-		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/Debug/x64/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x64/native" />
-		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/Debug/Win32/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x86/native" />
+		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/$(Configuration)/x64/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x64/native" />
+		<Copy SourceFiles="../FileOnQ.Imaging.Heif.Encoders/bin/$(Configuration)/Win32/FileOnQ.Imaging.Heif.Encoders.dll" DestinationFolder="runtimes/win-x86/native" />
 	</Target>
 
 	<Target Name="CleanEncoders" BeforeTargets="Clean">

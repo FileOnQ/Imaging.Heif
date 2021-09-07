@@ -44,28 +44,28 @@ namespace FileOnQ.Imaging.Heif
 			}
 		}
 
-		internal static bool Encode(IntPtr encoder, LibHeif.ImageHandle* handle, LibHeif.Image* image, string filename)
+		internal static bool Encode(IntPtr encoder, LibHeif.ImageHandle* handle, LibHeif.Image* image, byte** buffer, ulong* buffer_size)
 		{
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
 				case Architecture.X64:
-					return x64.encode(encoder, handle, image, filename);
+					return x64.encode(encoder, handle, image, buffer, buffer_size);
 				case Architecture.X86:
-					return x86.encode(encoder, handle, image, filename);
+					return x86.encode(encoder, handle, image, buffer, buffer_size);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
 		}
 
-		internal static void Free(IntPtr encoder)
+		internal static void Free(IntPtr pointer)
 		{
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
 				case Architecture.X64:
-					x64.encoder_free(encoder);
+					x64.free_pointer(pointer);
 					break;
 				case Architecture.X86:
-					x86.encoder_free(encoder);
+					x86.free_pointer(pointer);
 					break;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");

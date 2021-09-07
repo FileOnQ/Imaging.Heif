@@ -19,10 +19,10 @@ namespace FileOnQ.Imaging.Heif
 			internal static extern LibHeif.Chroma encoder_chroma(IntPtr encoder, bool hasAlpha, int bitDepth);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-			internal static extern bool encode(IntPtr encoder, LibHeif.ImageHandle* handle, LibHeif.Image* image, string filename);
+			internal static extern bool encode(IntPtr encoder, LibHeif.ImageHandle* handle, LibHeif.Image* image, byte** buffer, ulong* buffer_size);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-			internal static extern IntPtr encoder_free(IntPtr encoder);
+			internal static extern void free_pointer(IntPtr pointer);
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 			internal static extern void encoder_update_decoding_options(IntPtr encoder, LibHeif.ImageHandle* handle, IntPtr decodingOptions);
