@@ -148,7 +148,6 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 
 	jpeg_create_compress(&cinfo);
 
-	unsigned char* test = 0;
 	int width = heif_image_get_width(image, heif_channel_Y);
 	int height = heif_image_get_height(image, heif_channel_Y);
 
