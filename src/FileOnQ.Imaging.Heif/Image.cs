@@ -41,6 +41,7 @@ namespace FileOnQ.Imaging.Heif
 				LibEncoder.GetChroma(encoder, hasAlpha, bitDepth),
 				decodingOptions);
 
+
 			if (decodeError.Code != LibHeif.ErrorCode.Ok)
 				throw new HeifException(decodeError);
 
@@ -88,6 +89,11 @@ namespace FileOnQ.Imaging.Heif
 					if ((IntPtr)buffer != IntPtr.Zero)
 					{
 						LibEncoder.Free((IntPtr)buffer);
+					}
+
+					if ((IntPtr)outputImage != IntPtr.Zero)
+					{
+						LibHeif.ReleaseImage(outputImage);
 					}
 				}
 			}
