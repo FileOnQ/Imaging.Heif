@@ -91,6 +91,22 @@ namespace FileOnQ.Imaging.Heif
 			return new ReadOnlySpan<byte>((void*)buffer.Data, buffer.Size);
 		}
 
+		public Stream ToStream(int quality = 90)
+		{
+			var stream = new MemoryStream();
+			var span = ToSpan(quality);
+#if NET48_OR_GREATER
+			stream.Write(span.ToArray(), 0, span.Length);
+#elif NET5_0_OR_GREATER
+			stream.Write(span);
+#endif
+
+			stream.Position = 0;
+			stream.Seek(0, SeekOrigin.Begin);
+
+			return stream;
+		}
+
 		(IntPtr Data, int Size) GetImageBuffer(int quality)
 		{ 
 			CreateEncoder(quality);

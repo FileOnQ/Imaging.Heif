@@ -57,5 +57,15 @@ namespace FileOnQ.Imaging.Heif.Benchmarks
 				return primary.ToSpan();
 			}
 		}
+
+		[Benchmark]
+		public Stream PrimaryImage_ToStream()
+		{
+			using (var image = new HeifImage(filePath))
+			using (var primary = image.PrimaryImage())
+			{
+				return primary.ToStream();
+			}
+		}
 	}
 }
