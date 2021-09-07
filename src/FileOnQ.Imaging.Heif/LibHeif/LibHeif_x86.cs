@@ -47,6 +47,9 @@ namespace FileOnQ.Imaging.Heif
 
 			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 			internal static extern void heif_image_handle_release(ImageHandle* handle);
+
+			[DllImport(DllName, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+			internal static extern void heif_image_release(Image* image);
 		}
 	}
 }
