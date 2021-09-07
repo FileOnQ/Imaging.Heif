@@ -95,26 +95,28 @@ namespace FileOnQ.Imaging.Heif
 				});
 			}
 
-			var hasAlpha = LibHeif.HasAlphaChannel(handle);
-			LibHeif.Image* outputImage;
-			var decodeError = LibHeif.DecodeImage(
+			LibHeif.Image* outputImage = (LibHeif.Image*)IntPtr.Zero;
+			byte* buffer = (byte*)IntPtr.Zero;
+			ulong size;
+
+			try
+			{
+				var hasAlpha = LibHeif.HasAlphaChannel(handle);
+
+				var decodeError = LibHeif.DecodeImage(
 				handle,
 				&outputImage,
 				LibEncoder.GetColorSpace(encoder, hasAlpha),
 				LibEncoder.GetChroma(encoder, hasAlpha, bitDepth),
 				decodingOptions);
 
-			if (decodeError.Code != LibHeif.ErrorCode.Ok)
-				throw new HeifException(decodeError);
 
-			if ((IntPtr)outputImage == IntPtr.Zero)
-				return (IntPtr.Zero, 0);
+				if (decodeError.Code != LibHeif.ErrorCode.Ok)
+					throw new HeifException(decodeError);
 
-			byte* buffer = (byte*)IntPtr.Zero;
-			ulong size;
+				if ((IntPtr)outputImage == IntPtr.Zero)
+					return (IntPtr.Zero, 0);
 
-			try
-			{
 				bool saved = LibEncoder.Encode(encoder, handle, outputImage, &buffer, &size);
 				if (saved)
 				{
@@ -139,6 +141,13 @@ namespace FileOnQ.Imaging.Heif
 					SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
 					Message = "See native exception details"
 				});
+			}
+			finally
+			{
+				if ((IntPtr)outputImage != IntPtr.Zero)
+				{
+					LibHeif.ReleaseImage(outputImage);
+				}
 			}
 		}
 

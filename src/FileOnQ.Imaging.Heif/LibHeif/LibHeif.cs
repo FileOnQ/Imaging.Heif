@@ -181,5 +181,20 @@ namespace FileOnQ.Imaging.Heif
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
 		}
+
+		internal static void ReleaseImage(Image* image)
+		{
+			switch (RuntimeInformation.ProcessArchitecture)
+			{
+				case Architecture.X64:
+					x64.heif_image_release(image);
+					break;
+				case Architecture.X86:
+					x86.heif_image_release(image);
+					break;
+				default:
+					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
+			}
+		}
 	}
 }
