@@ -132,12 +132,12 @@ void jpeg_write_icc_profile(j_compress_ptr cinfo, const JOCTET* icc_data_ptr,
 #endif  // !defined(HAVE_JPEG_WRITE_ICC_PROFILE)
 
 bool JpegEncoder::Encode(const struct heif_image_handle* handle,
-	const struct heif_image* image, unsigned char** data, 
+	const struct heif_image* image, unsigned char** data,
 	unsigned long* data_size)
 {
 	struct jpeg_compress_struct cinfo = {};
 	struct ErrorHandler jerr = {};
-	
+
 	cinfo.err = jpeg_std_error(reinterpret_cast<struct jpeg_error_mgr*>(&jerr));
 	jerr.pub.error_exit = &JpegEncoder::OnJpegError;
 	if (setjmp(jerr.setjmp_buffer)) {
@@ -147,10 +147,19 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 	}
 
 	jpeg_create_compress(&cinfo);
+
+	unsigned char* test = 0;
+	int width = heif_image_get_width(image, heif_channel_Y);
+	int height = heif_image_get_height(image, heif_channel_Y);
+
+	// malloc the size of the pointer so it can be released
+	*data = (unsigned char*)malloc(width * height);
+	*data_size = width * height;
+
 	jpeg_mem_dest(&cinfo, data, data_size);
 
-	cinfo.image_width = heif_image_get_width(image, heif_channel_Y);
-	cinfo.image_height = heif_image_get_height(image, heif_channel_Y);
+	cinfo.image_width = width;
+	cinfo.image_height = height;
 	cinfo.input_components = 3;
 	cinfo.in_color_space = JCS_YCbCr;
 	jpeg_set_defaults(&cinfo);
@@ -216,5 +225,6 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 
 	jpeg_finish_compress(&cinfo);
 	jpeg_destroy_compress(&cinfo);
+
 	return true;
 }

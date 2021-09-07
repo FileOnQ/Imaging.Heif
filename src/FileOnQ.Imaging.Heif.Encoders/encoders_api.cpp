@@ -34,5 +34,8 @@ void encoder_update_decoding_options(Encoder* encoder, const struct heif_image_h
 
 void free_pointer(void* pointer)
 {
+	if (!pointer)
+		return;
+
 	free(pointer);
 }
