@@ -19,7 +19,7 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 
 		public PrimaryImage_ToStream_Tests(string path)
 		{
-			hash = TestData.Integration.PrimaryImageWrite.HashCodes[path];
+			hash = TestData.Integration.PrimaryImageSave.HashCodes[path];
 
 			var assemblyDirectory = Path.GetDirectoryName(typeof(NoThumbnailTests).Assembly.Location) ?? string.Empty;
 			input = Path.Combine(assemblyDirectory, path);

@@ -15,7 +15,7 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 
 		public Thumbnail_ToArray_Tests(string path)
 		{
-			hash = TestData.Integration.PrimaryImageWrite.HashCodes[path];
+			hash = TestData.Integration.ThuumbnailSave.HashCodes[path];
 
 			var assemblyDirectory = Path.GetDirectoryName(typeof(NoThumbnailTests).Assembly.Location) ?? string.Empty;
 			input = Path.Combine(assemblyDirectory, path);
