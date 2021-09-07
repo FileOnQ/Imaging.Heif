@@ -9,6 +9,9 @@
 
 			// Defines test that validates a specific function or unit of work.
 			public const string Unit = "Unit";
+
+			// Defines integration tests that are for the memory buffer APIs
+			public const string MemoryBuffer = "MemoryBuffer";
 		}
 	}
 }

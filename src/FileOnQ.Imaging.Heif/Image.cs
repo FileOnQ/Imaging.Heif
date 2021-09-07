@@ -18,6 +18,99 @@ namespace FileOnQ.Imaging.Heif
 
 		public void Write(string filename, int quality = 90)
 		{
+			var outputImage = GetOutputImage(quality);
+			if ((IntPtr)outputImage == IntPtr.Zero)
+				return;
+
+			byte* buffer = (byte*)IntPtr.Zero;
+			ulong size;
+
+			try
+			{
+				bool saved = LibEncoder.Encode(encoder, handle, outputImage, &buffer, &size);
+				if (saved)
+				{
+					var span = new ReadOnlySpan<byte>(buffer, (int)size);
+					using (var fileStream = File.OpenWrite(filename))
+					{
+#if NET5_0_OR_GREATER
+							fileStream.Write(span);
+#elif NET48_OR_GREATER
+							fileStream.Write(span.ToArray(), 0, span.Length);
+#endif
+					}
+				}
+				else
+				{
+					// REVIEW - I don't think this exception is right. It is thumbnail specific but using on `IImage` impl
+					throw new HeifException(new HeifException.Error
+					{
+						Code = LibHeif.ErrorCode.NoThumbnail,
+						SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
+						Message = "Unable to save image"
+					});
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new HeifException(ex, new HeifException.Error
+				{
+					Code = LibHeif.ErrorCode.Failure,
+					SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
+					Message = "See native exception details"
+				});
+			}
+			finally
+			{
+				if ((IntPtr)buffer != IntPtr.Zero)
+				{
+					LibEncoder.Free((IntPtr)buffer);
+				}
+			}
+		}
+
+		public byte[] ToArray(int quality = 90)
+		{
+			var outputImage = GetOutputImage(quality);
+			if ((IntPtr)outputImage == IntPtr.Zero)
+				return new byte[0];
+
+			byte* buffer = (byte*)IntPtr.Zero;
+			ulong size;
+
+			try
+			{
+				bool success = LibEncoder.Encode(encoder, handle, outputImage, &buffer, &size);
+				if (success)
+				{
+					var span = new Span<byte>(buffer, (int)size);
+					return span.ToArray();
+				}
+				else
+				{
+					throw new Exception();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new HeifException(ex, new HeifException.Error
+				{
+					Code = LibHeif.ErrorCode.Failure,
+					SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
+					Message = "See native exception details"
+				});
+			}
+			finally
+			{
+				if ((IntPtr)buffer != IntPtr.Zero)
+				{
+					LibEncoder.Free((IntPtr)buffer);
+				}
+			}
+		}
+
+		LibHeif.Image* GetOutputImage(int quality)
+		{ 
 			CreateEncoder(quality);
 			CreateDecodingOptions();
 			
@@ -44,53 +137,7 @@ namespace FileOnQ.Imaging.Heif
 			if (decodeError.Code != LibHeif.ErrorCode.Ok)
 				throw new HeifException(decodeError);
 
-			if ((IntPtr)outputImage != IntPtr.Zero)
-			{
-				byte* buffer = (byte*)IntPtr.Zero;
-				ulong size;
-
-				try
-				{
-					bool saved = LibEncoder.Encode(encoder, handle, outputImage, &buffer, &size);
-					if (saved)
-					{
-						var span = new ReadOnlySpan<byte>((void*)buffer, (int)size);
-						using (var fileStream = File.OpenWrite(filename))
-						{
-#if NET5_0_OR_GREATER
-							fileStream.Write(span);
-#elif NET48_OR_GREATER
-							fileStream.Write(span.ToArray(), 0, span.Length);
-#endif
-						}
-					}
-					else
-					{
-						throw new HeifException(new HeifException.Error
-						{
-							Code = LibHeif.ErrorCode.NoThumbnail,
-							SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
-							Message = "Unable to save image"
-						});
-					}
-				}
-				catch (Exception ex)
-				{
-					throw new HeifException(ex, new HeifException.Error
-					{
-						Code = LibHeif.ErrorCode.Failure,
-						SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
-						Message = "See native exception details"
-					});
-				}
-				finally
-				{
-					if ((IntPtr)buffer != IntPtr.Zero)
-					{
-						LibEncoder.Free((IntPtr)buffer);
-					}
-				}
-			}
+			return outputImage;
 		}
 
 		void CreateEncoder(int quality)
