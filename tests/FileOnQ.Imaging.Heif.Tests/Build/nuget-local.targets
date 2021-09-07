@@ -3,6 +3,7 @@
 
 	<Target Name="ClearPackageCache" BeforeTargets="DispatchToInnerBuilds" Condition="'$(CI)' == 'false'">
 		<Exec Command="rmdir /s /q %UserProfile%\.nuget\packages\FileOnQ.Imaging.Heif\0.0.0-local.1" />
+		<Exec Command="del FileOnQ.Imaging.Heif.0.0.0-local.1.*" WorkingDirectory="$(ProjectDir)../../" />
 	</Target>
 
 	<Target Name="CreatePackage" AfterTargets="ClearPackageCache" Condition="'$(CI)' == 'false'">
