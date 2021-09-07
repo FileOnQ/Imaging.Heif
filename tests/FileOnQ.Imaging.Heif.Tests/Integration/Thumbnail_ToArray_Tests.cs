@@ -4,20 +4,16 @@ using NUnit.Framework;
 
 namespace FileOnQ.Imaging.Heif.Tests.Integration
 {
-	[TestFixture(TestData.Image1)]
-	[TestFixture(TestData.Image2)]
-	[TestFixture(TestData.Image3)]
-	[TestFixture(TestData.Image4)]
 	[TestFixture(TestData.Image5)]
 	[Category(Constants.Category.Integration)]
 	[Category(Constants.Category.MemoryBuffer)]
-	public class PrimaryImage_ToArray_Tests
+	public class Thumbnail_ToArray_Tests
 	{
 		readonly string input;
 		readonly string hash;
 		byte[] output;
 
-		public PrimaryImage_ToArray_Tests(string path)
+		public Thumbnail_ToArray_Tests(string path)
 		{
 			hash = TestData.Integration.PrimaryImageWrite.HashCodes[path];
 
@@ -29,9 +25,9 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 		public void Execute()
 		{
 			using (var image = new HeifImage(input))
-			using (var primary = image.PrimaryImage())
+			using (var thumbnail = image.Thumbnail())
 			{
-				output = primary.ToArray();
+				output = thumbnail.ToArray();
 			}
 		}
 
@@ -42,13 +38,13 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 		}
 
 		[Test]
-		public void PrimaryImage_ToArray_NotNull_Test()
+		public void Thumbnail_ToArray_NotNull_Test()
 		{
 			Assert.IsNotNull(output);
 		}
 
 		[Test]
-		public void PrimaryImage_ToArray_Match_Test()
+		public void Thumbnail_ToArray_Match_Test()
 		{
 			Assert.IsTrue(output.Length > 0);
 			AssertUtilities.IsHashEqual(hash, output);

@@ -29,6 +29,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integration\NoThumbnailTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\PrimaryImage_ToStream_Tests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\PrimaryImage_ToSpan_Tests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integration\PrimaryImage_ToArray_Tests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integration\Thumbnail_Write_Tests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integration\PrimaryImage_Write_Tests.cs" />

@@ -11,13 +11,12 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 	[TestFixture(TestData.Image5)]
 	[Category(Constants.Category.Integration)]
 	[Category(Constants.Category.MemoryBuffer)]
-	public class PrimaryImage_ToArray_Tests
+	public class PrimaryImage_ToSpan_Tests
 	{
 		readonly string input;
 		readonly string hash;
-		byte[] output;
 
-		public PrimaryImage_ToArray_Tests(string path)
+		public PrimaryImage_ToSpan_Tests(string path)
 		{
 			hash = TestData.Integration.PrimaryImageWrite.HashCodes[path];
 
@@ -25,33 +24,21 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 			input = Path.Combine(assemblyDirectory, path);
 		}
 
-		[OneTimeSetUp]
-		public void Execute()
+		[Test]
+		public void PrimaryImage_ToSpan_Match_Test()
 		{
+			// the span accesses native memory and must be used within the 
+			// IDisposable context of IImage. Otherwise you will be attempting
+			// to access deleted memory.
+
 			using (var image = new HeifImage(input))
 			using (var primary = image.PrimaryImage())
 			{
-				output = primary.ToArray();
+				var output = primary.ToSpan();
+
+				Assert.IsTrue(output.Length > 0);
+				AssertUtilities.IsHashEqual(hash, output.ToArray());
 			}
-		}
-
-		[OneTimeTearDown]
-		public void TearDown()
-		{
-			output = null;
-		}
-
-		[Test]
-		public void PrimaryImage_ToArray_NotNull_Test()
-		{
-			Assert.IsNotNull(output);
-		}
-
-		[Test]
-		public void PrimaryImage_ToArray_Match_Test()
-		{
-			Assert.IsTrue(output.Length > 0);
-			AssertUtilities.IsHashEqual(hash, output);
 		}
     }
 }
