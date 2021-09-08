@@ -6,23 +6,19 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 {
 	[TestFixture(TestData.Image5)]
 	[Category(Constants.Category.Integration)]
-	[Category(Constants.Category.FileIO)]
-	public class Thumbnail_Write_Tests
+	[Category(Constants.Category.MemoryBuffer)]
+	public class Thumbnail_ToStream_Tests
 	{
 		readonly string input;
-		readonly string output;
 		readonly string hash;
+		Stream output;
 
-		public Thumbnail_Write_Tests(string path)
+		public Thumbnail_ToStream_Tests(string path)
 		{
 			hash = TestData.Integration.ThuumbnailSave.HashCodes[path];
 
 			var assemblyDirectory = Path.GetDirectoryName(typeof(NoThumbnailTests).Assembly.Location) ?? string.Empty;
 			input = Path.Combine(assemblyDirectory, path);
-
-			var filename = Path.GetFileNameWithoutExtension(input);
-			var directory = Path.GetDirectoryName(input) ?? string.Empty;
-			output = Path.Combine(directory, $"{filename}.jpeg");
 		}
 
 		[OneTimeSetUp]
@@ -31,27 +27,34 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 			using (var image = new HeifImage(input))
 			using (var thumbnail = image.Thumbnail())
 			{
-				thumbnail.Write(output);
+				output = thumbnail.ToStream();
 			}
 		}
 
 		[OneTimeTearDown]
 		public void TearDown()
 		{
-			if (File.Exists(output))
-				File.Delete(output);
+			output?.Dispose();
+			output = null;
 		}
 
 		[Test]
-		public void Thumbnail_Write_FileExists_Test() =>
-			Assert.IsTrue(File.Exists(output));
+		public void Thumbnail_ToStream_NotNull_Test()
+		{
+			Assert.IsNotNull(output);
+		}
 
 		[Test]
-		public void Thumbnail_Write_Match_Test()
+		public void Thumbnail_ToStream_Match_Test()
 		{
-			var buffer = File.ReadAllBytes(output);
+			byte[] buffer = new byte[0];
+			using (var stream = new MemoryStream())
+			{
+				output.CopyTo(stream);
+				buffer = stream.ToArray();
+			}
 
-			Assert.IsTrue(buffer.Length > 0);
+			Assert.IsTrue(output.Length > 0);
 			AssertUtilities.IsHashEqual(hash, buffer);
 		}
     }

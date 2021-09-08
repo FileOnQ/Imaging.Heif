@@ -10,23 +10,19 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 	[TestFixture(TestData.Image4)]
 	[TestFixture(TestData.Image5)]
 	[Category(Constants.Category.Integration)]
-	[Category(Constants.Category.FileIO)]
-	public class PrimaryImage_Write_Tests
+	[Category(Constants.Category.MemoryBuffer)]
+	public class PrimaryImage_ToArray_Tests
 	{
 		readonly string input;
-		readonly string output;
 		readonly string hash;
+		byte[] output;
 
-		public PrimaryImage_Write_Tests(string path)
+		public PrimaryImage_ToArray_Tests(string path)
 		{
 			hash = TestData.Integration.PrimaryImageSave.HashCodes[path];
 
 			var assemblyDirectory = Path.GetDirectoryName(typeof(NoThumbnailTests).Assembly.Location) ?? string.Empty;
 			input = Path.Combine(assemblyDirectory, path);
-
-			var filename = Path.GetFileNameWithoutExtension(input);
-			var directory = Path.GetDirectoryName(input) ?? string.Empty;
-			output = Path.Combine(directory, $"{filename}.jpeg");
 		}
 
 		[OneTimeSetUp]
@@ -35,28 +31,27 @@ namespace FileOnQ.Imaging.Heif.Tests.Integration
 			using (var image = new HeifImage(input))
 			using (var primary = image.PrimaryImage())
 			{
-				primary.Write(output);
+				output = primary.ToArray();
 			}
 		}
 
 		[OneTimeTearDown]
 		public void TearDown()
 		{
-			if (File.Exists(output))
-				File.Delete(output);
+			output = null;
 		}
 
 		[Test]
-		public void PrimaryImage_Write_FileExists_Test() =>
-			Assert.IsTrue(File.Exists(output));
+		public void PrimaryImage_ToArray_NotNull_Test()
+		{
+			Assert.IsNotNull(output);
+		}
 
 		[Test]
-		public void PrimaryImage_Write_Match_Test()
+		public void PrimaryImage_ToArray_Match_Test()
 		{
-			var buffer = File.ReadAllBytes(output);
-
-			Assert.IsTrue(buffer.Length > 0);
-			AssertUtilities.IsHashEqual(hash, buffer);
+			Assert.IsTrue(output.Length > 0);
+			AssertUtilities.IsHashEqual(hash, output);
 		}
     }
 }
