@@ -47,9 +47,9 @@ namespace FileOnQ.Imaging.Heif
 			{
 				throw new HeifException(ex, new HeifException.Error
 				{
-					Code = LibHeif.ErrorCode.NoThumbnail,
+					Code = LibHeif.ErrorCode.EncodingError,
 					SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
-					Message = "Unable to save image"
+					Message = "Unable to encode image."
 				});
 			}
 			finally
@@ -71,6 +71,15 @@ namespace FileOnQ.Imaging.Heif
 			{
 				var span = new ReadOnlySpan<byte>((void*)buffer.Data, buffer.Size);
 				return span.ToArray();
+			}
+			catch (Exception ex)
+			{
+				throw new HeifException(ex, new HeifException.Error
+				{
+					Code = LibHeif.ErrorCode.EncodingError,
+					SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
+					Message = "Unable to encode image."
+				});
 			}
 			finally
 			{
@@ -154,7 +163,7 @@ namespace FileOnQ.Imaging.Heif
 					// REVIEW - I don't think this exception is right. It is thumbnail specific but using on `IImage` impl
 					throw new HeifException(new HeifException.Error
 					{
-						Code = LibHeif.ErrorCode.NoThumbnail,
+						Code = LibHeif.ErrorCode.Failure,
 						SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
 						Message = "Unable to save image"
 					});
