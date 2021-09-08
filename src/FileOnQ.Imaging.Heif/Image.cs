@@ -160,12 +160,11 @@ namespace FileOnQ.Imaging.Heif
 				}
 				else
 				{
-					// REVIEW - I don't think this exception is right. It is thumbnail specific but using on `IImage` impl
 					throw new HeifException(new HeifException.Error
 					{
-						Code = LibHeif.ErrorCode.Failure,
+						Code = LibHeif.ErrorCode.EncodingError,
 						SubCode = LibHeif.SubErrorCode.heif_suberror_Unspecified,
-						Message = "Unable to save image"
+						Message = "Unable to encode image."
 					});
 				}
 			}
