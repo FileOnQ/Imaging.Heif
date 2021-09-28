@@ -11,7 +11,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_context_alloc();
+					return Native.heif_context_alloc();
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -23,7 +23,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					native.heif_context_free(context);
+					Native.heif_context_free(context);
 					break;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
@@ -36,7 +36,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_context_read_from_file(context, filename, options);
+					return Native.heif_context_read_from_file(context, filename, options);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -48,7 +48,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_image_handle_get_number_of_thumbnails(handle);
+					return Native.heif_image_handle_get_number_of_thumbnails(handle);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -60,7 +60,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_image_handle_get_list_of_thumbnail_IDs(handle, itemIds, count);
+					return Native.heif_image_handle_get_list_of_thumbnail_IDs(handle, itemIds, count);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -72,7 +72,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_image_handle_get_thumbnail(handle, itemId, output);
+					return Native.heif_image_handle_get_thumbnail(handle, itemId, output);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -85,7 +85,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_context_get_primary_image_handle(context, output);
+					return Native.heif_context_get_primary_image_handle(context, output);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -97,7 +97,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_decoding_options_alloc();
+					return Native.heif_decoding_options_alloc();
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -109,7 +109,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_image_handle_has_alpha_channel(handle) == 1;
+					return Native.heif_image_handle_has_alpha_channel(handle) == 1;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -121,7 +121,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_image_handle_get_luma_bits_per_pixel(handle);
+					return Native.heif_image_handle_get_luma_bits_per_pixel(handle);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -133,7 +133,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.heif_decode_image(inputImage, outputImage, colorSpace, chroma, decodingOptions);
+					return Native.heif_decode_image(inputImage, outputImage, colorSpace, chroma, decodingOptions);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -145,7 +145,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					native.heif_decoding_options_free(decodingOptions);
+					Native.heif_decoding_options_free(decodingOptions);
 					break;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
@@ -159,7 +159,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					native.heif_image_handle_release(handle);
+					Native.heif_image_handle_release(handle);
 					break;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
@@ -172,7 +172,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					native.heif_image_release(image);
+					Native.heif_image_release(image);
 					break;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");

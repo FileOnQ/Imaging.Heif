@@ -11,7 +11,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.encoder_jpeg_init(quality);
+					return Native.encoder_jpeg_init(quality);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -23,7 +23,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.encoder_colorspace(encoder, hasAlpha);
+					return Native.encoder_colorspace(encoder, hasAlpha);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -35,7 +35,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.encoder_chroma(encoder, hasAlpha, bitDepth);
+					return Native.encoder_chroma(encoder, hasAlpha, bitDepth);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -47,7 +47,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					return native.encode(encoder, handle, image, buffer, buffer_size);
+					return Native.encode(encoder, handle, image, buffer, buffer_size);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -59,7 +59,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					native.free_pointer(pointer);
+					Native.free_pointer(pointer);
 					break;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
@@ -72,7 +72,7 @@ namespace FileOnQ.Imaging.Heif
 			{
 				case Architecture.X64:
 				case Architecture.X86:
-					native.encoder_update_decoding_options(encoder, handle, decodingOptions);
+					Native.encoder_update_decoding_options(encoder, handle, decodingOptions);
 					break;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
