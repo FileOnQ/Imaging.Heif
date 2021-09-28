@@ -10,9 +10,8 @@ namespace FileOnQ.Imaging.Heif
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
 				case Architecture.X64:
-					return x64.encoder_jpeg_init(quality);
 				case Architecture.X86:
-					return x86.encoder_jpeg_init(quality);
+					return Native.encoder_jpeg_init(quality);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -23,9 +22,8 @@ namespace FileOnQ.Imaging.Heif
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
 				case Architecture.X64:
-					return x64.encoder_colorspace(encoder, hasAlpha);
 				case Architecture.X86:
-					return x86.encoder_colorspace(encoder, hasAlpha);
+					return Native.encoder_colorspace(encoder, hasAlpha);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -36,9 +34,8 @@ namespace FileOnQ.Imaging.Heif
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
 				case Architecture.X64:
-					return x64.encoder_chroma(encoder, hasAlpha, bitDepth);
 				case Architecture.X86:
-					return x86.encoder_chroma(encoder, hasAlpha, bitDepth);
+					return Native.encoder_chroma(encoder, hasAlpha, bitDepth);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -49,9 +46,8 @@ namespace FileOnQ.Imaging.Heif
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
 				case Architecture.X64:
-					return x64.encode(encoder, handle, image, buffer, buffer_size);
 				case Architecture.X86:
-					return x86.encode(encoder, handle, image, buffer, buffer_size);
+					return Native.encode(encoder, handle, image, buffer, buffer_size);
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
 			}
@@ -62,10 +58,8 @@ namespace FileOnQ.Imaging.Heif
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
 				case Architecture.X64:
-					x64.free_pointer(pointer);
-					break;
 				case Architecture.X86:
-					x86.free_pointer(pointer);
+					Native.free_pointer(pointer);
 					break;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
@@ -77,10 +71,8 @@ namespace FileOnQ.Imaging.Heif
 			switch (RuntimeInformation.ProcessArchitecture)
 			{
 				case Architecture.X64:
-					x64.encoder_update_decoding_options(encoder, handle, decodingOptions);
-					break;
 				case Architecture.X86:
-					x86.encoder_update_decoding_options(encoder, handle, decodingOptions);
+					Native.encoder_update_decoding_options(encoder, handle, decodingOptions);
 					break;
 				default:
 					throw new NotSupportedException($"Current platform ({RuntimeInformation.ProcessArchitecture}) is not supported");
