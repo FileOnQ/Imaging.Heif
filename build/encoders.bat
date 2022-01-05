@@ -1,5 +1,5 @@
 @echo off
-title Building dav1d
+title Building FileOnQ.Imaging.Encoders
 set arch=%1
 set config=%2
 call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %arch%
