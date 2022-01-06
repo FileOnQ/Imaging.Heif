@@ -36,7 +36,7 @@ jobs:
         run: echo "${{ github.EVENT_NAME }}"
 
       - name: Check Benchmark Trigger
-        if: ${{ github.EVENT_NAME != 'pull_request' }}
+        if: ${{ github.EVENT_NAME != 'pull_request_target' }}
         uses: khan/pull-request-comment-trigger@master
         id: check
         with:
@@ -71,7 +71,7 @@ jobs:
           echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
 
   benchmark-build:
-    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request' }}
+    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
     needs: check-command
     runs-on: windows-2019
     outputs:
@@ -118,7 +118,7 @@ jobs:
             *.snupkg
     
   benchmark-run:
-    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request' }}
+    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
     needs: benchmark-build
     runs-on: ${{ matrix.os }}
     outputs:
@@ -160,7 +160,7 @@ jobs:
           path: ./benchmarks/tools/BenchmarkDotNet.Artifacts/results
 
   benchmark-compare:
-    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request' }}
+    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
     needs: benchmark-run
     runs-on: windows-2019
     steps:
