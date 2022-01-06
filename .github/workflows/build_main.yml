@@ -193,11 +193,11 @@ jobs:
         with:
           name: Packages
       
-      - name: Set NuGet API Key
-        run: nuget setapikey ${{ secrets.NUGET_API_KEY }}
+      # - name: Set NuGet API Key
+      #   run: nuget setapikey ${{ secrets.NUGET_API_KEY }}
         
-      - name: Publish NuGet Packages
-        run: nuget push *.nupkg -Source https://api.nuget.org/v3/index.json
+      # - name: Publish NuGet Packages
+      #   run: nuget push *.nupkg -Source https://api.nuget.org/v3/index.json
 
   create-release:
     if: startsWith(github.ref, 'refs/tags/v') == true && contains(github.ref, 'preview') == false
