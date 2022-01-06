@@ -60,7 +60,7 @@ jobs:
         run: |
           $repository = '${{ fromJSON(steps.find-branch.outputs.result).head.repo.html_url }}'
           $ref = '${{ fromJSON(steps.find-branch.outputs.result).head.ref }}'
-          echo "CUSTOM_REPO=$($repository)" >> $env:GITHUB_ENV"
+          echo "CUSTOM_REPO=$($repository)" >> $env:GITHUB_ENV
           echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
 
       # - name: Set Ref
