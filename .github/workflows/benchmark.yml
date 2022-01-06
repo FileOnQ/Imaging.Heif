@@ -15,6 +15,7 @@ jobs:
     outputs:
       benchmark: ${{ steps.check.outputs.triggered }}
       ref: ${{ env.CUSTOM_REF }}
+      repo: ${{ env.CUSTOM_REPO }}
     steps:
       - name: Print Event Name
         run: echo "${{ github.EVENT_NAME }}"
@@ -29,16 +30,15 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
-      - name: Set Triggered Variable
-        run: |
-          $triggered = 'false'
-          if ('${{ github.EVENT_NAME }}' -ne 'pull_request') {
-            $triggered = '${{ steps.check.outputs.triggered }}'
-          }
-          echo "COMMAND_TRIGGERED=$($triggered)" >> $env:GITHUB_ENV
+      # - name: Set Triggered Variable
+      #   run: |
+      #     $triggered = 'false'
+      #     if ('${{ github.EVENT_NAME }}' -ne 'pull_request') {
+      #       $triggered = '${{ steps.check.outputs.triggered }}'
+      #     }
 
       - name: Find Branch
-        if: ${{ env.COMMAND_TRIGGERED == 'true' }}
+        #if: ${{ env.COMMAND_TRIGGERED == 'true' }}
         uses: actions/github-script@v3
         id: find-branch
         with:
@@ -56,32 +56,41 @@ jobs:
               core.setFailed(`Request failed with error ${err}`)
             }
 
-      - name: Set Branch - Comment
-        if: ${{ env.COMMAND_TRIGGERED == 'true' }}
+      - name: Set Repository & Ref
         run: |
-          $triggered = '${{ env.COMMAND_TRIGGERED }}'
-          $ref = '${{ fromJSON(steps.find-branch.outputs.result).head.ref }}'
+          $repository = '${{ fromJSON(steps.find-branch.output.result).repo.html_url'
+          $ref = '${{ fromJSON(steps.find-branch.output.result).head.ref'
+          echo "CUSTOM_REPO=$($repository)" >> $env:GITHUB_ENV"
           echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
 
-      - name: Set Branch - Comment
-        if: ${{ env.COMMAND_TRIGGERED == 'false' }}
-        run: |
-          $triggered = '${{ env.COMMAND_TRIGGERED }}'
-          $ref = '${{ github.REF }}'
-          echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
+      # - name: Set Ref
+      #   #if: ${{ env.COMMAND_TRIGGERED == 'true' }}
+      #   run: |
+      #     $triggered = '${{ env.COMMAND_TRIGGERED }}'
+      #     $ref = '${{ fromJSON(steps.find-branch.outputs.result).head.ref }}'
+      #     echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
+
+      # - name: Set Branch - Comment
+      #   if: ${{ env.COMMAND_TRIGGERED == 'false' }}
+      #   run: |
+      #     $triggered = '${{ env.COMMAND_TRIGGERED }}'
+      #     $ref = '${{ github.REF }}'
+      #     echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
 
   benchmark-build:
     if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request' }}
     needs: check-command
     runs-on: windows-2019
     outputs:
+      repo: ${{ needs.check-command.outputs.repo }}
       ref: ${{ needs.check-command.outputs.ref }}
       package_version: ${{ env.PACKAGE_VERSION }}
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: 'true'
+          repository: ${{ needs.check-command.outputs.repo }}
           ref: ${{ needs.check-command.outputs.ref }}
+          submodules: 'true'
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v1
@@ -120,6 +129,7 @@ jobs:
     needs: benchmark-build
     runs-on: ${{ matrix.os }}
     outputs:
+      repo: ${{ needs.benchmark-build.outputs.repo }}
       ref: ${{ needs.benchmark-build.outputs.ref }}
     strategy:
       matrix:
@@ -131,8 +141,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: 'true'
+          repository: ${{ needs.benchmark-build.outputs.repo }}
           ref: ${{ needs.benchmark-build.outputs.ref }}
+          submodules: 'true'
 
       - name: Download Artifacts
         uses: actions/download-artifact@v2
