@@ -60,7 +60,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinformsApp", "WinformsApp"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinformsApp.net48", "samples\WinformsApp\WinformsApp.net48\WinformsApp.net48.csproj", "{BF6E7601-6F35-497F-89B1-9303B287914F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinformsApp.net5", "samples\WinformsApp\WinformsApp.net5\WinformsApp.net5.csproj", "{82B54D1F-F988-480E-A30A-AE12C9FA3136}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinformsApp.net5", "samples\WinformsApp\WinformsApp.net5\WinformsApp.net5.csproj", "{82B54D1F-F988-480E-A30A-AE12C9FA3136}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -73,6 +73,7 @@ Global
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{7e516116-cbf9-4d83-b4b2-e1c0ac1b7074}*SharedItemsImports = 5
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{836d4878-b6f6-4c62-9f5b-807785b29e34}*SharedItemsImports = 5
 		tests\FileOnQ.Imaging.Heif.Tests\FileOnQ.Imaging.Heif.Tests.projitems*{c5c19cd4-383d-4a2c-b55e-d3b8ff611a2d}*SharedItemsImports = 13
+		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{db6160f1-37a7-4096-8e02-9748d6225efe}*SharedItemsImports = 5
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{f10ea7da-142c-42db-a8cb-817f81a4a9e1}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
