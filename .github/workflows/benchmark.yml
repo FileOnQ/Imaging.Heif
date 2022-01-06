@@ -231,8 +231,9 @@ jobs:
         working-directory: ./artifacts
 
       - name: GitHub Comment - Post
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.issues.createComment({
               issue_number: context.issue.number,
