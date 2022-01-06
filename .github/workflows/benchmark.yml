@@ -56,7 +56,7 @@ jobs:
               core.setFailed(`Request failed with error ${err}`)
             }
 
-      - name: Set Repository & Ref
+      - name: Set Repository and Ref
         run: |
           $repository = '${{ fromJSON(steps.find-branch.output.result).repo.html_url'
           $ref = '${{ fromJSON(steps.find-branch.output.result).head.ref'
