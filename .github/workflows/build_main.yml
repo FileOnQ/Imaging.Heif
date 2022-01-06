@@ -166,15 +166,15 @@ jobs:
         working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
 
       - name: Build WinForms App (Any CPU)
-        run: dotnet run -c Release /p:Platform=AnyCPU
+        run: dotnet build -c Release /p:Platform=AnyCPU
         working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
 
       - name: Build WinForms App (x86)
-        run: dotnet run -c Release /p:Platform=x86
+        run: dotnet build -c Release /p:Platform=x86
         working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
 
       - name: Build WinForms App (x64)
-        run: dotnet run -c Release /p:Platform=x64
+        run: dotnet build -c Release /p:Platform=x64
         working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
         
   nuget-publish:

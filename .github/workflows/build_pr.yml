@@ -178,5 +178,5 @@ jobs:
         working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
 
       - name: Build WinForms App
-        run: dotnet run -c Release /p:Platform=${{ matrix.architecture }}
+        run: dotnet build -c Release /p:Platform=${{ matrix.architecture }}
         working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
