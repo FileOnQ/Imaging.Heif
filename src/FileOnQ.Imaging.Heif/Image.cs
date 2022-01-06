@@ -18,6 +18,7 @@ namespace FileOnQ.Imaging.Heif
 			this.handle = handle;
 		}
 
+		/// <inheritdoc cref="IImage"/>
 		public void Write(string filename, int quality = 90)
 		{
 			var buffer = GetImageBuffer(quality);
@@ -61,6 +62,7 @@ namespace FileOnQ.Imaging.Heif
 			}
 		}
 
+		/// <inheritdoc cref="IImage"/>
 		public byte[] ToArray(int quality = 90)
 		{
 			var buffer = GetImageBuffer(quality);
@@ -90,6 +92,7 @@ namespace FileOnQ.Imaging.Heif
 			}
 		}
 
+		/// <inheritdoc cref="IImage"/>
 		public ReadOnlySpan<byte> ToSpan(int quality = 90)
 		{
 			var buffer = GetImageBuffer(quality);
@@ -100,6 +103,7 @@ namespace FileOnQ.Imaging.Heif
 			return new ReadOnlySpan<byte>((void*)buffer.Data, buffer.Size);
 		}
 
+		/// <inheritdoc cref="IImage"/>
 		public Stream ToStream(int quality = 90)
 		{
 			var stream = new MemoryStream();
