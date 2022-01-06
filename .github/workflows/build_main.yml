@@ -42,7 +42,6 @@ jobs:
       working-directory: ./src/FileOnQ.Imaging.Heif
       
     - name: Pack
-      if: startsWith(github.ref, 'refs/tags/v') == false
       run: dotnet pack -c Release -o ../../ /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
       working-directory: ./src/FileOnQ.Imaging.Heif
       
