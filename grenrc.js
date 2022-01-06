@@ -2,9 +2,19 @@
     "dataSource": "issues",
     "prefix": "",
     "onlyMilestones": false,
-    "ignoreIssuesWith": [],
+    "ignoreIssuesWith": [
+		"duplicate",
+		"invalid",
+		"question",
+		"wontfix"
+	],
     "groupBy": {
-        "Enhancements": ["enhancement"],
+        "⚒ Enhancements": ["⚒ Enhancement"],
+		"🔧 Native Changes (C++)": [ "🔧 Native" ],
+        "⚙ Build & DevOps": ["⚙ DevOps" ],
+        "🐛 Bugs Fixed:": ["🐛 Bug"],
+        "🧪 Testing and Samples": ["🧪 Testing"],
+        "📓 Documentation Improvements:": ["📓 Documentation" ]
     },
     "changelogFilename": "CHANGELOG.md",
     "template": {
