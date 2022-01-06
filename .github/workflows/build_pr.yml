@@ -143,9 +143,23 @@ jobs:
       matrix:
         include:
           - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'AnyCPU'
             framework: 'net5'
           - os: windows-2019
-            framework: 'net48'
+            architecture: 'x86'
+            framework: 'net5'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net5'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -163,14 +177,6 @@ jobs:
         run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.build.outputs.package_version }}
         working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
 
-      - name: Build WinForms App (Any CPU)
-        run: dotnet run -c Release /p:Platform=AnyCPU
-        working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
-
-      - name: Build WinForms App (x86)
-        run: dotnet run -c Release /p:Platform=x86
-        working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
-
-      - name: Build WinForms App (x64)
-        run: dotnet run -c Release /p:Platform=x64
+      - name: Build WinForms App
+        run: dotnet run -c Release /p:Platform=${{ matrix.architecture }}
         working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
