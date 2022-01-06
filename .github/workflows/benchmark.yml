@@ -173,6 +173,7 @@ jobs:
       - name: Clone fileonq/imaging.heif
         uses: actions/checkout@v2
         with:
+          repository: ${{ needs.benchmark-run.outputs.repo }}
           ref: ${{ needs.benchmark-run.outputs.ref }}
           path: fileonq.imaging.heif
 
