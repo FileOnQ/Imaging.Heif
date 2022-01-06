@@ -36,7 +36,7 @@ namespace WinformsApp.net48
 							using (var thumb = image.Thumbnail())
 							{
 								pbPicture.Image = byteArrayToImage(thumb.ToArray());
-
+								pbPicture.SizeMode = PictureBoxSizeMode.Zoom;
 							}
 						}
 						catch (HeifException ex)
@@ -47,7 +47,7 @@ namespace WinformsApp.net48
 							using (var primaryImage = image.PrimaryImage())
 							{
 								pbPicture.Image = byteArrayToImage(primaryImage.ToArray());
-
+								pbPicture.SizeMode = PictureBoxSizeMode.Zoom;
 							}
 						}
 					}

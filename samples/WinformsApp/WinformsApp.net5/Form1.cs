@@ -41,6 +41,7 @@ namespace WinformsApp.net5
 							using (var thumb = image.Thumbnail())
 							{
 								pbPicture.Image = byteArrayToImage(thumb.ToArray());
+								pbPicture.SizeMode = PictureBoxSizeMode.Zoom;
 
 							}
 						}
@@ -52,7 +53,7 @@ namespace WinformsApp.net5
 							using (var primaryImage = image.PrimaryImage())
 							{
 								pbPicture.Image = byteArrayToImage(primaryImage.ToArray());
-
+								pbPicture.SizeMode = PictureBoxSizeMode.Zoom;
 							}
 						}
 					}

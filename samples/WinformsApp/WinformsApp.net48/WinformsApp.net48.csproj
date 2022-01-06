@@ -76,14 +76,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="FileOnQ.Imaging.Heif" Version="0.0.0-local.1" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FileOnQ.Imaging.Heif" Version="0.0.0-local.1" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-	<Import Project="..\..\..\build\nuget-local.props" />
+  <Import Project="..\..\..\build\nuget-local.props" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-	<Import Project="Build\nuget-local.targets" />
+  <Import Project="Build\nuget-local.targets" />
 </Project>
