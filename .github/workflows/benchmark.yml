@@ -2,13 +2,13 @@ name: Benchmark
 
 on:
   pull_request_target:
-    types: [ opened, syncrhonize ]
-#    branches: [ main ]
-#    types: [ opened ]
+    branches: [ main ]
+    types: [ opened ]
   issue_comment:
     types: [ created ]
 
 jobs:
+#this is a test job to validate commenting
   test-comment:
     runs-on: windows-2019
     steps:
@@ -45,15 +45,7 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
-      # - name: Set Triggered Variable
-      #   run: |
-      #     $triggered = 'false'
-      #     if ('${{ github.EVENT_NAME }}' -ne 'pull_request') {
-      #       $triggered = '${{ steps.check.outputs.triggered }}'
-      #     }
-
       - name: Find Branch
-        #if: ${{ env.COMMAND_TRIGGERED == 'true' }}
         uses: actions/github-script@v3
         id: find-branch
         with:
@@ -77,19 +69,6 @@ jobs:
           $ref = '${{ fromJSON(steps.find-branch.outputs.result).head.ref }}'
           echo "CUSTOM_REPO=$($repository)" >> $env:GITHUB_ENV
           echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
-
-      # - name: Set Ref
-      #   run: |
-      #     $triggered = '${{ env.COMMAND_TRIGGERED }}'
-      #     $ref = '${{ fromJSON(steps.find-branch.outputs.result).head.ref }}'
-      #     echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
-
-      # - name: Set Branch - Comment
-      #   if: ${{ env.COMMAND_TRIGGERED == 'false' }}
-      #   run: |
-      #     $triggered = '${{ env.COMMAND_TRIGGERED }}'
-      #     $ref = '${{ github.REF }}'
-      #     echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
 
   benchmark-build:
     if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request' }}
