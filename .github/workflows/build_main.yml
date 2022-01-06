@@ -137,9 +137,48 @@ jobs:
       - name: Run Console App
         run: dotnet run -c Release
         working-directory: ./samples/ConsoleApp/ConsoleApp.${{ matrix.framework }}.${{ matrix.architecture }}
+
+  build-win-forms-app:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-2019
+            framework: 'net5'
+          - os: windows-2019
+            framework: 'net48'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+          
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+      
+      - name: Copy Nupkg
+        shell: powershell
+        run: Copy-Item Packages\* -Destination .
+                
+      - name: Update NuGet
+        run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.build.outputs.package_version }}
+        working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
+
+      - name: Build WinForms App (Any CPU)
+        run: dotnet run -c Release /p:Platform=AnyCPU
+        working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
+
+      - name: Build WinForms App (x86)
+        run: dotnet run -c Release /p:Platform=x86
+        working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
+
+      - name: Build WinForms App (x64)
+        run: dotnet run -c Release /p:Platform=x64
+        working-directory: ./samples/WinformsApp/WinformsApp.${{ matrix.framework }}
         
   nuget-publish:
-    needs: [test-integration, test-console-app]
+    needs: [test-integration, test-console-app, build-win-forms-app]
     runs-on: windows-2019
     steps:
       - name: Download Packages
