@@ -2,9 +2,19 @@
 
 namespace FileOnQ.Imaging.Heif
 {
+	/// <inheritdoc cref="IHeifImage"/>
 	public unsafe class HeifImage : IHeifImage
 	{
+	
 		LibHeif.Context* heifContext;
+		/// <summary>
+		/// Instantiates the default instance of
+		/// <see cref="HeifImage"/>
+		/// with an image from storage using the file path.
+		/// </summary>
+		/// <param name="file">
+		/// The storage location where to find the image to open.
+		/// </param>
 		public HeifImage(string file)
 		{
 #if NET48_OR_GREATER
@@ -17,6 +27,7 @@ namespace FileOnQ.Imaging.Heif
 				throw new HeifException(error);
 		}
 
+		/// <inheritdoc cref="IHeifImage"/>
 		public IImage Thumbnail()
 		{
 			LibHeif.ImageHandle* primaryImageHandle;
@@ -57,7 +68,7 @@ namespace FileOnQ.Imaging.Heif
 				LibHeif.ReleaseImageHandle(primaryImageHandle);
 			}
 		}
-
+		/// <inheritdoc cref="IHeifImage"/>
 		public IImage PrimaryImage()
 		{
 			LibHeif.ImageHandle* primaryImageHandle;
@@ -71,6 +82,7 @@ namespace FileOnQ.Imaging.Heif
 		~HeifImage() => Dispose(false);
 
 		bool isDisposed;
+		/// <inheritdoc cref="IDisposable"/>
 		public void Dispose()
 		{
 			Dispose(true);
