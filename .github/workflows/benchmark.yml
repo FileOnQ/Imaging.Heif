@@ -1,13 +1,26 @@
 name: Benchmark
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [ main ]
 #    types: [ opened ]
   issue_comment:
     types: [ created ]
 
 jobs:
+  test-comment:
+    runs-on: windows-2019
+    steps:
+    uses: actions/github-script@v5
+    with:
+      script: |
+        github.rest.issues.createComment({
+          issue_number: context.issue.number,
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          body: `Hello World, this is GitHub Actions 👋`
+        })
+
   check-command:
     runs-on: windows-2019
     permissions:
@@ -233,7 +246,6 @@ jobs:
       - name: GitHub Comment - Post
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.MAIN_REPO_GITHUB_TOKEN }}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
