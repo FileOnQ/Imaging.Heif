@@ -33,6 +33,15 @@ namespace FileOnQ.Imaging.Heif
 		/// </exception>
 		byte[] ToArray(int quality = 90);
 
+		/// <summary>
+		/// Get a readyonly byte span of the current image.
+		/// </summary>
+		/// <param name="quality">
+		/// The quailty of the image.
+		/// </param>
+		/// <returns>
+		/// The readonly byte span of the image.
+		/// </returns>
 		ReadOnlySpan<byte> ToSpan(int quality = 90);
 
 		/// <summary>
