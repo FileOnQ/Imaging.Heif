@@ -16,7 +16,7 @@ namespace FileOnQ.Imaging.Heif
 		/// </returns>
 		/// <exception cref="HeifException">
 		/// If an error occurs during retrieving the embedded thumbnail, an exception will be
-		/// thrown which contains an error code explaining the problem.
+		/// thrown which contains a <see cref="HeifException.Error" /> explaining the problem.
 		/// </exception>
 		IImage Thumbnail();
 		
@@ -29,7 +29,7 @@ namespace FileOnQ.Imaging.Heif
 		/// </returns>
 		/// <exception cref="HeifException">
 		/// If an error occurs during retrieving the image, an exception will be
-		/// thrown which contains an error code explaining the problem.
+		/// thrown which contains a <see cref="HeifException.Error" /> explaining the problem.
 		/// </exception>
 		IImage PrimaryImage();
 	}
