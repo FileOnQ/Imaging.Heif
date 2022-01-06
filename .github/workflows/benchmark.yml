@@ -51,7 +51,6 @@ jobs:
             core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
             try {
               const result = await github.pulls.get(request)
-              core.info(result.data.stringify())
               return result.data
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
@@ -59,6 +58,8 @@ jobs:
 
       - name: Set Repository and Ref
         run: |
+          echo '${{ fromJSON(steps.find-branch.output.result) }}'
+          echo '${{ steps.find-branch.output.result }}'
           $repository = '${{ fromJSON(steps.find-branch.output.result).repo.html_url }}'
           $ref = '${{ fromJSON(steps.find-branch.output.result).head.ref }}'
           echo "CUSTOM_REPO=$($repository)" >> $env:GITHUB_ENV"
