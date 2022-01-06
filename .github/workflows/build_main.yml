@@ -15,13 +15,13 @@ jobs:
       with:
         submodules: 'true'
 
-      - name: Set Version from Tag
-        if: startsWith(github.ref, 'refs/tags/v') == true
-        run: |
-          $version = '${{ GITHUB_REF }}' -re "refs/tags/v", ""
-          echo "PACKAGE_VERSION=$version" >> $env:GITHUB_ENV
-          echo "Version: $version"
-          
+    - name: Set Version from Tag
+      if: startsWith(github.ref, 'refs/tags/v') == true
+      run: |
+        $version = '${{ GITHUB_REF }}' -re "refs/tags/v", ""
+        echo "PACKAGE_VERSION=$version" >> $env:GITHUB_ENV
+        echo "Version: $version"
+
   #   - name: Setup .NET SDK
   #     uses: actions/setup-dotnet@v1
   #     with:
