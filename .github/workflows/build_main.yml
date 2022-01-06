@@ -18,7 +18,7 @@ jobs:
     - name: Set Version from Tag
       if: startsWith(github.ref, 'refs/tags/v') == true
       run: |
-        $version = "${{ github.ref }}" -re "refs/tags/v", ""
+        $version = "${{ github.ref }}" -replace "refs/tags/v", ""
         echo "PACKAGE_VERSION=$version" >> $env:GITHUB_ENV
         echo "Version: $version"
 
