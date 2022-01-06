@@ -3,7 +3,7 @@
 namespace FileOnQ.Imaging.Heif
 {
 	/// <summary>
-	/// A unprocessed Heif image.
+	/// A High Efficiency Image Format (HEIF) image.
 	/// </summary>
 	public interface IHeifImage : IDisposable
 	{
