@@ -2,7 +2,8 @@ name: Benchmark
 
 on:
   pull_request_target:
-    branches: [ main ]
+    types: [ opened, syncrhonize ]
+#    branches: [ main ]
 #    types: [ opened ]
   issue_comment:
     types: [ created ]
