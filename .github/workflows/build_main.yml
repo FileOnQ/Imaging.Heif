@@ -58,7 +58,8 @@ jobs:
   test-integration:
     needs: build
     runs-on: ${{ matrix.os }}
-    
+    outputs:
+      package_version: ${{ needs.build.outputs.package_version }}
     strategy:
       matrix:
         include:
@@ -219,9 +220,9 @@ jobs:
       
       - name: Release Notes - Add PRs
         run: |
-          $release = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/tags/v${{ needs.build.outputs.package_Version }} -Method GET -Headers @{"Accept"="application/vnd.github.v3+json"} -UseBasicParsing
+          $release = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/tags/v${{ needs.test-integration.outputs.package_version }} -Method GET -Headers @{"Accept"="application/vnd.github.v3+json"} -UseBasicParsing
           $releaseContent = ConvertFrom-Json $release.Content
-          $generateNotes = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes -Method POST -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"tag_name":"${{ needs.build.outputs.package_version }}"}' -UseBasicParsing
+          $generateNotes = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes -Method POST -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"tag_name":"${{ needs.test-integration.outputs.package_version }}"}' -UseBasicParsing
           $generateNotesContent = ConvertFrom-Json $generateNotes.Content
           $body = $releaseContent.Body + $generateNotesContent.Body
           $body = $body -replace "@", ""
