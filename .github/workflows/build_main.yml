@@ -58,6 +58,7 @@ jobs:
   test-integration:
     needs: build
     runs-on: ${{ matrix.os }}
+    
     strategy:
       matrix:
         include:
@@ -215,12 +216,13 @@ jobs:
       - name: Release Notes - Add Pull Requests
         uses: actions/github-script@v5
         with:
-          script: |
-            github.rest.repos.generateReleaseNotes({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag: context.ref
-            })
+          run: |
+            curl \
+              -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes \
+              -d '{"tag_name":"${{ needs.build.outputs.package_version }} "}'
       
 
     
