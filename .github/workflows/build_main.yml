@@ -222,13 +222,11 @@ jobs:
         run: |
           $release = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/tags/v${{ needs.build.outputs.package_Version }} -Method GET -Headers @{"Accept"="application/vnd.github.v3+json"} -UseBasicParsing
           $releaseContent = ConvertFrom-Json $release.Content
-          $body = "## ⌚⚙🛠 testing emojis" + $releaseContent.Body
+          $generateNotes = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes -Method POST -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"tag_name":"${{ needs.build.outputs.package_version }}"}' -UseBasicParsing
+          $generateNotesContent = ConvertFrom-Json $generateNotes.Content
+          $body = $releaseContent.Body + $generateNotesContent.Body
+          $body -replace "@", ""
           echo $body
           $uri = "https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/" + $releaseContent.id
           $json = ConvertTo-Json @{"body"=$body} -Compress
           $response = Invoke-RestMethod -URI $uri -Method PATCH -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body $json -UseBasicParsing -ContentType "text/plain; charset=utf-8"
-
-
-#                     $generateNotes = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes -Method POST -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"tag_name":"${{ needs.build.outputs.package_version }}"}' -UseBasicParsing
-#           $generateNotesContent = ConvertFrom-Json $generateNotes.Content
-# #          $body = $releaseContent.Body + $generateNotesContent.Body
