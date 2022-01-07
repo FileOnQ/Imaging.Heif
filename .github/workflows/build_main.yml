@@ -206,22 +206,34 @@ jobs:
     needs: [build]
 #    if: startsWith(github.ref, 'refs/tags/v') == true && contains(github.ref, 'preview') == false
 #    needs: [test-integration, test-console-app, build-win-forms-app]
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: NPM Install GitHub-Release-Notes
         run: npm install github-release-notes -g
 
       - name: Release Notes - Add Issues
         run: gren release --username=FileOnQ --token=${{ secrets.GITHUB_TOKEN }} --repo=Imaging.Heif --override --ignore-tags-with="preview"
-
-      - name: Release Notes - Add Pull Requests
-        run: |
-          curl \
-            -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes \
-            -d '{"tag_name":"${{ needs.build.outputs.package_version }}"}'
       
+      - name: Get Release Notes
+        run: |
+          $response = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/tags/${{ needs.build.outputs.package_Version }} -Method GET -Headers @{"Accept"="application/vnd.github.v3+json"} -UseBasicParsing
+          echo $response
+          $content = ConvertFrom-Json $response.Content
+          echo "release_content_issues=$content.body" >> $env:GITHUB_ENV
+          echo "release_id=$content.id" >> $env:GITHUB_ENV
+
+      - name: Generate Pull Request Content
+        run: |
+          $response = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes -Method POST -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"tag_name":"${{ needs.build.outputs.package_version }}"}' -UseBasicParsing
+          echo $response
+          $content = ConvertFrom-Json $response.Content
+          echo "release_content_prs=$content.body" >> $env:GITHUB_ENV
+      
+      - name: Update Release Content
+        run: |
+          $content = "${{ env.release_content_issues }} \r\n ${{ env.release_content_prs }}"
+          $response = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/${{ env.release_id }} -Method PATCH -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"body":"$content"} -UseBasicParsing'
+          echo $response
+
 
     
