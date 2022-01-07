@@ -206,7 +206,7 @@ jobs:
     needs: [build]
 #    if: startsWith(github.ref, 'refs/tags/v') == true && contains(github.ref, 'preview') == false
 #    needs: [test-integration, test-console-app, build-win-forms-app]
-    runs-on: windows-2019
+    runs-on: ubuntu-latest
     steps:
       - name: NPM Install GitHub-Release-Notes
         run: npm install github-release-notes -g
@@ -221,7 +221,7 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes \
-            -d '{"tag_name":"${{ needs.build.outputs.package_version }} "}'
+            -d '{"tag_name":"${{ needs.build.outputs.package_version }}"}'
       
 
     
