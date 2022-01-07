@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="FileOnQ.Imaging.Heif" Version="0.0.0-local.1" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Build\" />
+	</ItemGroup>
+
+	<Import Project="..\..\..\build\nuget-local.props" />
+	<Import Project="Build\nuget-local.targets" />
+
+</Project>
