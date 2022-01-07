@@ -217,12 +217,11 @@ jobs:
       - name: Release Notes - Add PRs
         run: |
           $release = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/tags/v${{ needs.build.outputs.package_Version }} -Method GET -Headers @{"Accept"="application/vnd.github.v3+json"} -UseBasicParsing
-          echo $release
           $releaseContent = ConvertFrom-Json $release.Content
           $generateNotes = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes -Method POST -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"tag_name":"${{ needs.build.outputs.package_version }}"}' -UseBasicParsing
-          echo $generateNotes
           $generateNotesContent = ConvertFrom-Json $generateNotes.Content
           $body = $releaseContent.Body + "\r\n" + $generateNotesContent.Body
+          echo $body
           $uri = "https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/" + $releaseContent.id
-          $response = Invoke-WebRequest -URI $uri -Method PATCH -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"body":"$body"}' -UseBasicParsing
-          echo $response
+          $json = ConvertTo-Json @{"body"=$body} -Compress
+          $response = Invoke-WebRequest -URI $uri -Method PATCH -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body $json -UseBasicParsing
