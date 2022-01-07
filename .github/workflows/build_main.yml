@@ -223,5 +223,6 @@ jobs:
           echo $generateNotes
           $generateNotesContent = ConvertFrom-Json $generateNotes.Content
           $body = $releaseContent.Body + "\r\n" + $generateNotesContent.Body
-          $response = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/$releaseContent.id -Method PATCH -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"body":"$body"} -UseBasicParsing'
+          $uri = "https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/" + $releaseContent.id
+          $response = Invoke-WebRequest -URI $uri -Method PATCH -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"body":"$body"} -UseBasicParsing'
           echo $response
