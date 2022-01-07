@@ -12,8 +12,8 @@
 	</Target>
 
 	<Target Name="libjpeg-turbo" DependsOnTargets="libjpeg-turbo-clone-x64;libjpeg-turbo-clone-x86" Condition="!Exists('runtimes/win-x64/native/jpeg62.dll') and !Exists('runtimes/win-x86/native/jpeg62.dll')">
-		<Exec Command="libjpeg-turbo.bat x86" WorkingDirectory="$(ThirdPartyDir)/../build" />
-		<Exec Command="libjpeg-turbo.bat x64" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Exec Command="libjpeg-turbo.bat x86 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Exec Command="libjpeg-turbo.bat x64 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
 
 		<Copy SourceFiles="$(ThirdPartyDir)/libjpeg-turbo-x86/jpeg62.dll" DestinationFolder="runtimes/win-x86/native" />
 		<Copy SourceFiles="$(ThirdPartyDir)/libjpeg-turbo-x64/jpeg62.dll" DestinationFolder="runtimes/win-x64/native" />
