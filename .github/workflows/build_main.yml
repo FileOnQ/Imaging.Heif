@@ -81,7 +81,15 @@ jobs:
           - os: windows-2019
             architecture: 'x64'
             framework: 'net5'
-
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net6'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -127,6 +135,15 @@ jobs:
           - os: windows-2019
             architecture: 'x64'
             framework: 'net5'
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net6'
 
     steps:
       - name: Checkout
@@ -156,9 +173,32 @@ jobs:
       matrix:
         include:
           - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net48'
+          - os: windows-2019
+            architecture: 'AnyCPU'
             framework: 'net5'
           - os: windows-2019
-            framework: 'net48'
+            architecture: 'x86'
+            framework: 'net5'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net5',
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net6'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
