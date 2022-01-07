@@ -12,7 +12,8 @@ namespace FileOnQ.Imaging.Heif.Tests
 
 		public static class Integration
 		{
-			public static class PrimaryImageWrite
+			public static class PrimaryImageSave
+
 			{
 				public static IDictionary<string, string> HashCodes => BuildDictionary();
 
@@ -27,7 +28,7 @@ namespace FileOnQ.Imaging.Heif.Tests
 					};
 			}
 
-			public static class ThuumbnailWrite
+			public static class ThuumbnailSave
 			{
 				public static IDictionary<string, string> HashCodes => BuildDictionary();
 

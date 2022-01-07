@@ -5,7 +5,7 @@ namespace FileOnQ.Imaging.Heif
 {
 	partial class LibHeif
 	{
-		private unsafe class x86
+		private unsafe class Native
 		{
 			const string DllName = "heif.dll";
 
