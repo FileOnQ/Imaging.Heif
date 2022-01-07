@@ -189,7 +189,7 @@ jobs:
             framework: 'net5'
           - os: windows-2019
             architecture: 'x64'
-            framework: 'net5',
+            framework: 'net5'
           - os: windows-2019
             architecture: 'AnyCPU'
             framework: 'net6'
