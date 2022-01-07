@@ -219,7 +219,9 @@ jobs:
           $response = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/tags/v${{ needs.build.outputs.package_Version }} -Method GET -Headers @{"Accept"="application/vnd.github.v3+json"} -UseBasicParsing
           echo $response
           $content = ConvertFrom-Json $response.Content
-          echo "release_content_issues=$content.body" >> $env:GITHUB_ENV
+          echo "release_content_issues<<EOF" >> $env:GITHUB_ENV
+          echo "$content.body" >> $env:GITHUB_ENV
+          echo "EOF" >> $env:GITHUB_ENV
           echo "release_id=$content.id" >> $env:GITHUB_ENV
 
       - name: Generate Pull Request Content
@@ -227,7 +229,9 @@ jobs:
           $response = Invoke-WebRequest -URI https://api.github.com/repos/FileOnQ/Imaging.Heif/releases/generate-notes -Method POST -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"} -Body '{"tag_name":"${{ needs.build.outputs.package_version }}"}' -UseBasicParsing
           echo $response
           $content = ConvertFrom-Json $response.Content
-          echo "release_content_prs=$content.body" >> $env:GITHUB_ENV
+          echo "release_content_prs<<EOF" >> $env:GITHUB_ENV
+          echo "$content.body" >> $env:GITHUB_ENV
+          echo "EOF" >> $env:GITHUB_ENV
       
       - name: Update Release - Issues + PRs
         run: |
