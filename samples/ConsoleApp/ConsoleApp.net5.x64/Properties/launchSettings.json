@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConsoleApp.net5.x64": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

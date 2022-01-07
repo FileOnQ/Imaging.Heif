@@ -12,8 +12,8 @@
 	</Target>
 
 	<Target Name="dav1d" DependsOnTargets="dav1d-clone-x64;dav1d-clone-x86" Condition="!Exists('runtimes/win-x64/native/dav1d.dll') and !Exists('runtimes/win-x86/native/dav1d.dll')">
-		<Exec Command="dav1d.bat x86" WorkingDirectory="$(ThirdPartyDir)/../build" />
-		<Exec Command="dav1d.bat x64" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Exec Command="dav1d.bat x86 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Exec Command="dav1d.bat x64 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
 
 		<Copy SourceFiles="$(ThirdPartyDir)/dav1d-x86/build/src/dav1d.dll" DestinationFolder="runtimes/win-x86/native" />
 		<Copy SourceFiles="$(ThirdPartyDir)/dav1d-x64/build/src/dav1d.dll" DestinationFolder="runtimes/win-x64/native" />

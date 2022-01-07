@@ -6,10 +6,10 @@
 			<_Path>$([System.IO.Path]::GetFullPath($(ThirdPartyDir)))</_Path>
 		</PropertyGroup>
 
-		<Exec Command="libheif.bat x64 &quot;$(_Path)&quot;" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Exec Command="libheif.bat x64 $(Configuration) &quot;$(_Path)&quot;" WorkingDirectory="$(ThirdPartyDir)/../build" />
 		<Copy SourceFiles="$(ThirdPartyDir)/libheif-x64/build/libheif/heif.dll" DestinationFolder="runtimes/win-x64/native" />
 
-		<Exec Command="libheif.bat x86 &quot;$(_Path)&quot;" WorkingDirectory="$(ThirdPartyDir)/../build" />
+		<Exec Command="libheif.bat x86 $(Configuration) &quot;$(_Path)&quot;" WorkingDirectory="$(ThirdPartyDir)/../build" />
 		<Copy SourceFiles="$(ThirdPartyDir)/libheif-x86/build/libheif/heif.dll" DestinationFolder="runtimes/win-x86/native" />
 	</Target>
 
