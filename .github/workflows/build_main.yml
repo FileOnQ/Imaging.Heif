@@ -15,7 +15,12 @@ jobs:
       with:
         submodules: 'true'
 
-    - name: Setup .NET SDK
+    - name: Ensure .NET 5 SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.302
+
+    - name: Ensure .NET 6 SDK
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.101
@@ -96,6 +101,16 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Ensure .NET 5 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
+
+      - name: Ensure .NET 6 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.101
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
 
@@ -149,7 +164,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
-          
+
+      - name: Ensure .NET 5 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
+
+      - name: Ensure .NET 6 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.101
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
       
@@ -182,7 +207,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
-          
+      
+      - name: Ensure .NET 6 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.101
+
+      - name: Ensure .NET 5 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
+                    
       - name: Download Artifacts
         uses: actions/download-artifact@v2
       
