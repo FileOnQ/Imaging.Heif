@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.302
+        dotnet-version: 6.0.101
 
     - name: Install Build Dependencies
       run: |
@@ -68,7 +68,15 @@ jobs:
           - os: windows-2019
             architecture: 'x64'
             framework: 'net5'
-
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net6'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -114,7 +122,15 @@ jobs:
           - os: windows-2019
             architecture: 'x64'
             framework: 'net5'
-
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net6'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -160,6 +176,15 @@ jobs:
           - os: windows-2019
             architecture: 'x64'
             framework: 'net5'
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net6'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
