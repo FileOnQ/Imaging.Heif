@@ -123,6 +123,11 @@ jobs:
           ref: ${{ needs.benchmark-build.outputs.ref }}
           submodules: 'true'
 
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.101
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
 
