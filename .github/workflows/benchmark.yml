@@ -73,7 +73,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.302
+          dotnet-version: 6.0.101
 
       - name: Install Build Dependencies
         run: |
@@ -135,7 +135,7 @@ jobs:
         working-directory: ./benchmarks/tools
 
       - name: Benchmark
-        run: dotnet run -c Release -b ${{ matrix.benchmark }}
+        run: dotnet run -c Release -f net6.0 -b ${{ matrix.benchmark }}
         working-directory: ./benchmarks/tools
 
       - name: Upload Results
