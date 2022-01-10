@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>net48;net5.0;net6.0</TargetFrameworks>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net48</TargetFrameworks>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.13.0" />
@@ -18,7 +18,7 @@
 		<None Update="Images\*" CopyToOutputDirectory="Always" />
 	</ItemGroup>
 
-	<Import Project="..\..\build\nuget-local.props" />
+	<Import Project="..\..\..\build\nuget-local.props" />
 	<Import Project="Build\nuget-local.targets" />
 
 </Project>
