@@ -72,7 +72,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinformsApp.net6", "samples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileOnQ.Imaging.Heif.Benchmarks.net5", "benchmarks\tools\FileOnQ.Imaging.Heif.Benchmarks.net5\FileOnQ.Imaging.Heif.Benchmarks.net5.csproj", "{D1263ADC-38BA-4CC3-84ED-5B3D942F44A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOnQ.Imaging.Heif.Benchmark.net48", "benchmarks\tools\FileOnQ.Imaging.Heif.Benchmark.net48\FileOnQ.Imaging.Heif.Benchmark.net48.csproj", "{E943A8E9-382D-4C31-BCBB-C8E64ECD177C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileOnQ.Imaging.Heif.Benchmark.net48", "benchmarks\tools\FileOnQ.Imaging.Heif.Benchmark.net48\FileOnQ.Imaging.Heif.Benchmark.net48.csproj", "{E943A8E9-382D-4C31-BCBB-C8E64ECD177C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FileOnQ.Imaging.Heif.Benchmarks", "benchmarks\tools\FileOnQ.Imaging.Heif.Benchmarks\FileOnQ.Imaging.Heif.Benchmarks.shproj", "{AEF4F0E9-367B-45AE-B14E-C8A86D62D83F}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -86,8 +88,12 @@ Global
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{595e88f2-b685-46bb-a9c7-538c1d8f7708}*SharedItemsImports = 5
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{7e516116-cbf9-4d83-b4b2-e1c0ac1b7074}*SharedItemsImports = 5
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{836d4878-b6f6-4c62-9f5b-807785b29e34}*SharedItemsImports = 5
+		benchmarks\tools\FileOnQ.Imaging.Heif.Benchmarks\FileOnQ.Imaging.Heif.Benchmarks.projitems*{91d2759f-7a60-438c-84c6-2097bbbe950b}*SharedItemsImports = 5
+		benchmarks\tools\FileOnQ.Imaging.Heif.Benchmarks\FileOnQ.Imaging.Heif.Benchmarks.projitems*{aef4f0e9-367b-45ae-b14e-c8a86d62d83f}*SharedItemsImports = 13
 		tests\FileOnQ.Imaging.Heif.Tests\FileOnQ.Imaging.Heif.Tests.projitems*{c5c19cd4-383d-4a2c-b55e-d3b8ff611a2d}*SharedItemsImports = 13
+		benchmarks\tools\FileOnQ.Imaging.Heif.Benchmarks\FileOnQ.Imaging.Heif.Benchmarks.projitems*{d1263adc-38ba-4cc3-84ed-5b3d942f44a1}*SharedItemsImports = 5
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{db6160f1-37a7-4096-8e02-9748d6225efe}*SharedItemsImports = 5
+		benchmarks\tools\FileOnQ.Imaging.Heif.Benchmarks\FileOnQ.Imaging.Heif.Benchmarks.projitems*{e943a8e9-382d-4c31-bcbb-c8e64ecd177c}*SharedItemsImports = 5
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{f10ea7da-142c-42db-a8cb-817f81a4a9e1}*SharedItemsImports = 13
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{fc3e32ea-710c-4440-bddb-85f5cf1e0d95}*SharedItemsImports = 5
 	EndGlobalSection
@@ -350,6 +356,7 @@ Global
 		{B7C0A4F0-6181-432B-80B7-81AA1C41A628} = {82567CD8-0E98-4DB7-AB73-4FE05DDC0A34}
 		{D1263ADC-38BA-4CC3-84ED-5B3D942F44A1} = {A4396AB5-9EE2-4B42-AB2A-0D9A12927E92}
 		{E943A8E9-382D-4C31-BCBB-C8E64ECD177C} = {A4396AB5-9EE2-4B42-AB2A-0D9A12927E92}
+		{AEF4F0E9-367B-45AE-B14E-C8A86D62D83F} = {A4396AB5-9EE2-4B42-AB2A-0D9A12927E92}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AF811503-BFBF-48C0-AFBA-872CBA57D6F2}

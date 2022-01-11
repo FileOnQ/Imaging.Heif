@@ -5,9 +5,15 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnostics.Windows.Configs;
 using BenchmarkDotNet.Jobs;
 
-namespace FileOnQ.Imaging.Heif.Benchmarks.net5
+namespace FileOnQ.Imaging.Heif.Benchmarks
 {
+#if NET48
+	[SimpleJob(RuntimeMoniker.Net48, launchCount: 1, invocationCount: 1)]
+#elif NET5_0
 	[SimpleJob(RuntimeMoniker.Net50, launchCount: 1, invocationCount: 1)]
+#elif NET6_0
+	[SimpleJob(RuntimeMoniker.Net60, launchCount: 1, invocationCount: 1)]
+#endif
 	[NativeMemoryProfiler]
 	[MemoryDiagnoser]
 	[JsonExporterAttribute.Full]

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -14,11 +14,8 @@
 		<PackageReference Include="FileOnQ.Imaging.Heif" Version="0.0.0-local.1" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="Images\*" CopyToOutputDirectory="Always" />
-	</ItemGroup>
-
+	<Import Project="..\FileOnQ.Imaging.Heif.Benchmarks\FileOnQ.Imaging.Heif.Benchmarks.projitems" Label="Shared" />
 	<Import Project="..\..\..\build\nuget-local.props" />
-	<Import Project="Build\nuget-local.targets" />
+	<Import Project="..\FileOnQ.Imaging.Heif.Benchmarks\Build\nuget-local.targets" />
 
 </Project>
