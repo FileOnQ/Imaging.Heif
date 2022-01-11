@@ -118,22 +118,22 @@ jobs:
       matrix:
         include:
           - os: windows-2019
-            framework: net48
+            framework: 'net48'
             benchmark: 'thumbnail'
           - os: windows-2019
-            framework: net5
+            framework: 'net5'
             benchmark: 'thumbnail'
           - os: windows-2019
-            framework: net6
+            framework: 'net6'
             benchmark: 'thumbnail'
           - os: windows-2019
-            framework: net48
+            framework: 'net48'
             benchmark: 'primary'
           - os: windows-2019
-            framework: net5
+            framework: 'net5'
             benchmark: 'primary'
           - os: windows-2019
-            framework: net6
+            framework: 'net6'
             benchmark: 'primary'
     steps:
       - uses: actions/checkout@v2
@@ -175,11 +175,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - framework: net48
+          - framework: 'net48'
             name: '.NET Framework 4.8'
-          - framework: net5
+          - framework: 'net5'
             name: '.NET 5'
-          - framework: net6
+          - framework: 'net6'
             name: '.NET 6'
     steps:
       - name: Clone fileonq/imaging.heif
