@@ -68,7 +68,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp.net6.x64", "samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp.net6.AnyCPU", "samples\ConsoleApp\ConsoleApp.net6.AnyCPU\ConsoleApp.net6.AnyCPU.csproj", "{595E88F2-B685-46BB-A9C7-538C1D8F7708}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinformsApp.net6", "samples\WinformsApp\WinformsApp.net6\WinformsApp.net6.csproj", "{B7C0A4F0-6181-432B-80B7-81AA1C41A628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinformsApp.net6", "samples\WinformsApp\WinformsApp.net6\WinformsApp.net6.csproj", "{B7C0A4F0-6181-432B-80B7-81AA1C41A628}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{49F20D94-89B9-4737-A0B2-4887031225BE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\pull_request_template.md = .github\pull_request_template.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{FCF86DF2-79CA-4ABB-8DCE-C433AFF37960}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\benchmark.yml = .github\workflows\benchmark.yml
+		.github\workflows\build_main.yml = .github\workflows\build_main.yml
+		.github\workflows\build_pr.yml = .github\workflows\build_pr.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -320,6 +332,7 @@ Global
 		{FC3E32EA-710C-4440-BDDB-85F5CF1E0D95} = {FB7CB06D-2D84-4A04-BE62-EF54E2DC44A9}
 		{595E88F2-B685-46BB-A9C7-538C1D8F7708} = {FB7CB06D-2D84-4A04-BE62-EF54E2DC44A9}
 		{B7C0A4F0-6181-432B-80B7-81AA1C41A628} = {82567CD8-0E98-4DB7-AB73-4FE05DDC0A34}
+		{FCF86DF2-79CA-4ABB-8DCE-C433AFF37960} = {49F20D94-89B9-4737-A0B2-4887031225BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AF811503-BFBF-48C0-AFBA-872CBA57D6F2}
