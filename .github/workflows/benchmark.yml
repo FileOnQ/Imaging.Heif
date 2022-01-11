@@ -3,7 +3,7 @@ name: Benchmark
 on:
   pull_request_target:
     branches: [ main ]
-    types: [ opened, synchronize ]
+    types: [ opened ]
   issue_comment:
     types: [ created ]
 
@@ -73,7 +73,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.101
+          dotnet-version: 5.0.302
 
       - name: Install Build Dependencies
         run: |
@@ -114,8 +114,6 @@ jobs:
         include:
           - os: windows-2019
             benchmark: 'thumbnail'
-            architecture: 'AnyCPU'
-            platform: 'net5'
           - os: windows-2019
             benchmark: 'primary'
     steps:
@@ -137,7 +135,7 @@ jobs:
         working-directory: ./benchmarks/tools
 
       - name: Benchmark
-        run: dotnet run -c Release -f net6.0 -b ${{ matrix.benchmark }}
+        run: dotnet run -c Release -b ${{ matrix.benchmark }}
         working-directory: ./benchmarks/tools
 
       - name: Upload Results
