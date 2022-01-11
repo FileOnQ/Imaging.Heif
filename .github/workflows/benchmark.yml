@@ -118,8 +118,22 @@ jobs:
       matrix:
         include:
           - os: windows-2019
+            framework: net48
             benchmark: 'thumbnail'
           - os: windows-2019
+            framework: net5
+            benchmark: 'thumbnail'
+          - os: windows-2019
+            framework: net6
+            benchmark: 'thumbnail'
+          - os: windows-2019
+            framework: net48
+            benchmark: 'primary'
+          - os: windows-2019
+            framework: net5
+            benchmark: 'primary'
+          - os: windows-2019
+            framework: net6
             benchmark: 'primary'
     steps:
       - uses: actions/checkout@v2
@@ -142,22 +156,31 @@ jobs:
         
       - name: Update NuGet
         run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.benchmark-build.outputs.package_version }}
-        working-directory: ./benchmarks/tools
+        working-directory: ./benchmarks/tools/FileOnQ.Imaging.Heif.Benchmarks.${{ matrix.framework }}
 
       - name: Benchmark
         run: dotnet run -c Release -b ${{ matrix.benchmark }}
-        working-directory: ./benchmarks/tools
+        working-directory: ./benchmarks/tools/FileOnQ.Imaging.Heif.Benchmarks.${{ matrix.framework }}
 
       - name: Upload Results
         uses: actions/upload-artifact@v2
         with:
-          name: Benchmark-${{ matrix.benchmark }}
+          name: Benchmark-${{ matrix.benchmark }}.${{ matrix.framework }}
           path: ./benchmarks/tools/BenchmarkDotNet.Artifacts/results
 
   benchmark-compare:
     if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
     needs: benchmark-run
     runs-on: windows-2019
+    strategy:
+      matrix:
+        include:
+          - framework: net48
+            name: '.NET Framework 4.8'
+          - framework: net5
+            name: '.NET 5'
+          - framework: net6
+            name: '.NET 6'
     steps:
       - name: Clone fileonq/imaging.heif
         uses: actions/checkout@v2
@@ -177,20 +200,20 @@ jobs:
         with:
           path: artifacts
 
-      - name: Compare - thumbnail
-        run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/thumbnail" --diff "../../../../artifacts/Benchmark-thumbnail" --threshold 10% --top 10 > thumbnail.output.txt
+      - name: Compare - thumbnail (${{ matrix.framework }})
+        run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/thumbnail.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-thumbnail.${{ matrix.framework }}" --threshold 10% --top 10 > thumbnail.${{ matrix.framework }}.output.txt
         working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-      - name: Compare - primary
-        run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/primary" --diff "../../../../artifacts/Benchmark-primary" --threshold 10% --top 10 > primary.output.txt
+      - name: Compare - primary (${{ matrix.framework }})
+        run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/primary.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-primary.${{ matrix.framework }}" --threshold 10% --top 10 > primary.${{ matrix.framework }}.output.txt
         working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-      - name: GitHub Comment - Comparison
+      - name: GitHub Comment - Comparison (${{ matrix.framework }})
         run: |
-          $thumbnail = Get-Content "thumbnail.output.txt" -raw
-          $primary = Get-Content "primary.output.txt" -raw
+          $thumbnail = Get-Content "thumbnail.${{ matrix.framework }}.output.txt" -raw
+          $primary = Get-Content "primary.${{ matrix.framework }}.output.txt" -raw
 
-          $message = "## Benchmark Comparison`r`n"
+          $message = "## Benchmark Comparison - ${{ matrix.name }}`r`n"
           $message += "Benchmarking comparison between this Pull Request and the comitted values at benchmarks/results `r`n`r`n"
           $message += "thumbnail`r`n"
           $message += "\``\``\``ini `r`n $thumbnail `r`n \``\``\``"
@@ -202,15 +225,15 @@ jobs:
           echo "EOF" >> $env:GITHUB_ENV
         working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-      - name: GitHub Comment - Benchmark Results
+      - name: GitHub Comment - Benchmark Results (${{ matrix.framework }})
         run: |
-          $thumbnail = Get-Content "Benchmark-thumbnail/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
+          $thumbnail = Get-Content "Benchmark-thumbnail.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
           $thumbnail = $thumbnail.replace("``", "\``")
 
-          $primary = Get-Content "Benchmark-primary/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
+          $primary = Get-Content "Benchmark-primary.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
           $primary = $primary.replace("``", "\``")
 
-          $message = "## Benchmark Results`r`n"
+          $message = "## Benchmark Results - ${{ matrix.name }}`r`n"
           $message += "<details><summary>thumbnail</summary><p>`r`n`r`n $thumbnail </p></details>`r`n"
           $message += "<details><summary>primary</summary><p>`r`n`r`n $primary </p></details>`r`n"
           echo $message
@@ -219,6 +242,40 @@ jobs:
           echo "EOF" >> $env:GITHUB_ENV
         working-directory: ./artifacts
 
+      - name: Combine Message (${{ matrix.framework }})
+        run: |
+          $message = "${{ env.PR_COMMENT_COMPARISON }}\r\n\r\n${{ env.PR_COMMENT_RESULTS }}"
+          echo $message > github-comment.${{ matrix.framework }}.md
+        working-directory: ./artifacts
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: Benchmark-GitHub-Comment.${{ matrix.framework }}
+          path: ./artifacts/github-comment.${{ matrix.framework }}.md
+
+  benchmark-github-post:
+    if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
+    needs: benchmark-compare
+    runs-on: windows-2019
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+
+      - name: Combine GitHub Comments
+        run: |
+          $net48 = Get-Content "Benchmark-GitHub-Comment.net48.md -raw
+          $net5 = Get-Content "Benchmark-GitHub-Comment.net5.md -raw
+          $net6 = Get-Content "Benchmark-GitHub-Comment.net6.md -raw
+          $message = "$net48`r`n`r`n$net5`r`n`r`n$net6`r`n"
+          echo $message
+          echo "GITHUB_COMMENT<<EOF" >> $env:GITHUB_ENV
+          echo "$message" >> $env:GITHUB_ENV
+          echo "EOF" >> $env:GITHUB_ENV
+        working-directory: ./artifacts
+        
       - name: GitHub Comment - Post
         uses: actions/github-script@v5
         with:
@@ -227,5 +284,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `${{ env.PR_COMMENT_COMPARISON }}\r\n\r\n${{ env.PR_COMMENT_RESULTS }}`
+              body: `${{ env.GITHUB_COMMENT }}`
             })
