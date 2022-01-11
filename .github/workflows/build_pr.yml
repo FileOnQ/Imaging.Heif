@@ -14,10 +14,15 @@ jobs:
       with:
         submodules: 'true'
 
-    - name: Setup .NET SDK
+    - name: Ensure .NET 5 SDK
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.302
+
+    - name: Ensure .NET 6 SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.101
 
     - name: Install Build Dependencies
       run: |
@@ -68,12 +73,30 @@ jobs:
           - os: windows-2019
             architecture: 'x64'
             framework: 'net5'
-
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net6'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+
+      - name: Ensure .NET 5 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
+
+      - name: Ensure .NET 6 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.101
 
       - name: Download Artifacts
         uses: actions/download-artifact@v2
@@ -114,13 +137,31 @@ jobs:
           - os: windows-2019
             architecture: 'x64'
             framework: 'net5'
-
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net6'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: 'true'
-          
+
+      - name: Ensure .NET 5 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
+
+      - name: Ensure .NET 6 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.101
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
       
@@ -160,12 +201,31 @@ jobs:
           - os: windows-2019
             architecture: 'x64'
             framework: 'net5'
+          - os: windows-2019
+            architecture: 'AnyCPU'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x86'
+            framework: 'net6'
+          - os: windows-2019
+            architecture: 'x64'
+            framework: 'net6'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: 'true'
-          
+
+      - name: Ensure .NET 5 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
+
+      - name: Ensure .NET 6 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.101
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
       
