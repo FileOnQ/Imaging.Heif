@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WinformsApp.net48": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

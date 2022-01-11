@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConsoleApp.net5.AnyCPU": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
