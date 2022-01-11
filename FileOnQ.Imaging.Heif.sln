@@ -76,6 +76,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileOnQ.Imaging.Heif.Benchm
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FileOnQ.Imaging.Heif.Benchmarks", "benchmarks\tools\FileOnQ.Imaging.Heif.Benchmarks\FileOnQ.Imaging.Heif.Benchmarks.shproj", "{AEF4F0E9-367B-45AE-B14E-C8A86D62D83F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{54326C49-9DAE-4EA3-8B33-C9CCFB2CAECF}"
+	ProjectSection(SolutionItems) = preProject
+		.github\pull_request_template.md = .github\pull_request_template.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{4B7D008C-B948-4EA6-8C65-336896A8BD3F}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\benchmark.yml = .github\workflows\benchmark.yml
+		.github\workflows\build_main.yml = .github\workflows\build_main.yml
+		.github\workflows\build_pr.yml = .github\workflows\build_pr.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		samples\ConsoleApp\ConsoleApp.Shared\ConsoleApp.Shared.projitems*{1e597879-fed0-47bd-8710-78330d370699}*SharedItemsImports = 5
@@ -357,6 +369,7 @@ Global
 		{D1263ADC-38BA-4CC3-84ED-5B3D942F44A1} = {A4396AB5-9EE2-4B42-AB2A-0D9A12927E92}
 		{E943A8E9-382D-4C31-BCBB-C8E64ECD177C} = {A4396AB5-9EE2-4B42-AB2A-0D9A12927E92}
 		{AEF4F0E9-367B-45AE-B14E-C8A86D62D83F} = {A4396AB5-9EE2-4B42-AB2A-0D9A12927E92}
+		{4B7D008C-B948-4EA6-8C65-336896A8BD3F} = {54326C49-9DAE-4EA3-8B33-C9CCFB2CAECF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AF811503-BFBF-48C0-AFBA-872CBA57D6F2}
