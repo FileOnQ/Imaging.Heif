@@ -1,4 +1,6 @@
-﻿#if NET48_OR_GREATER
+﻿
+
+#if NET48_OR_GREATER
 using System;
 using System.Runtime.InteropServices;
 
