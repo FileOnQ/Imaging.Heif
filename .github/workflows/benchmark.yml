@@ -3,7 +3,7 @@ name: Benchmark
 on:
   pull_request_target:
     branches: [ main ]
-    types: [ opened, synchronize ]
+    types: [ opened ]
   issue_comment:
     types: [ created ]
 
@@ -70,7 +70,12 @@ jobs:
           ref: ${{ needs.check-command.outputs.ref }}
           submodules: 'true'
 
-      - name: Setup .NET SDK
+      - name: Ensure .NET 5 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
+
+      - name: Ensure .NET 6 SDK
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.101
@@ -114,8 +119,6 @@ jobs:
         include:
           - os: windows-2019
             benchmark: 'thumbnail'
-            architecture: 'AnyCPU'
-            platform: 'net5'
           - os: windows-2019
             benchmark: 'primary'
     steps:
@@ -124,6 +127,11 @@ jobs:
           repository: ${{ needs.benchmark-build.outputs.repo }}
           ref: ${{ needs.benchmark-build.outputs.ref }}
           submodules: 'true'
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
 
       - name: Download Artifacts
         uses: actions/download-artifact@v2
@@ -137,7 +145,7 @@ jobs:
         working-directory: ./benchmarks/tools
 
       - name: Benchmark
-        run: dotnet run -c Release -f net6.0 -b ${{ matrix.benchmark }}
+        run: dotnet run -c Release -b ${{ matrix.benchmark }}
         working-directory: ./benchmarks/tools
 
       - name: Upload Results
