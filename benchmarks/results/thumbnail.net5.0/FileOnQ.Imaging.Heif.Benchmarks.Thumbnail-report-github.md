@@ -1,10 +1,10 @@
 ``` ini
 
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19043.1415 (21H1/May2021Update)
-AMD Ryzen 9 3950X, 1 CPU, 32 logical and 16 physical cores
-.NET SDK=6.0.100
-  [Host]     : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT
-  Job-CIJBHG : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Redstone5)
+Intel Xeon Platinum 8171M CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
+.NET SDK=6.0.101
+  [Host]     : .NET 5.0.8 (5.0.821.31504), X64 RyuJIT
+  Job-KKDNHT : .NET 5.0.8 (5.0.821.31504), X64 RyuJIT
 
 Runtime=.NET 5.0  InvocationCount=1  LaunchCount=1  
 UnrollFactor=1  
@@ -12,7 +12,7 @@ UnrollFactor=1
 ```
 |             Method |     Mean |    Error |   StdDev | Allocated native memory | Native memory leak | Allocated |
 |------------------- |---------:|---------:|---------:|------------------------:|-------------------:|----------:|
-|    Thumbnail_Write | 33.89 ms | 0.232 ms | 0.217 ms |             5,124,079 B |                  - |     288 B |
-|  Thumbnail_ToArray | 33.37 ms | 0.314 ms | 0.279 ms |             5,123,551 B |                  - |  66,408 B |
-|   Thumbnail_ToSpan | 33.66 ms | 0.272 ms | 0.241 ms |             5,123,551 B |                  - |     120 B |
-| Thumbnail_ToStream | 33.61 ms | 0.320 ms | 0.284 ms |             5,123,551 B |                  - |  66,472 B |
+|    Thumbnail_Write | 57.82 ms | 1.134 ms | 1.114 ms |             5,124,425 B |                  - |     288 B |
+|  Thumbnail_ToArray | 56.98 ms | 1.120 ms | 0.935 ms |             5,123,869 B |                  - |  66,408 B |
+|   Thumbnail_ToSpan | 56.66 ms | 1.081 ms | 1.011 ms |             5,123,853 B |                  - |     120 B |
+| Thumbnail_ToStream | 57.26 ms | 0.884 ms | 1.018 ms |             5,123,853 B |                  - |  66,472 B |
