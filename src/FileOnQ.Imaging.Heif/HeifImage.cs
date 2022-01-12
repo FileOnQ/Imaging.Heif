@@ -17,10 +17,6 @@ namespace FileOnQ.Imaging.Heif
 		/// </param>
 		public HeifImage(string file)
 		{
-#if NET48_OR_GREATER
-			Interop.UpdateDllSearchPath();
-#endif
-
 			heifContext = LibHeif.ContextAllocate();
 			var error = LibHeif.ReadFromFile(heifContext, file, IntPtr.Zero);
 			if (error.Code != LibHeif.ErrorCode.Ok)
