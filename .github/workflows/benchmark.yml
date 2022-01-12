@@ -210,58 +210,58 @@ jobs:
         with:
           dotnet-version: 5.0.302
 
-     - name: Build Compare Tool
-       run: dotnet build
-       working-directory: ./dotnet.performance/src/tools/ResultsComparer
+      - name: Build Compare Tool
+        run: dotnet build
+        working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-     - name: Compare - thumbnail (${{ matrix.framework }})
-       run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/thumbnail.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-thumbnail.${{ matrix.framework }}" --threshold 10% --top 10 > thumbnail.${{ matrix.framework }}.output.txt
-       working-directory: ./dotnet.performance/src/tools/ResultsComparer
+      - name: Compare - thumbnail (${{ matrix.framework }})
+        run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/thumbnail.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-thumbnail.${{ matrix.framework }}" --threshold 10% --top 10 > thumbnail.${{ matrix.framework }}.output.txt
+        working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-     - name: Compare - primary (${{ matrix.framework }})
-       run: dotnet run --base "../../../../fileonq.imaging.heif/benchmarks/results/primary.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-primary.${{ matrix.framework }}" --threshold 10% --top 10 > primary.${{ matrix.framework }}.output.txt
-       working-directory: ./dotnet.performance/src/tools/ResultsComparer
+      - name: Compare - primary (${{ matrix.framework }})
+        run: dotnet run --base "../../../../fileonq.imaging.heif/benchmarks/results/primary.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-primary.${{ matrix.framework }}" --threshold 10% --top 10 > primary.${{ matrix.framework }}.output.txt
+        working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-     - name: GitHub Comment - Comparison (${{ matrix.framework }})
-       run: |
-         $thumbnail = Get-Content "thumbnail.${{ matrix.framework }}.output.txt" -raw
-         $primary = Get-Content "primary.${{ matrix.framework }}.output.txt" -raw
-
-         $message = "## Benchmark Comparison - ${{ matrix.name }}`r`n"
-         $message += "Benchmarking comparison between this Pull Request and the comitted values at benchmarks/results `r`n`r`n"
-         $message += "thumbnail`r`n"
-         $message += "\``\``\``ini `r`n $thumbnail `r`n \``\``\``"
-         $message += "`r`n`r`nprimary`r`n"
-         $message += "\``\``\``ini `r`n $primary `r`n \``\``\``"
-         echo $message
-         echo "PR_COMMENT_COMPARISON<<EOF" >> $env:GITHUB_ENV
-         echo "$message" >> $env:GITHUB_ENV
-         echo "EOF" >> $env:GITHUB_ENV
-       working-directory: ./dotnet.performance/src/tools/ResultsComparer
-
-     - name: GitHub Comment - Benchmark Results (${{ matrix.framework }})
-       run: |
-         $thumbnail = Get-Content "Benchmark-thumbnail.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
-         $thumbnail = $thumbnail.replace("``", "\``")
-
-         $primary = Get-Content "Benchmark-primary.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
-         $primary = $primary.replace("``", "\``")
-
-         $message = "## Benchmark Results - ${{ matrix.name }}`r`n"
-         $message += "<details><summary>thumbnail</summary><p>`r`n`r`n $thumbnail </p></details>`r`n"
-         $message += "<details><summary>primary</summary><p>`r`n`r`n $primary </p></details>`r`n"
-         echo $message
-         echo "PR_COMMENT_RESULTS<<EOF" >> $env:GITHUB_ENV
-         echo "$message" >> $env:GITHUB_ENV
-         echo "EOF" >> $env:GITHUB_ENV
-       working-directory: ./artifacts
+      - name: GitHub Comment - Comparison (${{ matrix.framework }})
+        run: |
+          $thumbnail = Get-Content "thumbnail.${{ matrix.framework }}.output.txt" -raw
+          $primary = Get-Content "primary.${{ matrix.framework }}.output.txt" -raw
+      
+          $message = "## Benchmark Comparison - ${{ matrix.name }}`r`n"
+          $message += "Benchmarking comparison between this Pull Request and the comitted values at benchmarks/results `r`n`r`n"
+          $message += "thumbnail`r`n"
+          $message += "\``\``\``ini `r`n $thumbnail `r`n \``\``\``"
+          $message += "`r`n`r`nprimary`r`n"
+          $message += "\``\``\``ini `r`n $primary `r`n \``\``\``"
+          echo $message
+          echo "PR_COMMENT_COMPARISON<<EOF" >> $env:GITHUB_ENV
+          echo "$message" >> $env:GITHUB_ENV
+          echo "EOF" >> $env:GITHUB_ENV
+        working-directory: ./dotnet.performance/src/tools/ResultsComparer
+      
+      - name: GitHub Comment - Benchmark Results (${{ matrix.framework }})
+        run: |
+          $thumbnail = Get-Content "Benchmark-thumbnail.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
+          $thumbnail = $thumbnail.replace("``", "\``")
+      
+          $primary = Get-Content "Benchmark-primary.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
+          $primary = $primary.replace("``", "\``")
+      
+          $message = "## Benchmark Results - ${{ matrix.name }}`r`n"
+          $message += "<details><summary>thumbnail</summary><p>`r`n`r`n $thumbnail </p></details>`r`n"
+          $message += "<details><summary>primary</summary><p>`r`n`r`n $primary </p></details>`r`n"
+          echo $message
+          echo "PR_COMMENT_RESULTS<<EOF" >> $env:GITHUB_ENV
+          echo "$message" >> $env:GITHUB_ENV
+          echo "EOF" >> $env:GITHUB_ENV
+        working-directory: ./artifacts
 
       - name: Combine Message (${{ matrix.framework }})
-       run: |
-         $message = "${{ env.PR_COMMENT_COMPARISON }} \r\n\r\n ${{ env.PR_COMMENT_RESULTS }}"
-         $message = $message.replace("\\\", "\`\`\`")
-         echo $message > github-comment.${{ matrix.framework }}.md
-       working-directory: ./artifacts
+        run: |
+          $message = "${{ env.PR_COMMENT_COMPARISON }} \r\n\r\n ${{ env.PR_COMMENT_RESULTS }}"
+          $message = $message.replace("\\\", "\`\`\`")
+          echo $message > github-comment.${{ matrix.framework }}.md
+        working-directory: ./artifacts
 
       # - name: Combine Message (${{ matrix.framework }})
       #   run: |
