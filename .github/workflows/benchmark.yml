@@ -121,19 +121,19 @@ jobs:
             framework: 'net48'
             benchmark: 'thumbnail'
           - os: windows-2019
-            framework: 'net5'
+            framework: 'net5.0'
             benchmark: 'thumbnail'
           - os: windows-2019
-            framework: 'net6'
+            framework: 'net6.0'
             benchmark: 'thumbnail'
           - os: windows-2019
             framework: 'net48'
             benchmark: 'primary'
           - os: windows-2019
-            framework: 'net5'
+            framework: 'net5.0'
             benchmark: 'primary'
           - os: windows-2019
-            framework: 'net6'
+            framework: 'net6.0'
             benchmark: 'primary'
     steps:
       - uses: actions/checkout@v2
@@ -164,8 +164,8 @@ jobs:
         working-directory: ./benchmarks/tools/FileOnQ.Imaging.Heif.Benchmarks.${{ matrix.framework }}
 
       - name: Benchmark
-        run: dotnet run -c Release -b ${{ matrix.benchmark }}
-        working-directory: ./benchmarks/tools/FileOnQ.Imaging.Heif.Benchmarks.${{ matrix.framework }}
+        run: dotnet run -c Release -f ${{ matrix.framework }} -b ${{ matrix.benchmark }}
+        working-directory: ./benchmarks/tools
 
       - name: Upload Results
         uses: actions/upload-artifact@v2
@@ -182,9 +182,9 @@ jobs:
         include:
           - framework: 'net48'
             name: '.NET Framework 4.8'
-          - framework: 'net5'
+          - framework: 'net5.0'
             name: '.NET 5'
-          - framework: 'net6'
+          - framework: 'net6.0'
             name: '.NET 6'
     steps:
       - name: Clone fileonq/imaging.heif
