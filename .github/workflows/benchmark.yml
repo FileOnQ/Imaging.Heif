@@ -230,9 +230,9 @@ jobs:
           $message = "## Benchmark Comparison - ${{ matrix.name }}`r`n"
           $message += "Benchmarking comparison between this Pull Request and the comitted values at benchmarks/results `r`n`r`n"
           $message += "thumbnail`r`n"
-          $message += "``````ini `r`n $thumbnail `r`n ``````"
+          $message += "\``\``\``ini `r`n $thumbnail `r`n \``\``\``"
           $message += "`r`n`r`nprimary`r`n"
-          $message += "``````ini `r`n $primary `r`n ``````"
+          $message += "\``\``\``ini `r`n $primary `r`n \``\``\``"
           echo $message
           echo "PR_COMMENT_COMPARISON<<EOF" >> $env:GITHUB_ENV
           echo "$message" >> $env:GITHUB_ENV
@@ -242,11 +242,14 @@ jobs:
       - name: GitHub Comment - Benchmark Results (${{ matrix.framework }})
         run: |
           $thumbnail = Get-Content "Benchmark-thumbnail.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
+          $thumbnail = $thumbnail.replace("``", "\``")
+
           $primary = Get-Content "Benchmark-primary.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
+          $primary = $primary.replace("``", "\``")
 
           $message = "## Benchmark Results - ${{ matrix.name }}`r`n"
-          $message += "<details><summary>thumbnail</summary><p>`r`n`r`n ``````ini `r`n $thumbnail `````` </p></details>`r`n"
-          $message += "<details><summary>primary</summary><p>`r`n`r`n ``````ini `r`n $primary `````` </p></details>`r`n"
+          $message += "<details><summary>thumbnail</summary><p>`r`n`r`n $thumbnail </p></details>`r`n"
+          $message += "<details><summary>primary</summary><p>`r`n`r`n $primary </p></details>`r`n"
           echo $message
           echo "PR_COMMENT_RESULTS<<EOF" >> $env:GITHUB_ENV
           echo "$message" >> $env:GITHUB_ENV
