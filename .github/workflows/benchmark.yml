@@ -268,7 +268,7 @@ jobs:
         run: |
           mkdir artifacts
           cd artifacts
-          $message = Get-Content ./fileonq.imaging.heif/benchmarks/results/github-comment.net48.md -raw
+          $message = Get-Content ../fileonq.imaging.heif/benchmarks/results/github-comment.net48.md -raw
           $message = $message.replace("\\\", "``````")
           echo $message > github-comment.${{ matrix.framework }}.md
 
