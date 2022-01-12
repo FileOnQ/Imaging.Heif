@@ -205,12 +205,21 @@ jobs:
         with:
           path: artifacts
 
+      - name: Ensure .NET 5 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.302
+
+      - name: Build Compare Tool
+        run: dotnet build
+        working-directory: ./dotnet.performance/src/tools/ResultsComparer
+
       - name: Compare - thumbnail (${{ matrix.framework }})
         run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/thumbnail.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-thumbnail.${{ matrix.framework }}" --threshold 10% --top 10 > thumbnail.${{ matrix.framework }}.output.txt
         working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
       - name: Compare - primary (${{ matrix.framework }})
-        run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/primary.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-primary.${{ matrix.framework }}" --threshold 10% --top 10 > primary.${{ matrix.framework }}.output.txt
+        run: dotnet run --base "../../../../fileonq.imaging.heif/benchmarks/results/primary.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-primary.${{ matrix.framework }}" --threshold 10% --top 10 > primary.${{ matrix.framework }}.output.txt
         working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
       - name: GitHub Comment - Comparison (${{ matrix.framework }})
