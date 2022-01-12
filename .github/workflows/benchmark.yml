@@ -271,9 +271,9 @@ jobs:
 
       - name: Combine GitHub Comments
         run: |
-          $net48 = Get-Content Benchmark-GitHub-Comment.net48.md -raw
-          $net5 = Get-Content Benchmark-GitHub-Comment.net5.md -raw
-          $net6 = Get-Content Benchmark-GitHub-Comment.net6.md -raw
+          $net48 = Get-Content ./Benchmark-GitHub-Comment.net48/github-comment.net48.md -raw
+          $net5 = Get-Content ./Benchmark-GitHub-Comment.net5.0/github-comment.net5.0.md -raw
+          $net6 = Get-Content Benchmark-GitHub-Comment.net6.0/github-comment.net6.0.md -raw
           $message = "$net48`r`n`r`n$net5`r`n`r`n$net6"
           echo $message
           echo "GITHUB_COMMENT<<EOF" >> $env:GITHUB_ENV
