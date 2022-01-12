@@ -175,7 +175,7 @@ jobs:
 
   benchmark-compare:
     if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
-    needs: benchmark-run
+#    needs: benchmark-run
     runs-on: windows-2019
     strategy:
       matrix:
