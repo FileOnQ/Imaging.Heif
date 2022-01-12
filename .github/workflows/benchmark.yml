@@ -161,7 +161,7 @@ jobs:
         
       - name: Update NuGet
         run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.benchmark-build.outputs.package_version }}
-        working-directory: ./benchmarks/tools/FileOnQ.Imaging.Heif.Benchmarks.${{ matrix.framework }}
+        working-directory: ./benchmarks/tools
 
       - name: Benchmark
         run: dotnet run -c Release -f ${{ matrix.framework }} -b ${{ matrix.benchmark }}
