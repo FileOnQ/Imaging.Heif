@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-20220111-224234</title>
+<title>FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-20220112-211740</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -13,8 +13,8 @@
 </head>
 <body>
 <pre><code>
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19043.1415 (21H1/May2021Update)
-AMD Ryzen 9 3950X, 1 CPU, 32 logical and 16 physical cores
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Redstone5), VM=Hyper-V
+Intel Xeon Platinum 8171M CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
   [Host]     : .NET Framework 4.8 (4.8.4420.0), X64 RyuJIT
   Job-GHSIOX : .NET Framework 4.8 (4.8.4420.0), X64 RyuJIT
 </code></pre>
@@ -25,10 +25,10 @@ UnrollFactor=1
 <table>
 <thead><tr><th>      Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Allocated native memory</th><th>Native memory leak</th><th>Allocated</th>
 </tr>
-</thead><tbody><tr><td>Thumbnail_Write</td><td>34.15 ms</td><td>0.432 ms</td><td>0.383 ms</td><td>5,123,909 B</td><td>166 B</td><td>74,504 B</td>
-</tr><tr><td>Thumbnail_ToArray</td><td>33.40 ms</td><td>0.237 ms</td><td>0.211 ms</td><td>5,123,865 B</td><td>166 B</td><td>74,504 B</td>
-</tr><tr><td>Thumbnail_ToSpan</td><td>33.93 ms</td><td>0.620 ms</td><td>0.550 ms</td><td>5,123,865 B</td><td>166 B</td><td>-</td>
-</tr><tr><td>Thumbnail_ToStream</td><td>33.91 ms</td><td>0.263 ms</td><td>0.233 ms</td><td>5,123,865 B</td><td>166 B</td><td>140,816 B</td>
+</thead><tbody><tr><td>Thumbnail_Write</td><td>60.80 ms</td><td>1.188 ms</td><td>2.658 ms</td><td>5,124,251 B</td><td>180 B</td><td>74,504 B</td>
+</tr><tr><td>Thumbnail_ToArray</td><td>60.41 ms</td><td>1.086 ms</td><td>1.592 ms</td><td>5,123,923 B</td><td>180 B</td><td>74,504 B</td>
+</tr><tr><td>Thumbnail_ToSpan</td><td>60.79 ms</td><td>1.181 ms</td><td>1.655 ms</td><td>5,123,923 B</td><td>180 B</td><td>-</td>
+</tr><tr><td>Thumbnail_ToStream</td><td>58.00 ms</td><td>1.130 ms</td><td>1.429 ms</td><td>5,123,923 B</td><td>180 B</td><td>140,816 B</td>
 </tr></tbody></table>
 </body>
 </html>
