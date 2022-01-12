@@ -7,7 +7,7 @@
 	</Target>
 
 	<Target Name="CreatePackage" AfterTargets="ClearPackageCache" Condition="'$(CI)' == 'false'">
-		<Exec Command="dotnet pack -o ../../../ /p:Configuration=$(Configuration) /p:Version=0.0.0-local.1 /p:PackageVersion=0.0.0-local.1" WorkingDirectory="$(ProjectDir)../../../src/FileOnQ.Imaging.Heif" />
+		<Exec Command="dotnet pack -o ../../ /p:Configuration=$(Configuration) /p:Version=0.0.0-local.1 /p:PackageVersion=0.0.0-local.1" WorkingDirectory="$(ProjectDir)../../src/FileOnQ.Imaging.Heif" />
 		<Exec Command="dotnet restore" WorkingDirectory="$(ProjectDir)" />
 	</Target>
 
