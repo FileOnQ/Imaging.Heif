@@ -5,6 +5,7 @@ namespace FileOnQ.Imaging.Heif
 {
 	public static unsafe partial class LibHeif
 	{
+
 #if NET48_OR_GREATER
 		static LibHeif()
 		{
@@ -14,6 +15,7 @@ namespace FileOnQ.Imaging.Heif
 
 		}
 #endif
+
 		internal static Context* ContextAllocate()
 		{
 			switch (RuntimeInformation.ProcessArchitecture)
