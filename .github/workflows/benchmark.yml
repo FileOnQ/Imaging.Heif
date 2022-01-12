@@ -55,128 +55,127 @@ jobs:
           echo "CUSTOM_REPO=$($repository)" >> $env:GITHUB_ENV
           echo "CUSTOM_REF=$($ref)" >> $env:GITHUB_ENV
 
-  #benchmark-build:
-  #  if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
-  #  needs: check-command
-  #  runs-on: windows-2019
-  #  outputs:
-  #    repo: ${{ needs.check-command.outputs.repo }}
-  #    ref: ${{ needs.check-command.outputs.ref }}
-  #    package_version: ${{ env.PACKAGE_VERSION }}
-  #  steps:
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        repository: ${{ needs.check-command.outputs.repo }}
-  #        ref: ${{ needs.check-command.outputs.ref }}
-  #        submodules: 'true'
+  benchmark-build:
+   if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
+   needs: check-command
+   runs-on: windows-2019
+   outputs:
+     repo: ${{ needs.check-command.outputs.repo }}
+     ref: ${{ needs.check-command.outputs.ref }}
+     package_version: ${{ env.PACKAGE_VERSION }}
+   steps:
+     - uses: actions/checkout@v2
+       with:
+         repository: ${{ needs.check-command.outputs.repo }}
+         ref: ${{ needs.check-command.outputs.ref }}
+         submodules: 'true'
 
-  #    - name: Ensure .NET 5 SDK
-  #      uses: actions/setup-dotnet@v1
-  #      with:
-  #        dotnet-version: 5.0.302
+     - name: Ensure .NET 5 SDK
+       uses: actions/setup-dotnet@v1
+       with:
+         dotnet-version: 5.0.302
 
-  #    - name: Ensure .NET 6 SDK
-  #      uses: actions/setup-dotnet@v1
-  #      with:
-  #        dotnet-version: 6.0.101
+     - name: Ensure .NET 6 SDK
+       uses: actions/setup-dotnet@v1
+       with:
+         dotnet-version: 6.0.101
 
-  #    - name: Install Build Dependencies
-  #      run: |
-  #        choco install meson
-  #        choco install ninja
-  #        choco install nasm
-  #        echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-  #        echo "C:\Program Files\Meson" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+     - name: Install Build Dependencies
+       run: |
+         choco install meson
+         choco install ninja
+         choco install nasm
+         echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+         echo "C:\Program Files\Meson" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           
-  #    - name: Set NuGet Version
-  #      run: echo "PACKAGE_VERSION=1.0.0-benchmark.${{ GITHUB.RUN_NUMBER }}" >> $env:GITHUB_ENV
+     - name: Set NuGet Version
+       run: echo "PACKAGE_VERSION=1.0.0-benchmark.${{ GITHUB.RUN_NUMBER }}" >> $env:GITHUB_ENV
           
-  #    - name: Build
-  #      run: dotnet build -c Release
-  #      working-directory: ./src/FileOnQ.Imaging.Heif
+     - name: Build
+       run: dotnet build -c Release
+       working-directory: ./src/FileOnQ.Imaging.Heif
         
-  #    - name: Pack
-  #      run: dotnet pack -c Release -o ../../ /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
-  #      working-directory: ./src/FileOnQ.Imaging.Heif
+     - name: Pack
+       run: dotnet pack -c Release -o ../../ /p:ContinuousIntegrationBuild=true /p:Version=${{ env.PACKAGE_VERSION }} /p:PackageVersion=${{ env.PACKAGE_VERSION }}
+       working-directory: ./src/FileOnQ.Imaging.Heif
         
-  #    - name: Upload NuGet Package
-  #      uses: actions/upload-artifact@v2
-  #      with:
-  #        name: Benchmark-Packages
-  #        path: |
-  #          *.nupkg
-  #          *.snupkg
+     - name: Upload NuGet Package
+       uses: actions/upload-artifact@v2
+       with:
+         name: Benchmark-Packages
+         path: |
+           *.nupkg
+           *.snupkg
     
-  #benchmark-run:
-  #  if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
-  #  needs: benchmark-build
-  #  runs-on: ${{ matrix.os }}
-  #  outputs:
-  #    repo: ${{ needs.benchmark-build.outputs.repo }}
-  #    ref: ${{ needs.benchmark-build.outputs.ref }}
-  #  strategy:
-  #    matrix:
-  #      include:
-  #        - os: windows-2019
-  #          framework: 'net48'
-  #          benchmark: 'thumbnail'
-  #        - os: windows-2019
-  #          framework: 'net5.0'
-  #          benchmark: 'thumbnail'
-  #        - os: windows-2019
-  #          framework: 'net6.0'
-  #          benchmark: 'thumbnail'
-  #        - os: windows-2019
-  #          framework: 'net48'
-  #          benchmark: 'primary'
-  #        - os: windows-2019
-  #          framework: 'net5.0'
-  #          benchmark: 'primary'
-  #        - os: windows-2019
-  #          framework: 'net6.0'
-  #          benchmark: 'primary'
-  #  steps:
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        repository: ${{ needs.benchmark-build.outputs.repo }}
-  #        ref: ${{ needs.benchmark-build.outputs.ref }}
-  #        submodules: 'true'
+  benchmark-run:
+   if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
+   needs: benchmark-build
+   runs-on: ${{ matrix.os }}
+   outputs:
+     repo: ${{ needs.benchmark-build.outputs.repo }}
+     ref: ${{ needs.benchmark-build.outputs.ref }}
+   strategy:
+     matrix:
+       include:
+         - os: windows-2019
+           framework: 'net48'
+           benchmark: 'thumbnail'
+         - os: windows-2019
+           framework: 'net5.0'
+           benchmark: 'thumbnail'
+         - os: windows-2019
+           framework: 'net6.0'
+           benchmark: 'thumbnail'
+         - os: windows-2019
+           framework: 'net48'
+           benchmark: 'primary'
+         - os: windows-2019
+           framework: 'net5.0'
+           benchmark: 'primary'
+         - os: windows-2019
+           framework: 'net6.0'
+           benchmark: 'primary'
+   steps:
+     - uses: actions/checkout@v2
+       with:
+         repository: ${{ needs.benchmark-build.outputs.repo }}
+         ref: ${{ needs.benchmark-build.outputs.ref }}
+         submodules: 'true'
 
-  #    - name: Ensure .NET 5 SDK
-  #      uses: actions/setup-dotnet@v1
-  #      with:
-  #        dotnet-version: 5.0.302
+     - name: Ensure .NET 5 SDK
+       uses: actions/setup-dotnet@v1
+       with:
+         dotnet-version: 5.0.302
 
-  #    - name: Ensure .NET 6 SDK
-  #      uses: actions/setup-dotnet@v1
-  #      with:
-  #        dotnet-version: 6.0.101
+     - name: Ensure .NET 6 SDK
+       uses: actions/setup-dotnet@v1
+       with:
+         dotnet-version: 6.0.101
 
-  #    - name: Download Artifacts
-  #      uses: actions/download-artifact@v2
+     - name: Download Artifacts
+       uses: actions/download-artifact@v2
 
-  #    - name: Copy Nupkg
-  #      shell: powershell
-  #      run: Copy-Item Benchmark-Packages\* -Destination .
+     - name: Copy Nupkg
+       shell: powershell
+       run: Copy-Item Benchmark-Packages\* -Destination .
         
-  #    - name: Update NuGet
-  #      run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.benchmark-build.outputs.package_version }}
-  #      working-directory: ./benchmarks/tools
+     - name: Update NuGet
+       run: dotnet add package FileOnQ.Imaging.Heif --version ${{ needs.benchmark-build.outputs.package_version }}
+       working-directory: ./benchmarks/tools
 
-  #    - name: Benchmark
-  #      run: dotnet run -c Release -f ${{ matrix.framework }} -b ${{ matrix.benchmark }}
-  #      working-directory: ./benchmarks/tools
+     - name: Benchmark
+       run: dotnet run -c Release -f ${{ matrix.framework }} -b ${{ matrix.benchmark }}
+       working-directory: ./benchmarks/tools
 
-  #    - name: Upload Results
-  #      uses: actions/upload-artifact@v2
-  #      with:
-  #        name: Benchmark-${{ matrix.benchmark }}.${{ matrix.framework }}
-  #        path: ./benchmarks/tools/BenchmarkDotNet.Artifacts/results
+     - name: Upload Results
+       uses: actions/upload-artifact@v2
+       with:
+         name: Benchmark-${{ matrix.benchmark }}.${{ matrix.framework }}
+         path: ./benchmarks/tools/BenchmarkDotNet.Artifacts/results
 
   benchmark-compare:
     if: ${{ needs.check-command.outputs.benchmark == 'true' || github.EVENT_NAME == 'pull_request_target' }}
-#    needs: benchmark-run
-    needs: check-command
+    needs: benchmark-run
     runs-on: windows-2019
     strategy:
       matrix:
@@ -211,66 +210,66 @@ jobs:
         with:
           dotnet-version: 5.0.302
 
-  #    - name: Build Compare Tool
-  #      run: dotnet build
-  #      working-directory: ./dotnet.performance/src/tools/ResultsComparer
+     - name: Build Compare Tool
+       run: dotnet build
+       working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-  #    - name: Compare - thumbnail (${{ matrix.framework }})
-  #      run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/thumbnail.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-thumbnail.${{ matrix.framework }}" --threshold 10% --top 10 > thumbnail.${{ matrix.framework }}.output.txt
-  #      working-directory: ./dotnet.performance/src/tools/ResultsComparer
+     - name: Compare - thumbnail (${{ matrix.framework }})
+       run: dotnet run  --base "../../../../fileonq.imaging.heif/benchmarks/results/thumbnail.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-thumbnail.${{ matrix.framework }}" --threshold 10% --top 10 > thumbnail.${{ matrix.framework }}.output.txt
+       working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-  #    - name: Compare - primary (${{ matrix.framework }})
-  #      run: dotnet run --base "../../../../fileonq.imaging.heif/benchmarks/results/primary.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-primary.${{ matrix.framework }}" --threshold 10% --top 10 > primary.${{ matrix.framework }}.output.txt
-  #      working-directory: ./dotnet.performance/src/tools/ResultsComparer
+     - name: Compare - primary (${{ matrix.framework }})
+       run: dotnet run --base "../../../../fileonq.imaging.heif/benchmarks/results/primary.${{ matrix.framework }}" --diff "../../../../artifacts/Benchmark-primary.${{ matrix.framework }}" --threshold 10% --top 10 > primary.${{ matrix.framework }}.output.txt
+       working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-  #    - name: GitHub Comment - Comparison (${{ matrix.framework }})
-  #      run: |
-  #        $thumbnail = Get-Content "thumbnail.${{ matrix.framework }}.output.txt" -raw
-  #        $primary = Get-Content "primary.${{ matrix.framework }}.output.txt" -raw
+     - name: GitHub Comment - Comparison (${{ matrix.framework }})
+       run: |
+         $thumbnail = Get-Content "thumbnail.${{ matrix.framework }}.output.txt" -raw
+         $primary = Get-Content "primary.${{ matrix.framework }}.output.txt" -raw
 
-  #        $message = "## Benchmark Comparison - ${{ matrix.name }}`r`n"
-  #        $message += "Benchmarking comparison between this Pull Request and the comitted values at benchmarks/results `r`n`r`n"
-  #        $message += "thumbnail`r`n"
-  #        $message += "\``\``\``ini `r`n $thumbnail `r`n \``\``\``"
-  #        $message += "`r`n`r`nprimary`r`n"
-  #        $message += "\``\``\``ini `r`n $primary `r`n \``\``\``"
-  #        echo $message
-  #        echo "PR_COMMENT_COMPARISON<<EOF" >> $env:GITHUB_ENV
-  #        echo "$message" >> $env:GITHUB_ENV
-  #        echo "EOF" >> $env:GITHUB_ENV
-  #      working-directory: ./dotnet.performance/src/tools/ResultsComparer
+         $message = "## Benchmark Comparison - ${{ matrix.name }}`r`n"
+         $message += "Benchmarking comparison between this Pull Request and the comitted values at benchmarks/results `r`n`r`n"
+         $message += "thumbnail`r`n"
+         $message += "\``\``\``ini `r`n $thumbnail `r`n \``\``\``"
+         $message += "`r`n`r`nprimary`r`n"
+         $message += "\``\``\``ini `r`n $primary `r`n \``\``\``"
+         echo $message
+         echo "PR_COMMENT_COMPARISON<<EOF" >> $env:GITHUB_ENV
+         echo "$message" >> $env:GITHUB_ENV
+         echo "EOF" >> $env:GITHUB_ENV
+       working-directory: ./dotnet.performance/src/tools/ResultsComparer
 
-  #    - name: GitHub Comment - Benchmark Results (${{ matrix.framework }})
-  #      run: |
-  #        $thumbnail = Get-Content "Benchmark-thumbnail.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
-  #        $thumbnail = $thumbnail.replace("``", "\``")
+     - name: GitHub Comment - Benchmark Results (${{ matrix.framework }})
+       run: |
+         $thumbnail = Get-Content "Benchmark-thumbnail.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-report-github.md" -raw
+         $thumbnail = $thumbnail.replace("``", "\``")
 
-  #        $primary = Get-Content "Benchmark-primary.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
-  #        $primary = $primary.replace("``", "\``")
+         $primary = Get-Content "Benchmark-primary.${{ matrix.framework }}/FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-report-github.md" -raw
+         $primary = $primary.replace("``", "\``")
 
-  #        $message = "## Benchmark Results - ${{ matrix.name }}`r`n"
-  #        $message += "<details><summary>thumbnail</summary><p>`r`n`r`n $thumbnail </p></details>`r`n"
-  #        $message += "<details><summary>primary</summary><p>`r`n`r`n $primary </p></details>`r`n"
-  #        echo $message
-  #        echo "PR_COMMENT_RESULTS<<EOF" >> $env:GITHUB_ENV
-  #        echo "$message" >> $env:GITHUB_ENV
-  #        echo "EOF" >> $env:GITHUB_ENV
-  #      working-directory: ./artifacts
-
-      #- name: Combine Message (${{ matrix.framework }})
-      #  run: |
-      #    $message = "${{ env.PR_COMMENT_COMPARISON }} \r\n\r\n ${{ env.PR_COMMENT_RESULTS }}"
-      #    $message = $message.replace("\\\", "```")
-      #    echo $message > github-comment.${{ matrix.framework }}.md
-      #  working-directory: ./artifacts
+         $message = "## Benchmark Results - ${{ matrix.name }}`r`n"
+         $message += "<details><summary>thumbnail</summary><p>`r`n`r`n $thumbnail </p></details>`r`n"
+         $message += "<details><summary>primary</summary><p>`r`n`r`n $primary </p></details>`r`n"
+         echo $message
+         echo "PR_COMMENT_RESULTS<<EOF" >> $env:GITHUB_ENV
+         echo "$message" >> $env:GITHUB_ENV
+         echo "EOF" >> $env:GITHUB_ENV
+       working-directory: ./artifacts
 
       - name: Combine Message (${{ matrix.framework }})
-        run: |
-          mkdir artifacts
-          cd artifacts
-          $message = Get-Content ../fileonq.imaging.heif/benchmarks/results/github-comment.net48.md -raw
-          $message = $message.replace("\\\", "\``\``\``")
-          echo $message > github-comment.${{ matrix.framework }}.md
+       run: |
+         $message = "${{ env.PR_COMMENT_COMPARISON }} \r\n\r\n ${{ env.PR_COMMENT_RESULTS }}"
+         $message = $message.replace("\\\", "\`\`\`")
+         echo $message > github-comment.${{ matrix.framework }}.md
+       working-directory: ./artifacts
+
+      # - name: Combine Message (${{ matrix.framework }})
+      #   run: |
+      #     mkdir artifacts
+      #     cd artifacts
+      #     $message = Get-Content ../fileonq.imaging.heif/benchmarks/results/github-comment.net48.md -raw
+      #     $message = $message.replace("\\\", "\``\``\``")
+      #     echo $message > github-comment.${{ matrix.framework }}.md
 
       - name: Upload Results
         uses: actions/upload-artifact@v2
