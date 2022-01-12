@@ -5,7 +5,12 @@ namespace FileOnQ.Imaging.Heif
 	/// <inheritdoc cref="IHeifImage"/>
 	public unsafe class HeifImage : IHeifImage
 	{
-	
+
+#if NET48_OR_GREATER
+		static HeifImage() =>
+			Interop.UpdateDllSearchPath();
+#endif
+
 		LibHeif.Context* heifContext;
 		/// <summary>
 		/// Instantiates the default instance of
