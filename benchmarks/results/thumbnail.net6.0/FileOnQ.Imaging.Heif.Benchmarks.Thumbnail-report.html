@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-20220111-224553</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19043.1415 (21H1/May2021Update)
+AMD Ryzen 9 3950X, 1 CPU, 32 logical and 16 physical cores
+.NET SDK=6.0.100
+  [Host]     : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
+  Job-KXHYYP : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
+</code></pre>
+<pre><code>Runtime=.NET 6.0  InvocationCount=1  LaunchCount=1  
+UnrollFactor=1  
+</code></pre>
+
+<table>
+<thead><tr><th>      Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Allocated native memory</th><th>Native memory leak</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>Thumbnail_Write</td><td>33.66 ms</td><td>0.288 ms</td><td>0.269 ms</td><td>5,124,079 B</td><td>-</td><td>832 B</td>
+</tr><tr><td>Thumbnail_ToArray</td><td>33.74 ms</td><td>0.358 ms</td><td>0.317 ms</td><td>5,123,551 B</td><td>-</td><td>66,888 B</td>
+</tr><tr><td>Thumbnail_ToSpan</td><td>33.61 ms</td><td>0.451 ms</td><td>0.400 ms</td><td>5,123,583 B</td><td>32 B</td><td>600 B</td>
+</tr><tr><td>Thumbnail_ToStream</td><td>33.48 ms</td><td>0.480 ms</td><td>0.449 ms</td><td>5,123,583 B</td><td>32 B</td><td>66,952 B</td>
+</tr></tbody></table>
+</body>
+</html>
