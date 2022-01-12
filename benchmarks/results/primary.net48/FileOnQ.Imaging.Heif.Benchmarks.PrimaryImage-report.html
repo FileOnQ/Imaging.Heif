@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-20220111-224718</title>
+<title>FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-20220112-211724</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -13,23 +13,22 @@
 </head>
 <body>
 <pre><code>
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19043.1415 (21H1/May2021Update)
-AMD Ryzen 9 3950X, 1 CPU, 32 logical and 16 physical cores
-.NET SDK=6.0.100
-  [Host]     : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
-  Job-BOOZET : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Redstone5), VM=Hyper-V
+Intel Xeon Platinum 8272CL CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
+  [Host]     : .NET Framework 4.8 (4.8.4420.0), X64 RyuJIT
+  Job-GHSIOX : .NET Framework 4.8 (4.8.4420.0), X64 RyuJIT
 </code></pre>
-<pre><code>Runtime=.NET 6.0  InvocationCount=1  LaunchCount=1  
+<pre><code>Runtime=.NET Framework 4.8  InvocationCount=1  LaunchCount=1  
 UnrollFactor=1  
 </code></pre>
 
 <table>
 <thead><tr><th>         Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Allocated native memory</th><th>Native memory leak</th><th>Allocated</th>
 </tr>
-</thead><tbody><tr><td>PrimaryImage_Write</td><td>1.635 s</td><td>0.0043 s</td><td>0.0036 s</td><td>222,028,826 B</td><td>-</td><td>848 B</td>
-</tr><tr><td>PrimaryImage_ToArray</td><td>1.630 s</td><td>0.0031 s</td><td>0.0029 s</td><td>222,028,298 B</td><td>-</td><td>1,943,536 B</td>
-</tr><tr><td>PrimaryImage_ToSpan</td><td>1.627 s</td><td>0.0024 s</td><td>0.0023 s</td><td>222,028,442 B</td><td>-</td><td>616 B</td>
-</tr><tr><td>PrimaryImage_ToStream</td><td>1.631 s</td><td>0.0050 s</td><td>0.0047 s</td><td>222,027,978 B</td><td>-</td><td>1,943,600 B</td>
+</thead><tbody><tr><td>PrimaryImage_Write</td><td>2.141 s</td><td>0.0131 s</td><td>0.0123 s</td><td>222,029,638 B</td><td>180 B</td><td>1,951,112 B</td>
+</tr><tr><td>PrimaryImage_ToArray</td><td>2.144 s</td><td>0.0081 s</td><td>0.0063 s</td><td>222,029,326 B</td><td>180 B</td><td>1,951,112 B</td>
+</tr><tr><td>PrimaryImage_ToSpan</td><td>2.163 s</td><td>0.0037 s</td><td>0.0035 s</td><td>222,029,358 B</td><td>180 B</td><td>-</td>
+</tr><tr><td>PrimaryImage_ToStream</td><td>2.270 s</td><td>0.0350 s</td><td>0.0327 s</td><td>222,029,278 B</td><td>180 B</td><td>3,894,032 B</td>
 </tr></tbody></table>
 </body>
 </html>
