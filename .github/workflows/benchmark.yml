@@ -259,7 +259,7 @@ jobs:
       - name: Combine Message (${{ matrix.framework }})
         run: |
           $message = "${{ env.PR_COMMENT_COMPARISON }} \r\n\r\n ${{ env.PR_COMMENT_RESULTS }}"
-          $message = $message.replace("\\\", "\`\`\`")
+          $message = $message.replace("\\\", "\``\``\``")
           echo $message > github-comment.${{ matrix.framework }}.md
         working-directory: ./artifacts
 
