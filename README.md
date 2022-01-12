@@ -12,6 +12,7 @@ A C#/.NET wrapper around [libheif](https://github.com/strukturag/libheif) to sim
 * [Contributing](CONTRIBUTING.md)
 * [Developer Guide](DEVELOPER_GUIDE.md)
 * [Building](BUILDING.md)
+* [Releasing](RELEASING.md)
 
 ## Setup
 Install the NuGet package into your target head and any shared projects.
