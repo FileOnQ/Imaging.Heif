@@ -263,14 +263,6 @@ jobs:
           echo $message > github-comment.${{ matrix.framework }}.md
         working-directory: ./artifacts
 
-      # - name: Combine Message (${{ matrix.framework }})
-      #   run: |
-      #     mkdir artifacts
-      #     cd artifacts
-      #     $message = Get-Content ../fileonq.imaging.heif/benchmarks/results/github-comment.net48.md -raw
-      #     $message = $message.replace("\\\", "\``\``\``")
-      #     echo $message > github-comment.${{ matrix.framework }}.md
-
       - name: Upload Results
         uses: actions/upload-artifact@v2
         with:
