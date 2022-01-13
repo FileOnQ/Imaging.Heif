@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-20220112-211758</title>
+<title>FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-20220112-235445</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -17,7 +17,7 @@ BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Reds
 Intel Xeon Platinum 8171M CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
 .NET SDK=6.0.101
   [Host]     : .NET 5.0.8 (5.0.821.31504), X64 RyuJIT
-  Job-KKDNHT : .NET 5.0.8 (5.0.821.31504), X64 RyuJIT
+  Job-AGFPST : .NET 5.0.8 (5.0.821.31504), X64 RyuJIT
 </code></pre>
 <pre><code>Runtime=.NET 5.0  InvocationCount=1  LaunchCount=1  
 UnrollFactor=1  
@@ -26,10 +26,10 @@ UnrollFactor=1
 <table>
 <thead><tr><th>      Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Allocated native memory</th><th>Native memory leak</th><th>Allocated</th>
 </tr>
-</thead><tbody><tr><td>Thumbnail_Write</td><td>57.82 ms</td><td>1.134 ms</td><td>1.114 ms</td><td>5,124,425 B</td><td>-</td><td>288 B</td>
-</tr><tr><td>Thumbnail_ToArray</td><td>56.98 ms</td><td>1.120 ms</td><td>0.935 ms</td><td>5,123,869 B</td><td>-</td><td>66,408 B</td>
-</tr><tr><td>Thumbnail_ToSpan</td><td>56.66 ms</td><td>1.081 ms</td><td>1.011 ms</td><td>5,123,853 B</td><td>-</td><td>120 B</td>
-</tr><tr><td>Thumbnail_ToStream</td><td>57.26 ms</td><td>0.884 ms</td><td>1.018 ms</td><td>5,123,853 B</td><td>-</td><td>66,472 B</td>
+</thead><tbody><tr><td>Thumbnail_Write</td><td>59.29 ms</td><td>1.184 ms</td><td>1.912 ms</td><td>5,124,425 B</td><td>-</td><td>288 B</td>
+</tr><tr><td>Thumbnail_ToArray</td><td>58.66 ms</td><td>1.163 ms</td><td>1.339 ms</td><td>5,123,869 B</td><td>-</td><td>66,408 B</td>
+</tr><tr><td>Thumbnail_ToSpan</td><td>58.68 ms</td><td>1.150 ms</td><td>1.889 ms</td><td>5,123,597 B</td><td>-</td><td>120 B</td>
+</tr><tr><td>Thumbnail_ToStream</td><td>57.98 ms</td><td>1.150 ms</td><td>1.370 ms</td><td>5,123,853 B</td><td>-</td><td>66,472 B</td>
 </tr></tbody></table>
 </body>
 </html>

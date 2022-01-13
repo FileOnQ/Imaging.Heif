@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-20220112-211724</title>
+<title>FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-20220112-235455</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -14,7 +14,7 @@
 <body>
 <pre><code>
 BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Redstone5), VM=Hyper-V
-Intel Xeon Platinum 8272CL CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
+Intel Xeon Platinum 8171M CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
   [Host]     : .NET Framework 4.8 (4.8.4420.0), X64 RyuJIT
   Job-GHSIOX : .NET Framework 4.8 (4.8.4420.0), X64 RyuJIT
 </code></pre>
@@ -25,10 +25,10 @@ UnrollFactor=1
 <table>
 <thead><tr><th>         Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Allocated native memory</th><th>Native memory leak</th><th>Allocated</th>
 </tr>
-</thead><tbody><tr><td>PrimaryImage_Write</td><td>2.141 s</td><td>0.0131 s</td><td>0.0123 s</td><td>222,029,638 B</td><td>180 B</td><td>1,951,112 B</td>
-</tr><tr><td>PrimaryImage_ToArray</td><td>2.144 s</td><td>0.0081 s</td><td>0.0063 s</td><td>222,029,326 B</td><td>180 B</td><td>1,951,112 B</td>
-</tr><tr><td>PrimaryImage_ToSpan</td><td>2.163 s</td><td>0.0037 s</td><td>0.0035 s</td><td>222,029,358 B</td><td>180 B</td><td>-</td>
-</tr><tr><td>PrimaryImage_ToStream</td><td>2.270 s</td><td>0.0350 s</td><td>0.0327 s</td><td>222,029,278 B</td><td>180 B</td><td>3,894,032 B</td>
+</thead><tbody><tr><td>PrimaryImage_Write</td><td>2.989 s</td><td>0.0554 s</td><td>0.0518 s</td><td>222,028,750 B</td><td>-</td><td>1,951,112 B</td>
+</tr><tr><td>PrimaryImage_ToArray</td><td>2.767 s</td><td>0.0547 s</td><td>0.0671 s</td><td>222,028,966 B</td><td>-</td><td>1,951,112 B</td>
+</tr><tr><td>PrimaryImage_ToSpan</td><td>2.828 s</td><td>0.0560 s</td><td>0.1118 s</td><td>222,028,774 B</td><td>-</td><td>-</td>
+</tr><tr><td>PrimaryImage_ToStream</td><td>2.774 s</td><td>0.0483 s</td><td>0.0517 s</td><td>222,029,014 B</td><td>-</td><td>3,894,032 B</td>
 </tr></tbody></table>
 </body>
 </html>

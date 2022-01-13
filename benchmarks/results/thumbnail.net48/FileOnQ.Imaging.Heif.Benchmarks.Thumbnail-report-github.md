@@ -9,9 +9,9 @@ Runtime=.NET Framework 4.8  InvocationCount=1  LaunchCount=1
 UnrollFactor=1  
 
 ```
-|             Method |     Mean |    Error |   StdDev | Allocated native memory | Native memory leak | Allocated |
-|------------------- |---------:|---------:|---------:|------------------------:|-------------------:|----------:|
-|    Thumbnail_Write | 60.80 ms | 1.188 ms | 2.658 ms |             5,124,251 B |              180 B |  74,504 B |
-|  Thumbnail_ToArray | 60.41 ms | 1.086 ms | 1.592 ms |             5,123,923 B |              180 B |  74,504 B |
-|   Thumbnail_ToSpan | 60.79 ms | 1.181 ms | 1.655 ms |             5,123,923 B |              180 B |         - |
-| Thumbnail_ToStream | 58.00 ms | 1.130 ms | 1.429 ms |             5,123,923 B |              180 B | 140,816 B |
+|             Method |     Mean |    Error |   StdDev |   Median | Allocated native memory | Native memory leak | Allocated |
+|------------------- |---------:|---------:|---------:|---------:|------------------------:|-------------------:|----------:|
+|    Thumbnail_Write | 59.36 ms | 1.167 ms | 1.091 ms | 59.51 ms |             5,123,891 B |                  - |  74,504 B |
+|  Thumbnail_ToArray | 59.17 ms | 1.157 ms | 2.364 ms | 58.64 ms |             5,123,307 B |                  - |  74,504 B |
+|   Thumbnail_ToSpan | 59.17 ms | 1.047 ms | 1.779 ms | 58.91 ms |             5,123,579 B |                  - |         - |
+| Thumbnail_ToStream | 60.52 ms | 1.209 ms | 2.851 ms | 59.45 ms |             5,123,563 B |                  - | 140,816 B |
