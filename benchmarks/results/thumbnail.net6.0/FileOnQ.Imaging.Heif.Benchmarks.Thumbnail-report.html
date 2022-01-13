@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-20220112-211718</title>
+<title>FileOnQ.Imaging.Heif.Benchmarks.Thumbnail-20220112-235422</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -17,19 +17,19 @@ BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Reds
 Intel Xeon Platinum 8272CL CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
 .NET SDK=6.0.101
   [Host]     : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
-  Job-BSEFYJ : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
+  Job-EELGXR : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
 </code></pre>
 <pre><code>Runtime=.NET 6.0  InvocationCount=1  LaunchCount=1  
 UnrollFactor=1  
 </code></pre>
 
 <table>
-<thead><tr><th>      Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th><th>Allocated native memory</th><th>Native memory leak</th><th>Allocated</th>
+<thead><tr><th>      Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Allocated native memory</th><th>Native memory leak</th><th>Allocated</th>
 </tr>
-</thead><tbody><tr><td>Thumbnail_Write</td><td>46.47 ms</td><td>0.924 ms</td><td>2.300 ms</td><td>47.67 ms</td><td>5,124,153 B</td><td>-</td><td>832 B</td>
-</tr><tr><td>Thumbnail_ToArray</td><td>47.60 ms</td><td>0.388 ms</td><td>0.363 ms</td><td>47.55 ms</td><td>5,123,917 B</td><td>64 B</td><td>66,888 B</td>
-</tr><tr><td>Thumbnail_ToSpan</td><td>45.27 ms</td><td>0.902 ms</td><td>2.229 ms</td><td>46.29 ms</td><td>5,123,869 B</td><td>-</td><td>600 B</td>
-</tr><tr><td>Thumbnail_ToStream</td><td>45.89 ms</td><td>0.917 ms</td><td>1.994 ms</td><td>46.44 ms</td><td>5,123,869 B</td><td>-</td><td>66,952 B</td>
+</thead><tbody><tr><td>Thumbnail_Write</td><td>48.18 ms</td><td>0.541 ms</td><td>0.506 ms</td><td>5,124,409 B</td><td>-</td><td>832 B</td>
+</tr><tr><td>Thumbnail_ToArray</td><td>47.45 ms</td><td>0.539 ms</td><td>0.504 ms</td><td>5,123,597 B</td><td>-</td><td>66,888 B</td>
+</tr><tr><td>Thumbnail_ToSpan</td><td>47.54 ms</td><td>0.425 ms</td><td>0.398 ms</td><td>5,123,853 B</td><td>-</td><td>600 B</td>
+</tr><tr><td>Thumbnail_ToStream</td><td>47.74 ms</td><td>0.457 ms</td><td>0.427 ms</td><td>5,123,853 B</td><td>-</td><td>66,952 B</td>
 </tr></tbody></table>
 </body>
 </html>

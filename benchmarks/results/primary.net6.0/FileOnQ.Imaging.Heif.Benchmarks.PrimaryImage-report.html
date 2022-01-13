@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-20220112-211735</title>
+<title>FileOnQ.Imaging.Heif.Benchmarks.PrimaryImage-20220112-235442</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -14,10 +14,10 @@
 <body>
 <pre><code>
 BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Redstone5)
-Intel Xeon CPU E5-2673 v4 2.30GHz, 1 CPU, 2 logical and 2 physical cores
+Intel Xeon Platinum 8171M CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
 .NET SDK=6.0.101
   [Host]     : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
-  Job-GUHUPJ : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
+  Job-AMEHTW : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
 </code></pre>
 <pre><code>Runtime=.NET 6.0  InvocationCount=1  LaunchCount=1  
 UnrollFactor=1  
@@ -26,10 +26,10 @@ UnrollFactor=1
 <table>
 <thead><tr><th>         Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Allocated native memory</th><th>Native memory leak</th><th>Allocated</th>
 </tr>
-</thead><tbody><tr><td>PrimaryImage_Write</td><td>2.593 s</td><td>0.0349 s</td><td>0.0326 s</td><td>222,029,092 B</td><td>-</td><td>848 B</td>
-</tr><tr><td>PrimaryImage_ToArray</td><td>2.529 s</td><td>0.0325 s</td><td>0.0288 s</td><td>222,028,696 B</td><td>-</td><td>1,943,536 B</td>
-</tr><tr><td>PrimaryImage_ToSpan</td><td>2.598 s</td><td>0.0375 s</td><td>0.0350 s</td><td>222,028,488 B</td><td>-</td><td>616 B</td>
-</tr><tr><td>PrimaryImage_ToStream</td><td>2.605 s</td><td>0.0373 s</td><td>0.0330 s</td><td>222,028,552 B</td><td>-</td><td>1,943,600 B</td>
+</thead><tbody><tr><td>PrimaryImage_Write</td><td>2.869 s</td><td>0.0189 s</td><td>0.0167 s</td><td>222,029,556 B</td><td>-</td><td>848 B</td>
+</tr><tr><td>PrimaryImage_ToArray</td><td>2.887 s</td><td>0.0384 s</td><td>0.0340 s</td><td>222,028,872 B</td><td>-</td><td>1,943,536 B</td>
+</tr><tr><td>PrimaryImage_ToSpan</td><td>2.968 s</td><td>0.0271 s</td><td>0.0241 s</td><td>222,029,080 B</td><td>-</td><td>616 B</td>
+</tr><tr><td>PrimaryImage_ToStream</td><td>2.978 s</td><td>0.0368 s</td><td>0.0344 s</td><td>222,028,952 B</td><td>-</td><td>1,943,600 B</td>
 </tr></tbody></table>
 </body>
 </html>
