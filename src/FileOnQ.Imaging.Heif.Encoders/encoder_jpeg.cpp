@@ -189,15 +189,13 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 		return false;
 	}
 
-	int stride_y;
-	const uint8_t* row_y = heif_image_get_plane_readonly(image, heif_channel_R,
-		&stride_y);
-	int stride_u;
-	const uint8_t* row_u = heif_image_get_plane_readonly(image, heif_channel_G,
-		&stride_u);
-	int stride_v;
-	const uint8_t* row_v = heif_image_get_plane_readonly(image, heif_channel_B,
-		&stride_v);
+	int stride_r;
+	int stride_g;
+	int stride_b;
+
+	const uint8_t* row_r = heif_image_get_plane_readonly(image, heif_channel_R, &stride_r);
+	const uint8_t* row_g = heif_image_get_plane_readonly(image, heif_channel_G, &stride_g);
+	const uint8_t* row_b = heif_image_get_plane_readonly(image, heif_channel_B, &stride_b);
 
 	JSAMPARRAY buffer = cinfo.mem->alloc_sarray(
 		reinterpret_cast<j_common_ptr>(&cinfo), JPOOL_IMAGE,
@@ -205,18 +203,20 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 	JSAMPROW row[1] = { buffer[0] };
 
 	while (cinfo.next_scanline < cinfo.image_height) {
-		size_t offset_y = cinfo.next_scanline * stride_y;
-		const uint8_t* start_y = &row_y[offset_y];
-		size_t offset_u = (cinfo.next_scanline / 2) * stride_u;
-		const uint8_t* start_u = &row_u[offset_u];
-		size_t offset_v = (cinfo.next_scanline / 2) * stride_v;
-		const uint8_t* start_v = &row_v[offset_v];
+		size_t offset_r = cinfo.next_scanline * stride_r;
+		const uint8_t* start_r = &row_r[offset_r];
+
+		size_t offset_g = cinfo.next_scanline * stride_g;
+		const uint8_t* start_g = &row_g[offset_g];
+
+		size_t offset_b = cinfo.next_scanline * stride_b;
+		const uint8_t* start_b = &row_b[offset_b];
 
 		JOCTET* bufp = buffer[0];
 		for (JDIMENSION x = 0; x < cinfo.image_width; ++x) {
-			*bufp++ = start_y[x];
-			*bufp++ = start_u[x / 2];
-			*bufp++ = start_v[x / 2];
+			*bufp++ = start_r[x];
+			*bufp++ = start_g[x];
+			*bufp++ = start_b[x];
 		}
 
 		jpeg_write_scanlines(&cinfo, row, 1);
