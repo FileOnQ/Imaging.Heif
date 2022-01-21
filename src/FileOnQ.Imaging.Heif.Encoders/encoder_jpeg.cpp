@@ -148,8 +148,8 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 
 	jpeg_create_compress(&cinfo);
 
-	int width = heif_image_get_width(image, heif_channel_Y);
-	int height = heif_image_get_height(image, heif_channel_Y);
+	int width = heif_image_get_width(image, heif_channel_R);
+	int height = heif_image_get_height(image, heif_channel_R);
 
 	// malloc the size of the pointer so it can be released
 	*data = (unsigned char*)malloc(width * height);
@@ -160,7 +160,7 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 	cinfo.image_width = width;
 	cinfo.image_height = height;
 	cinfo.input_components = 3;
-	cinfo.in_color_space = JCS_YCbCr;
+	cinfo.in_color_space = JCS_RGB;
 	jpeg_set_defaults(&cinfo);
 	static const boolean kForceBaseline = TRUE;
 	jpeg_set_quality(&cinfo, quality_, kForceBaseline);
@@ -184,19 +184,19 @@ bool JpegEncoder::Encode(const struct heif_image_handle* handle,
 		free(profile_data);
 	}
 
-	if (heif_image_get_bits_per_pixel(image, heif_channel_Y) != 8) {
+	if (heif_image_get_bits_per_pixel(image, heif_channel_R) != 8) {
 		fprintf(stderr, "JPEG writer cannot handle image with >8 bpp.\n");
 		return false;
 	}
 
 	int stride_y;
-	const uint8_t* row_y = heif_image_get_plane_readonly(image, heif_channel_Y,
+	const uint8_t* row_y = heif_image_get_plane_readonly(image, heif_channel_R,
 		&stride_y);
 	int stride_u;
-	const uint8_t* row_u = heif_image_get_plane_readonly(image, heif_channel_Cb,
+	const uint8_t* row_u = heif_image_get_plane_readonly(image, heif_channel_G,
 		&stride_u);
 	int stride_v;
-	const uint8_t* row_v = heif_image_get_plane_readonly(image, heif_channel_Cr,
+	const uint8_t* row_v = heif_image_get_plane_readonly(image, heif_channel_B,
 		&stride_v);
 
 	JSAMPARRAY buffer = cinfo.mem->alloc_sarray(

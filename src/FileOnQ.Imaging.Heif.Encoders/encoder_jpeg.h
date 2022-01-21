@@ -43,12 +43,12 @@ public:
 
 	heif_colorspace colorspace(bool has_alpha) const override
 	{
-		return heif_colorspace_YCbCr;
+		return heif_colorspace_RGB;// heif_colorspace_YCbCr;
 	}
 
 	heif_chroma chroma(bool has_alpha, int bit_depth) const override
 	{
-		return heif_chroma_420;
+		return heif_chroma_444;// heif_chroma_420;
 	}
 
 	void UpdateDecodingOptions(const struct heif_image_handle* handle,
