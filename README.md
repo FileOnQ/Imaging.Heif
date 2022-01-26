@@ -1,6 +1,4 @@
 # FileOnQ.Imaging.Heif
-**This project is a work in progress all code is currently experimental**
-
 A C#/.NET wrapper around [libheif](https://github.com/strukturag/libheif) to simplify opening heic images and retrieving thumbnails.
 
 <!-- Add all badges here such as CI Build, wiki, etc. -->
