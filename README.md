@@ -78,7 +78,6 @@ FileOnQ.Imaging.Heif uses several native C/C++ dependent libraries
 * [dav1d](https://code.videolan.org/videolan/dav1d)
 * [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo)
 * [libde265](https://github.com/strukturag/libde265)
-* [x265](https://github.com/videolan/x265)
 
 # Created By FileOnQ
 This library was created by FileOnQ and donated to the open source community.
