@@ -8,6 +8,7 @@ cd ../third-party/libheif-%arch%
 
 mkdir build
 cd build
+
 cmake -G"NMake Makefiles"^
  -DCMAKE_BUILD_TYPE=%config%^
  -DDAV1D_INCLUDE_DIR:PATH=%thirdPartyPath%\dav1d-%arch%\build\include^
@@ -17,6 +18,6 @@ cmake -G"NMake Makefiles"^
  -DJPEG_LIBRARY_RELEASE:FILEPATH=%thirdPartyPath%\libjpeg-turbo-%arch%\jpeg.lib^
  -DLIBDE265_INCLUDE_DIR:PATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\include^
  -DLIBDE265_LIBRARY:FILEPATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\lib\libde265.lib^
- -DWITH_X265=OFF^
  ..
- nmake
+
+nmake
