@@ -22,8 +22,8 @@ Install the NuGet package into your target head and any shared projects.
 ### Windows
 Any Windows device running an application using this library requires the Visual C++ Redistributable package installed. See the [Microsoft Visual C++ Redistributable Latest Supported Downloads](https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist). You will need to install the correct CPU Architecture(s) that your application supports. 
 * [vc_redist.arm64.exe](https://aka.ms/vs/17/release/vc_redist.arm64.exe)
-* [vc_redist.x86.exe](https://aka.ms/vs/17/release/vc_redist.arm64.exe)
-* [vc_redist.x64.exe](https://aka.ms/vs/17/release/vc_redist.arm64.exe)
+* [vc_redist.x86.exe](https://aka.ms/vs/17/release/vc_redist.x86.exe)
+* [vc_redist.x64.exe](https://aka.ms/vs/17/release/vc_redist.x64.exe)
 
 ## Supported Target Frameworks
 FileOnQ.Imaging.Heif is available for use in the following target frameworks
