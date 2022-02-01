@@ -1,4 +1,4 @@
-name: Build (${{ env.version }})
+name: Build (1.0.1)
 
 on:
    push:

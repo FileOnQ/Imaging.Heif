@@ -1,4 +1,4 @@
-name: Build PR (${{ env.version }})
+name: Build PR (1.0.1)
 
 on:
    pull_request:
