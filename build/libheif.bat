@@ -8,5 +8,16 @@ cd ../third-party/libheif-%arch%
 
 mkdir build
 cd build
-cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=%config% -DDAV1D_INCLUDE_DIR:PATH=%thirdPartyPath%\dav1d-%arch%\build\include -DDAV1D_LIBRARY:FILEPATH=%thirdPartyPath%\dav1d-%arch%\build\src\dav1d.lib -DJPEG_INCLUDE_DIR:PATH=%thirdPartyPath%\libjpeg-turbo-%arch% -DJPEG_LIBRARY_DEBUG:FILEPATH=%thirdPartyPath%\libjpeg-turbo-%arch%\jpeg.lib -DJPEG_LIBRARY_RELEASE:FILEPATH=%thirdPartyPath%\libjpeg-turbo-%arch%\jpeg.lib -DLIBDE265_INCLUDE_DIR:PATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\include\libde265 -DLIBDE265_LIBRARY:FILEPATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\lib\libde265.lib -DX265_INCLUDE_DIR:PATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\include -DX265_LIBRARY:FILEPATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\lib\libx265.lib ..
+
+cmake -G"NMake Makefiles"^
+ -DCMAKE_BUILD_TYPE=%config%^
+ -DDAV1D_INCLUDE_DIR:PATH=%thirdPartyPath%\dav1d-%arch%\build\include^
+ -DDAV1D_LIBRARY:FILEPATH=%thirdPartyPath%\dav1d-%arch%\build\src\dav1d.lib^
+ -DJPEG_INCLUDE_DIR:PATH=%thirdPartyPath%\libjpeg-turbo-%arch%^
+ -DJPEG_LIBRARY_DEBUG:FILEPATH=%thirdPartyPath%\libjpeg-turbo-%arch%\jpeg.lib^
+ -DJPEG_LIBRARY_RELEASE:FILEPATH=%thirdPartyPath%\libjpeg-turbo-%arch%\jpeg.lib^
+ -DLIBDE265_INCLUDE_DIR:PATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\include^
+ -DLIBDE265_LIBRARY:FILEPATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\lib\libde265.lib^
+ ..
+
 nmake

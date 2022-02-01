@@ -23,18 +23,11 @@
 		<Copy SourceFiles="@(IncludeFiles_x64)" DestinationFiles="@(IncludeFiles_x64->'$(ThirdPartyDir)/libheif-x64/libheif/%(RecursiveDir)%(Filename)%(Extension)')" />
 	</Target>
 
-	<Target Name="LibHeif-Dependencies" DependsOnTargets="Vcpkg;libjpeg-turbo;dav1d" Condition="!Exists('dav1d.dll') and !Exists('libde265.dll') and !Exists('libx265.dll')">
+	<Target Name="LibHeif-Dependencies" DependsOnTargets="Vcpkg;libjpeg-turbo;dav1d" Condition="!Exists('dav1d.dll') and !Exists('libde265.dll')">
 		<Exec Command="vcpkg.exe install libde265:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
-		<Exec Command="vcpkg.exe install x265:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
-
 		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/libde265.dll" DestinationFolder="runtimes/win-x64/native" />
-		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/libx265.dll" DestinationFolder="runtimes/win-x64/native" />
-
 		<Exec Command="vcpkg.exe install libde265:x86-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
-		<Exec Command="vcpkg.exe install x265:x86-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
-
 		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x86-windows/bin/libde265.dll" DestinationFolder="runtimes/win-x86/native" />
-		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x86-windows/bin/libx265.dll" DestinationFolder="runtimes/win-x86/native" />
 	</Target>
 
 	<Target Name="LibHeif-Clone-x86" Condition="!Exists('$(ThirdPartyDir)/libheif-x86/README.md')">
@@ -65,11 +58,9 @@
 		<Delete Files="runtimes/win-x86/native/dav1d.dll" />
 		<Delete Files="runtimes/win-x86/native/heif.dll" />
 		<Delete Files="runtimes/win-x86/native/libde265.dll" />
-		<Delete Files="runtimes/win-x86/native/libx265.dll" />
 
 		<Delete Files="runtimes/win-x64/native/dav1d.dll" />
 		<Delete Files="runtimes/win-x64/native/heif.dll" />
 		<Delete Files="runtimes/win-x64/native/libde265.dll" />
-		<Delete Files="runtimes/win-x64/native/libx265.dll" />
 	</Target>
 </Project>

@@ -12,7 +12,6 @@
 		<Delete Files="$(ProjectDir)\$(OutDir)\heif.dll" />
 		<Delete Files="$(ProjectDir)\$(OutDir)\jpeg62.dll" />
 		<Delete Files="$(ProjectDir)\$(OutDir)\libde265.dll" />
-		<Delete Files="$(ProjectDir)\$(OutDir)\libx265.dll" />
 
 		<Copy SourceFiles="@(AssemblyFiles_x86)" DestinationFiles="@(AssemblyFiles_x86->'$(ProjectDir)\$(OutDir)\runtimes\win-x86\native\%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(AssemblyFiles_x64)" DestinationFiles="@(AssemblyFiles_x64->'$(ProjectDir)\$(OutDir)\runtimes\win-x64\native\%(Filename)%(Extension)')" />

@@ -20,14 +20,12 @@ runtimes/
 │  ├─ heif.dll
 │  ├─ jpeg62.dll
 │  ├─ libde265.dll
-│  ├─ libx265.dll
 ├─ win-x86/
 │  ├─ dav1d.dll
 │  ├─ FileOnQ.Imaging.Heif.Encoders.dll
 │  ├─ heif.dll
 │  ├─ jpeg62.dll
 │  ├─ libde265.dll
-│  ├─ libx265.dll
 ```
 
 If you need to make any changes to how these assemblies are generated you will need to look at the additional build files.
