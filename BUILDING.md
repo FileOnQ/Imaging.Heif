@@ -31,7 +31,7 @@ C:\Program Files\Meson
 *In our environment `nasm` was not automatically added to the path, but the other dependencies were*
 
 ## Compile
-First time compilation takes a very long time, after you start the build go grab a cup of ☕ or 🍵. Our build agent runs the entire clean build in about 25-35 minutes, your build times may vary. Future builds won't take as long even if you do a clean and rebuild as vcpkg will cache binaries in your user directory. 
+First time compilation takes a very long time, after you start the build go grab a cup of ☕ or 🍵. Our build agent runs the entire clean build in about 25-35 minutes, your build times may vary.
 
 By compiling the main project `FileOnQ.Imaging.Heif` you will be compiling all native dependencies including the C++ encoding library `FileOnQ.Imaging.Heif.Encoders`. No need to run any additional compilation instructions.
 

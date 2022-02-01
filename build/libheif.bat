@@ -16,8 +16,8 @@ cmake -G"NMake Makefiles"^
  -DJPEG_INCLUDE_DIR:PATH=%thirdPartyPath%\libjpeg-turbo-%arch%^
  -DJPEG_LIBRARY_DEBUG:FILEPATH=%thirdPartyPath%\libjpeg-turbo-%arch%\jpeg.lib^
  -DJPEG_LIBRARY_RELEASE:FILEPATH=%thirdPartyPath%\libjpeg-turbo-%arch%\jpeg.lib^
- -DLIBDE265_INCLUDE_DIR:PATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\include^
- -DLIBDE265_LIBRARY:FILEPATH=%thirdPartyPath%\vcpkg\installed\%arch%-windows\lib\libde265.lib^
+ -DLIBDE265_INCLUDE_DIR:PATH=%thirdPartyPath%\libde265-%arch%\build^
+ -DLIBDE265_LIBRARY:FILEPATH=%thirdPartyPath%\libde265-%arch%\build\libde265\libde265.lib^
  ..
 
 nmake
