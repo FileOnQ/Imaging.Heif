@@ -15,8 +15,8 @@
 		<Exec Command="libde265.bat x86 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
 		<Exec Command="libde265.bat x64 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
 
-		<Copy SourceFiles="$(ThirdPartyDir)/libde265-x86/build/libde265/libde265.dll" DestinationFolder="runtimes/win-x86/native" />
-		<Copy SourceFiles="$(ThirdPartyDir)/libde265-x64/build/libde265/libde265.dll" DestinationFolder="runtimes/win-x64/native" />
+		<Copy SourceFiles="$(ThirdPartyDir)/libde265-x86/libde265/libde265.dll" DestinationFolder="runtimes/win-x86/native" />
+		<Copy SourceFiles="$(ThirdPartyDir)/libde265-x64/libde265/libde265.dll" DestinationFolder="runtimes/win-x64/native" />
 	</Target>
 
 	<Target Name="libde265-clean" BeforeTargets="Clean">
