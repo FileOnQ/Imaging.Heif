@@ -13,7 +13,8 @@
 	<Import Project="Build\build-properties.props" />
 	<Import Project="Build\dav1d.targets" />
 	<Import Project="Build\encoders.targets" />
-	<Import Project="Build\libheif.targets" />
+	<Import Project="Build\libde265.targets" />
 	<Import Project="Build\libjpeg-turbo.targets" />
+	<Import Project="Build\libheif.targets" />
 
 </Project>

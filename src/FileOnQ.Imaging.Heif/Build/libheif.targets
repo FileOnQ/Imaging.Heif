@@ -23,11 +23,7 @@
 		<Copy SourceFiles="@(IncludeFiles_x64)" DestinationFiles="@(IncludeFiles_x64->'$(ThirdPartyDir)/libheif-x64/libheif/%(RecursiveDir)%(Filename)%(Extension)')" />
 	</Target>
 
-	<Target Name="LibHeif-Dependencies" DependsOnTargets="Vcpkg;libjpeg-turbo;dav1d" Condition="!Exists('dav1d.dll') and !Exists('libde265.dll')">
-		<Exec Command="vcpkg.exe install libde265:x64-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
-		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x64-windows/bin/libde265.dll" DestinationFolder="runtimes/win-x64/native" />
-		<Exec Command="vcpkg.exe install libde265:x86-windows" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
-		<Copy SourceFiles="$(ThirdPartyDir)/vcpkg/installed/x86-windows/bin/libde265.dll" DestinationFolder="runtimes/win-x86/native" />
+	<Target Name="LibHeif-Dependencies" DependsOnTargets="libde265;libjpeg-turbo;dav1d" Condition="!Exists('dav1d.dll') and !Exists('libde265.dll')">
 	</Target>
 
 	<Target Name="LibHeif-Clone-x86" Condition="!Exists('$(ThirdPartyDir)/libheif-x86/README.md')">
@@ -40,18 +36,9 @@
 		<Exec Command="git checkout v1.12.0" WorkingDirectory="$(ThirdPartyDir)/libheif-x64" />
 	</Target>
 
-	<Target Name="Vcpkg" Condition="!Exists('$(ThirdPartyDir)/vcpkg/vcpkg.exe')">
-		<Exec Command="git clone https://github.com/microsoft/vcpkg" WorkingDirectory="$(ThirdPartyDir)" />
-		<Exec Command="bootstrap-vcpkg.bat" WorkingDirectory="$(ThirdPartyDir)/vcpkg" />
-	</Target>
-
 	<Target Name="LibHeif-Clean" BeforeTargets="Clean" >
 		<Exec Command="rmdir /s /q libheif-x86" WorkingDirectory="$(ThirdPartyDir)" Condition="Exists('$(ThirdPartyDir)/libheif-x86/README.md')" />
 		<Exec Command="rmdir /s /q libheif-x64" WorkingDirectory="$(ThirdPartyDir)" Condition="Exists('$(ThirdPartyDir)/libheif-x64/README.md')" />
-	</Target>
-
-	<Target Name="vcpkg-clean" BeforeTargets="Clean" Condition="Exists('$(ThirdPartyDir)/vcpkg/vcpkg.exe')">
-		<Exec Command="rmdir /s /q vcpkg" WorkingDirectory="$(ThirdPartyDir)" />
 	</Target>
 
 	<Target Name="CleanLibHeif" BeforeTargets="Clean">
