@@ -3,12 +3,12 @@
 
 	<Target Name="libde265-clone-x86" Condition="!Exists('$(ThirdPartyDir)/libde265-x86/README.md')">
 		<Exec Command="git clone https://github.com/strukturag/libde265.git libde265-x86" WorkingDirectory="$(ThirdPartyDir)" />
-		<Exec Command="git checkout v1.0.15" WorkingDirectory="$(ThirdPartyDir)/libde265-x86" />
+		<Exec Command="git checkout v1.0.8" WorkingDirectory="$(ThirdPartyDir)/libde265-x86" />
 	</Target>
 
 	<Target Name="libde265-clone-x64" Condition="!Exists('$(ThirdPartyDir)/libde265-x64/README.md')">
 		<Exec Command="git clone https://github.com/strukturag/libde265.git libde265-x64" WorkingDirectory="$(ThirdPartyDir)" />
-		<Exec Command="git checkout v1.0.15" WorkingDirectory="$(ThirdPartyDir)/libde265-x64" />
+		<Exec Command="git checkout v1.0.8" WorkingDirectory="$(ThirdPartyDir)/libde265-x64" />
 	</Target>
 
 	<Target Name="libde265" DependsOnTargets="libde265-clone-x64;libde265-clone-x86" Condition="!Exists('runtimes/win-x64/native/libde265.dll') and !Exists('runtimes/win-x86/native/libde265.dll')">
