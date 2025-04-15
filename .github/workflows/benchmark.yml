@@ -64,7 +64,7 @@ jobs:
      ref: ${{ needs.check-command.outputs.ref }}
      package_version: ${{ env.PACKAGE_VERSION }}
    steps:
-     - uses: actions/checkout@v2
+     - uses: actions/checkout@v4
        with:
          repository: ${{ needs.check-command.outputs.repo }}
          ref: ${{ needs.check-command.outputs.ref }}
@@ -100,7 +100,7 @@ jobs:
        working-directory: ./src/FileOnQ.Imaging.Heif
         
      - name: Upload NuGet Package
-       uses: actions/upload-artifact@v2
+       uses: actions/upload-artifact@v4
        with:
          name: Benchmark-Packages
          path: |
@@ -136,7 +136,7 @@ jobs:
            framework: 'net6.0'
            benchmark: 'primary'
    steps:
-     - uses: actions/checkout@v2
+     - uses: actions/checkout@v4
        with:
          repository: ${{ needs.benchmark-build.outputs.repo }}
          ref: ${{ needs.benchmark-build.outputs.ref }}
@@ -153,7 +153,7 @@ jobs:
          dotnet-version: 6.0.101
 
      - name: Download Artifacts
-       uses: actions/download-artifact@v2
+       uses: actions/download-artifact@v4
 
      - name: Copy Nupkg
        shell: powershell
@@ -168,7 +168,7 @@ jobs:
        working-directory: ./benchmarks/tools
 
      - name: Upload Results
-       uses: actions/upload-artifact@v2
+       uses: actions/upload-artifact@v4
        with:
          name: Benchmark-${{ matrix.benchmark }}.${{ matrix.framework }}
          path: ./benchmarks/tools/BenchmarkDotNet.Artifacts/results
@@ -188,20 +188,20 @@ jobs:
             name: '.NET 6'
     steps:
       - name: Clone fileonq/imaging.heif
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: ${{ needs.benchmark-run.outputs.repo }}
           ref: ${{ needs.benchmark-run.outputs.ref }}
           path: fileonq.imaging.heif
 
       - name: Clone dotnet/performance
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: dotnet/performance
           path: dotnet.performance
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
 
@@ -264,7 +264,7 @@ jobs:
         working-directory: ./artifacts
 
       - name: Upload Results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Benchmark-GitHub-Comment.${{ matrix.framework }}
           path: ./artifacts/github-comment.${{ matrix.framework }}.md
@@ -275,7 +275,7 @@ jobs:
     runs-on: windows-2019
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
 

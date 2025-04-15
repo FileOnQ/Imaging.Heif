@@ -14,7 +14,7 @@ jobs:
     outputs:
       package_version: ${{ env.PACKAGE_VERSION }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: 'true'
 
@@ -56,7 +56,7 @@ jobs:
       working-directory: ./src/FileOnQ.Imaging.Heif
       
     - name: Upload NuGet Package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: Packages
         path: |
@@ -100,7 +100,7 @@ jobs:
             framework: 'net6'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'true'
 
@@ -115,7 +115,7 @@ jobs:
           dotnet-version: 6.0.101
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@4
 
       - name: Copy Nupkg
         shell: powershell
@@ -164,7 +164,7 @@ jobs:
             framework: 'net6'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'true'
 
@@ -179,7 +179,7 @@ jobs:
           dotnet-version: 6.0.101
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
       
       - name: Copy Nupkg
         shell: powershell
@@ -207,7 +207,7 @@ jobs:
             framework: 'net6'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'true'
       
@@ -222,7 +222,7 @@ jobs:
           dotnet-version: 5.0.302
                     
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
       
       - name: Copy Nupkg
         shell: powershell
@@ -250,7 +250,7 @@ jobs:
     runs-on: windows-2019
     steps:
       - name: Download Packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: Packages
       
