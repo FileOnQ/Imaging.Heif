@@ -55,7 +55,6 @@ mkdir build
 cd build
 
 cmake -G"NMake Makefiles"^
- -preset:release^
  -DDAV1D_INCLUDE_DIR:PATH=%thirdPartyPath%\dav1d-%arch%\build\include^
  -DDAV1D_LIBRARY:FILEPATH=%thirdPartyPath%\dav1d-%arch%\build\src\dav1d.lib^
  -DJPEG_INCLUDE_DIR:PATH=%thirdPartyPath%\libjpeg-turbo-%arch%^
