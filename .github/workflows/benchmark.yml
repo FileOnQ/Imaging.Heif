@@ -168,7 +168,7 @@ jobs:
        working-directory: ./benchmarks/tools
 
      - name: Upload Results
-       uses: actions/upload-artifact@v2
+       uses: actions/upload-artifact@v4
        with:
          name: Benchmark-${{ matrix.benchmark }}.${{ matrix.framework }}
          path: ./benchmarks/tools/BenchmarkDotNet.Artifacts/results
