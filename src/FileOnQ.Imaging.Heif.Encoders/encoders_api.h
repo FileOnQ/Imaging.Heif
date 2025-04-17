@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <libheif/heif.h>
+#include <libheif/api/libheif/heif.h>
 
 #include "encoder_jpeg.h"
 
