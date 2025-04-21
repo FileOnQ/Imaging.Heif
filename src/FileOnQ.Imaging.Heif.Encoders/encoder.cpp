@@ -1,10 +1,10 @@
 /*
-  libheif example application "convert".
-  This file is part of convert, an example application using libheif.
+  libheif example application.
 
   MIT License
 
-  Copyright (c) 2018 struktur AG, Joachim Bauch <bauch@struktur.de>
+  Copyright (c) 2017 struktur AG, Joachim Bauch <bauch@struktur.de>
+  Copyright (c) 2023 Dirk Farin <dirk.farin@gmail.com>
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -24,49 +24,40 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#if defined(HAVE_CONFIG_H)
-#include "config.h"
-#endif
+#ifndef EXAMPLE_ENCODER_H
+#define EXAMPLE_ENCODER_H
 
-#include <stdlib.h>
+#include <string>
+#include <memory>
 
-#include "encoder.h"
+#include "libheif/heif.h"
+#include <vector>
 
-static const char kMetadataTypeExif[] = "Exif";
 
-// static
-bool Encoder::HasExifMetaData(const struct heif_image_handle* handle)
+class Encoder
 {
+public:
+  virtual ~Encoder() = default;
 
-	heif_item_id metadata_id;
-	int count = heif_image_handle_get_list_of_metadata_block_IDs(handle, kMetadataTypeExif,
-		&metadata_id, 1);
-	return count > 0;
-}
+  virtual heif_colorspace colorspace(bool has_alpha) const = 0;
 
-// static
-uint8_t* Encoder::GetExifMetaData(const struct heif_image_handle* handle, size_t* size)
-{
-	heif_item_id metadata_id;
-	int count = heif_image_handle_get_list_of_metadata_block_IDs(handle, kMetadataTypeExif,
-		&metadata_id, 1);
+  virtual heif_chroma chroma(bool has_alpha, int bit_depth) const = 0;
 
-	for (int i = 0; i < count; i++) {
-		size_t datasize = heif_image_handle_get_metadata_size(handle, metadata_id);
-		uint8_t* data = static_cast<uint8_t*>(malloc(datasize));
-		if (!data) {
-			continue;
-		}
+  virtual void UpdateDecodingOptions(const struct heif_image_handle* handle,
+                                     struct heif_decoding_options* options) const
+  {
+    // Override if necessary.
+  }
 
-		heif_error error = heif_image_handle_get_metadata(handle, metadata_id, data);
-		if (error.code != heif_error_Ok) {
-			free(data);
-			continue;
-		}
+  virtual bool Encode(const struct heif_image_handle* handle,
+                      const struct heif_image* image, const std::string& filename) = 0;
 
-		*size = datasize;
-		return data;
-	}
+protected:
+  static bool HasExifMetaData(const struct heif_image_handle* handle);
 
-	return nullptr;
-}
+  static uint8_t* GetExifMetaData(const struct heif_image_handle* handle, size_t* size);
+
+  static std::vector<uint8_t> get_xmp_metadata(const struct heif_image_handle* handle);
+};
+
+#endif  // EXAMPLE_ENCODER_H

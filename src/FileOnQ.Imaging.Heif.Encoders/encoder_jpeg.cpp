@@ -1,5 +1,5 @@
 /*
-  libheif example application "convert".
+  libheif example application.
 
   MIT License
 
@@ -23,47 +23,56 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#if defined(HAVE_CONFIG_H)
-#include "config.h"
-#endif
 
-#include <assert.h>
-#include <errno.h>
-#include <string.h>
+#include <cerrno>
+#include <cstring>
 
-#include <iostream>
+#include <vector>
+#include <limits>
 
 #include "encoder_jpeg.h"
+#include "exif.h"
+
+#include <jpeglib.h>
+
+#define JPEG_XMP_MARKER  (JPEG_APP0+1)  /* JPEG marker code for XMP */
+#define JPEG_XMP_MARKER_ID "http://ns.adobe.com/xap/1.0/"
+
+
+struct ErrorHandler
+{
+  struct jpeg_error_mgr pub;  /* "public" fields */
+  jmp_buf setjmp_buffer;  /* for return to caller */
+};
+
+
 
 JpegEncoder::JpegEncoder(int quality) : quality_(quality)
 {
-	if (quality_ < 0 || quality_ > 100) {
-		quality_ = kDefaultQuality;
-	}
+  if (quality_ < 0 || quality_ > 100) {
+    quality_ = kDefaultQuality;
+  }
 }
 
 void JpegEncoder::UpdateDecodingOptions(const struct heif_image_handle* handle,
-	struct heif_decoding_options* options) const
+                                        struct heif_decoding_options* options) const
 {
-	if (HasExifMetaData(handle)) {
-		options->ignore_transformations = 1;
-	}
-
-	options->convert_hdr_to_8bit = 1;
+  options->convert_hdr_to_8bit = 1;
 }
 
 // static
-void JpegEncoder::OnJpegError(j_common_ptr cinfo)
+static void OnJpegError(j_common_ptr cinfo)
 {
-	ErrorHandler* handler = reinterpret_cast<ErrorHandler*>(cinfo->err);
-	longjmp(handler->setjmp_buffer, 1);
+  ErrorHandler* handler = reinterpret_cast<ErrorHandler*>(cinfo->err);
+  longjmp(handler->setjmp_buffer, 1);
 }
+
+#define MAX_BYTES_IN_MARKER  65533      /* maximum data len of a JPEG marker */
 
 #if !defined(HAVE_JPEG_WRITE_ICC_PROFILE)
 
 #define ICC_MARKER  (JPEG_APP0 + 2)     /* JPEG marker code for ICC */
 #define ICC_OVERHEAD_LEN  14            /* size of non-profile data in APP2 */
-#define MAX_BYTES_IN_MARKER  65533      /* maximum data len of a JPEG marker */
 #define MAX_DATA_BYTES_IN_MARKER (MAX_BYTES_IN_MARKER - ICC_OVERHEAD_LEN)
 
 /*
@@ -77,153 +86,229 @@ void JpegEncoder::OnJpegError(j_common_ptr cinfo)
 
 static
 void jpeg_write_icc_profile(j_compress_ptr cinfo, const JOCTET* icc_data_ptr,
-	unsigned int icc_data_len)
+                            unsigned int icc_data_len)
 {
-	unsigned int num_markers;     /* total number of markers we'll write */
-	int cur_marker = 1;           /* per spec, counting starts at 1 */
-	unsigned int length;          /* number of bytes to write in this marker */
+  unsigned int num_markers;     /* total number of markers we'll write */
+  int cur_marker = 1;           /* per spec, counting starts at 1 */
+  unsigned int length;          /* number of bytes to write in this marker */
 
-	/* Calculate the number of markers we'll need, rounding up of course */
-	num_markers = icc_data_len / MAX_DATA_BYTES_IN_MARKER;
-	if (num_markers * MAX_DATA_BYTES_IN_MARKER != icc_data_len)
-		num_markers++;
+  /* Calculate the number of markers we'll need, rounding up of course */
+  num_markers = icc_data_len / MAX_DATA_BYTES_IN_MARKER;
+  if (num_markers * MAX_DATA_BYTES_IN_MARKER != icc_data_len)
+    num_markers++;
 
-	while (icc_data_len > 0) {
-		/* length of profile to put in this marker */
-		length = icc_data_len;
-		if (length > MAX_DATA_BYTES_IN_MARKER)
-			length = MAX_DATA_BYTES_IN_MARKER;
-		icc_data_len -= length;
+  while (icc_data_len > 0) {
+    /* length of profile to put in this marker */
+    length = icc_data_len;
+    if (length > MAX_DATA_BYTES_IN_MARKER)
+      length = MAX_DATA_BYTES_IN_MARKER;
+    icc_data_len -= length;
 
-		/* Write the JPEG marker header (APP2 code and marker length) */
-		jpeg_write_m_header(cinfo, ICC_MARKER,
-			(unsigned int)(length + ICC_OVERHEAD_LEN));
+    /* Write the JPEG marker header (APP2 code and marker length) */
+    jpeg_write_m_header(cinfo, ICC_MARKER,
+                        (unsigned int) (length + ICC_OVERHEAD_LEN));
 
-		/* Write the marker identifying string "ICC_PROFILE" (null-terminated).  We
-		 * code it in this less-than-transparent way so that the code works even if
-		 * the local character set is not ASCII.
-		 */
-		jpeg_write_m_byte(cinfo, 0x49);
-		jpeg_write_m_byte(cinfo, 0x43);
-		jpeg_write_m_byte(cinfo, 0x43);
-		jpeg_write_m_byte(cinfo, 0x5F);
-		jpeg_write_m_byte(cinfo, 0x50);
-		jpeg_write_m_byte(cinfo, 0x52);
-		jpeg_write_m_byte(cinfo, 0x4F);
-		jpeg_write_m_byte(cinfo, 0x46);
-		jpeg_write_m_byte(cinfo, 0x49);
-		jpeg_write_m_byte(cinfo, 0x4C);
-		jpeg_write_m_byte(cinfo, 0x45);
-		jpeg_write_m_byte(cinfo, 0x0);
+    /* Write the marker identifying string "ICC_PROFILE" (null-terminated).  We
+     * code it in this less-than-transparent way so that the code works even if
+     * the local character set is not ASCII.
+     */
+    jpeg_write_m_byte(cinfo, 0x49);
+    jpeg_write_m_byte(cinfo, 0x43);
+    jpeg_write_m_byte(cinfo, 0x43);
+    jpeg_write_m_byte(cinfo, 0x5F);
+    jpeg_write_m_byte(cinfo, 0x50);
+    jpeg_write_m_byte(cinfo, 0x52);
+    jpeg_write_m_byte(cinfo, 0x4F);
+    jpeg_write_m_byte(cinfo, 0x46);
+    jpeg_write_m_byte(cinfo, 0x49);
+    jpeg_write_m_byte(cinfo, 0x4C);
+    jpeg_write_m_byte(cinfo, 0x45);
+    jpeg_write_m_byte(cinfo, 0x0);
 
-		/* Add the sequencing info */
-		jpeg_write_m_byte(cinfo, cur_marker);
-		jpeg_write_m_byte(cinfo, (int)num_markers);
+    /* Add the sequencing info */
+    jpeg_write_m_byte(cinfo, cur_marker);
+    jpeg_write_m_byte(cinfo, (int) num_markers);
 
-		/* Add the profile data */
-		while (length--) {
-			jpeg_write_m_byte(cinfo, *icc_data_ptr);
-			icc_data_ptr++;
-		}
-		cur_marker++;
-	}
+    /* Add the profile data */
+    while (length--) {
+      jpeg_write_m_byte(cinfo, *icc_data_ptr);
+      icc_data_ptr++;
+    }
+    cur_marker++;
+  }
 }
 
 #endif  // !defined(HAVE_JPEG_WRITE_ICC_PROFILE)
 
 bool JpegEncoder::Encode(const struct heif_image_handle* handle,
-	const struct heif_image* image, unsigned char** data,
-	unsigned long* data_size)
+                         const struct heif_image* image, const std::string& filename)
 {
-	struct jpeg_compress_struct cinfo = {};
-	struct ErrorHandler jerr = {};
+  FILE* fp = fopen(filename.c_str(), "wb");
+  if (!fp) {
+    fprintf(stderr, "Can't open %s: %s\n", filename.c_str(), strerror(errno));
+    return false;
+  }
 
-	cinfo.err = jpeg_std_error(reinterpret_cast<struct jpeg_error_mgr*>(&jerr));
-	jerr.pub.error_exit = &JpegEncoder::OnJpegError;
-	if (setjmp(jerr.setjmp_buffer)) {
-		cinfo.err->output_message(reinterpret_cast<j_common_ptr>(&cinfo));
-		jpeg_destroy_compress(&cinfo);
-		return false;
-	}
+  struct jpeg_compress_struct cinfo;
+  struct ErrorHandler jerr;
+  cinfo.err = jpeg_std_error(reinterpret_cast<struct jpeg_error_mgr*>(&jerr));
+  jerr.pub.error_exit = &OnJpegError;
+  if (setjmp(jerr.setjmp_buffer)) {
+    cinfo.err->output_message(reinterpret_cast<j_common_ptr>(&cinfo));
+    jpeg_destroy_compress(&cinfo);
+    fclose(fp);
+    return false;
+  }
 
-	jpeg_create_compress(&cinfo);
+  jpeg_create_compress(&cinfo);
+  jpeg_stdio_dest(&cinfo, fp);
 
-	int width = heif_image_get_width(image, heif_channel_Y);
-	int height = heif_image_get_height(image, heif_channel_Y);
+  cinfo.image_width = heif_image_get_width(image, heif_channel_Y);
+  cinfo.image_height = heif_image_get_height(image, heif_channel_Y);
+  cinfo.input_components = 3;
+  cinfo.in_color_space = JCS_YCbCr;
+  jpeg_set_defaults(&cinfo);
+  static const boolean kForceBaseline = TRUE;
+  jpeg_set_quality(&cinfo, quality_, kForceBaseline);
+  static const boolean kWriteAllTables = TRUE;
+  jpeg_start_compress(&cinfo, kWriteAllTables);
 
-	// malloc the size of the pointer so it can be released
-	*data = (unsigned char*)malloc(width * height);
-	*data_size = width * height;
+  // --- Write EXIF
 
-	jpeg_mem_dest(&cinfo, data, data_size);
+  size_t exifsize = 0;
+  uint8_t* exifdata = GetExifMetaData(handle, &exifsize);
+  if (exifdata) {
+    if (exifsize > 4) {
+      static const uint8_t kExifMarker = JPEG_APP0 + 1;
 
-	cinfo.image_width = width;
-	cinfo.image_height = height;
-	cinfo.input_components = 3;
-	cinfo.in_color_space = JCS_YCbCr;
-	jpeg_set_defaults(&cinfo);
-	static const boolean kForceBaseline = TRUE;
-	jpeg_set_quality(&cinfo, quality_, kForceBaseline);
-	static const boolean kWriteAllTables = TRUE;
-	jpeg_start_compress(&cinfo, kWriteAllTables);
+      uint32_t skip = (exifdata[0]<<24) | (exifdata[1]<<16) | (exifdata[2]<<8) | exifdata[3];
+      if (skip > (exifsize - 4)) {
+        fprintf(stderr, "Invalid EXIF data (offset too large)\n");
+        free(exifdata);
+        jpeg_destroy_compress(&cinfo);
+        fclose(fp);
+        return false;
+      }
+      skip += 4;
 
-	size_t exifsize = 0;
-	uint8_t* exifdata = GetExifMetaData(handle, &exifsize);
-	if (exifdata && exifsize > 4) {
-		static const uint8_t kExifMarker = JPEG_APP0 + 1;
-		jpeg_write_marker(&cinfo, kExifMarker, exifdata + 4,
-			static_cast<unsigned int>(exifsize - 4));
-		free(exifdata);
-	}
+      uint8_t* ptr = exifdata + skip;
+      size_t size = exifsize - skip;
 
-	size_t profile_size = heif_image_handle_get_raw_color_profile_size(handle);
-	if (profile_size > 0) {
-		uint8_t* profile_data = static_cast<uint8_t*>(malloc(profile_size));
-		heif_image_handle_get_raw_color_profile(handle, profile_data);
-		jpeg_write_icc_profile(&cinfo, profile_data, (unsigned int)profile_size);
-		free(profile_data);
-	}
+      if (size > std::numeric_limits<uint32_t>::max()) {
+        fprintf(stderr, "EXIF larger than 4GB is not supported");
+        free(exifdata);
+        jpeg_destroy_compress(&cinfo);
+        fclose(fp);
+        return false;
+      }
 
-	if (heif_image_get_bits_per_pixel(image, heif_channel_Y) != 8) {
-		fprintf(stderr, "JPEG writer cannot handle image with >8 bpp.\n");
-		return false;
-	}
+      auto size32 = static_cast<uint32_t>(size);
 
-	int stride_y;
-	const uint8_t* row_y = heif_image_get_plane_readonly(image, heif_channel_Y,
-		&stride_y);
-	int stride_u;
-	const uint8_t* row_u = heif_image_get_plane_readonly(image, heif_channel_Cb,
-		&stride_u);
-	int stride_v;
-	const uint8_t* row_v = heif_image_get_plane_readonly(image, heif_channel_Cr,
-		&stride_v);
+      // libheif by default normalizes the image orientation, so that we have to set the EXIF Orientation to "Horizontal (normal)"
+      modify_exif_orientation_tag_if_it_exists(ptr, size32, 1);
+      overwrite_exif_image_size_if_it_exists(ptr, size32, cinfo.image_width, cinfo.image_height);
 
-	JSAMPARRAY buffer = cinfo.mem->alloc_sarray(
-		reinterpret_cast<j_common_ptr>(&cinfo), JPOOL_IMAGE,
-		cinfo.image_width * cinfo.input_components, 1);
-	JSAMPROW row[1] = { buffer[0] };
+      // We have to limit the size for the memcpy, otherwise GCC warns that we exceed the maximum size.
+      if (size>0x1000000) {
+        size = 0x1000000;
+      }
 
-	while (cinfo.next_scanline < cinfo.image_height) {
-		size_t offset_y = cinfo.next_scanline * stride_y;
-		const uint8_t* start_y = &row_y[offset_y];
-		size_t offset_u = (cinfo.next_scanline / 2) * stride_u;
-		const uint8_t* start_u = &row_u[offset_u];
-		size_t offset_v = (cinfo.next_scanline / 2) * stride_v;
-		const uint8_t* start_v = &row_v[offset_v];
+      std::vector<uint8_t> jpegExifMarkerData(6+size);
+      memcpy(jpegExifMarkerData.data()+6, ptr, size);
+      jpegExifMarkerData[0]='E';
+      jpegExifMarkerData[1]='x';
+      jpegExifMarkerData[2]='i';
+      jpegExifMarkerData[3]='f';
+      jpegExifMarkerData[4]=0;
+      jpegExifMarkerData[5]=0;
 
-		JOCTET* bufp = buffer[0];
-		for (JDIMENSION x = 0; x < cinfo.image_width; ++x) {
-			*bufp++ = start_y[x];
-			*bufp++ = start_u[x / 2];
-			*bufp++ = start_v[x / 2];
-		}
+      ptr = jpegExifMarkerData.data();
+      size = jpegExifMarkerData.size();
 
-		jpeg_write_scanlines(&cinfo, row, 1);
-	}
+      while (size > MAX_BYTES_IN_MARKER) {
+        jpeg_write_marker(&cinfo, kExifMarker, ptr,
+                          static_cast<unsigned int>(MAX_BYTES_IN_MARKER));
 
-	jpeg_finish_compress(&cinfo);
-	jpeg_destroy_compress(&cinfo);
+        ptr += MAX_BYTES_IN_MARKER;
+        size -= MAX_BYTES_IN_MARKER;
+      }
 
-	return true;
+      jpeg_write_marker(&cinfo, kExifMarker, ptr,
+                        static_cast<unsigned int>(size));
+    }
+
+    free(exifdata);
+  }
+
+  // --- Write XMP
+
+  // spec: https://raw.githubusercontent.com/adobe/xmp-docs/master/XMPSpecifications/XMPSpecificationPart3.pdf
+
+  auto xmp = get_xmp_metadata(handle);
+  if (xmp.size() > 65502) {
+    fprintf(stderr, "XMP data too large, ExtendedXMP is not supported yet.\n");
+  }
+  else if (!xmp.empty()) {
+    std::vector<uint8_t> xmpWithId;
+    xmpWithId.resize(xmp.size() + strlen(JPEG_XMP_MARKER_ID)+1);
+    strcpy((char*)xmpWithId.data(), JPEG_XMP_MARKER_ID);
+    memcpy(xmpWithId.data() + strlen(JPEG_XMP_MARKER_ID) + 1, xmp.data(), xmp.size());
+
+    jpeg_write_marker(&cinfo, JPEG_XMP_MARKER, xmpWithId.data(), static_cast<unsigned int>(xmpWithId.size()));
+  }
+
+  // --- Write ICC
+
+  size_t profile_size = heif_image_handle_get_raw_color_profile_size(handle);
+  if (profile_size > 0) {
+    uint8_t* profile_data = static_cast<uint8_t*>(malloc(profile_size));
+    heif_image_handle_get_raw_color_profile(handle, profile_data);
+    jpeg_write_icc_profile(&cinfo, profile_data, (unsigned int) profile_size);
+    free(profile_data);
+  }
+
+
+  if (heif_image_get_bits_per_pixel(image, heif_channel_Y) != 8) {
+    fprintf(stderr, "JPEG writer cannot handle image with >8 bpp.\n");
+    jpeg_destroy_compress(&cinfo);
+    fclose(fp);
+    return false;
+  }
+
+
+  int stride_y;
+  const uint8_t* row_y = heif_image_get_plane_readonly(image, heif_channel_Y,
+                                                       &stride_y);
+  int stride_u;
+  const uint8_t* row_u = heif_image_get_plane_readonly(image, heif_channel_Cb,
+                                                       &stride_u);
+  int stride_v;
+  const uint8_t* row_v = heif_image_get_plane_readonly(image, heif_channel_Cr,
+                                                       &stride_v);
+
+  JSAMPARRAY buffer = cinfo.mem->alloc_sarray(
+      reinterpret_cast<j_common_ptr>(&cinfo), JPOOL_IMAGE,
+      cinfo.image_width * cinfo.input_components, 1);
+  JSAMPROW row[1] = {buffer[0]};
+
+  while (cinfo.next_scanline < cinfo.image_height) {
+    size_t offset_y = cinfo.next_scanline * stride_y;
+    const uint8_t* start_y = &row_y[offset_y];
+    size_t offset_u = (cinfo.next_scanline / 2) * stride_u;
+    const uint8_t* start_u = &row_u[offset_u];
+    size_t offset_v = (cinfo.next_scanline / 2) * stride_v;
+    const uint8_t* start_v = &row_v[offset_v];
+
+    JOCTET* bufp = buffer[0];
+    for (JDIMENSION x = 0; x < cinfo.image_width; ++x) {
+      *bufp++ = start_y[x];
+      *bufp++ = start_u[x / 2];
+      *bufp++ = start_v[x / 2];
+    }
+    jpeg_write_scanlines(&cinfo, row, 1);
+  }
+  jpeg_finish_compress(&cinfo);
+  fclose(fp);
+  jpeg_destroy_compress(&cinfo);
+  return true;
 }
