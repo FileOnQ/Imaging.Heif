@@ -1,9 +1,10 @@
 /*
-  libheif example application "convert".
+  libheif example application.
 
   MIT License
 
   Copyright (c) 2017 struktur AG, Joachim Bauch <bauch@struktur.de>
+  Copyright (c) 2023 Dirk Farin <dirk.farin@gmail.com>
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -30,8 +31,6 @@
 #include <cstddef>
 #include <cstdio>
 
-#include <jpeglib.h>
-
 #include <string>
 
 #include "encoder.h"
@@ -39,37 +38,28 @@
 class JpegEncoder : public Encoder
 {
 public:
-	JpegEncoder(int quality);
+  JpegEncoder(int quality);
 
-	heif_colorspace colorspace(bool has_alpha) const override
-	{
-		return heif_colorspace_YCbCr;
-	}
+  heif_colorspace colorspace(bool has_alpha) const override
+  {
+    return heif_colorspace_YCbCr;
+  }
 
-	heif_chroma chroma(bool has_alpha, int bit_depth) const override
-	{
-		return heif_chroma_420;
-	}
+  heif_chroma chroma(bool has_alpha, int bit_depth) const override
+  {
+    return heif_chroma_420;
+  }
 
-	void UpdateDecodingOptions(const struct heif_image_handle* handle,
-		struct heif_decoding_options* options) const override;
+  void UpdateDecodingOptions(const struct heif_image_handle* handle,
+                             struct heif_decoding_options* options) const override;
 
-	bool Encode(const struct heif_image_handle* handle,
-		const struct heif_image* image, unsigned char** buffer, 
-		unsigned long* buffer_size) override;
+  bool Encode(const struct heif_image_handle* handle,
+              const struct heif_image* image, const std::string& filename) override;
 
 private:
-	static const int kDefaultQuality = 90;
+  static const int kDefaultQuality = 90;
 
-	struct ErrorHandler
-	{
-		struct jpeg_error_mgr pub;  /* "public" fields */
-		jmp_buf setjmp_buffer;  /* for return to caller */
-	};
-
-	static void OnJpegError(j_common_ptr cinfo);
-
-	int quality_;
+  int quality_;
 };
 
 #endif  // EXAMPLE_ENCODER_JPEG_H
