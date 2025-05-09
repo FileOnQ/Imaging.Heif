@@ -15,6 +15,9 @@
 
 			// Defines integration tests that use the File IO APIs
 			public const string FileIO = "FileIO";
+
+			// Test change from Greg Blair to cause a build
+			public const string Builder = "GregBlair";
 		}
 	}
 }
