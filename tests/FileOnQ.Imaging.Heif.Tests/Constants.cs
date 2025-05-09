@@ -17,7 +17,7 @@
 			public const string FileIO = "FileIO";
 
 			// Test change from Greg Blair to cause a build
-			public const string Buider = "GregBlair";
+			public const string Builder = "GregBlair";
 		}
 	}
 }
