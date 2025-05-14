@@ -28,12 +28,12 @@
 
 	<Target Name="LibHeif-Clone-x86" Condition="!Exists('$(ThirdPartyDir)/libheif-x86/README.md')">
 		<Exec Command="git clone https://github.com/strukturag/libheif.git libheif-x86" WorkingDirectory="$(ThirdPartyDir)" />
-		<Exec Command="git checkout v1.12.0" WorkingDirectory="$(ThirdPartyDir)/libheif-x86" />
+		<Exec Command="git checkout v1.18.0" WorkingDirectory="$(ThirdPartyDir)/libheif-x86" />
 	</Target>
 
 	<Target Name="LibHeif-Clone-x64" Condition="!Exists('$(ThirdPartyDir)/libheif-x64/README.md')">
 		<Exec Command="git clone https://github.com/strukturag/libheif.git libheif-x64" WorkingDirectory="$(ThirdPartyDir)" />
-		<Exec Command="git checkout v1.12.0" WorkingDirectory="$(ThirdPartyDir)/libheif-x64" />
+		<Exec Command="git checkout v1.18.0" WorkingDirectory="$(ThirdPartyDir)/libheif-x64" />
 	</Target>
 
 	<Target Name="LibHeif-Clean" BeforeTargets="Clean" >
