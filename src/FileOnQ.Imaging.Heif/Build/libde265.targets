@@ -18,7 +18,7 @@
 		<Copy SourceFiles="$(ThirdPartyDir)/libde265-x86/libde265/de265.exp" DestinationFiles="$(ThirdPartyDir)/libde265-x86/libde265/libde265.exp" />
 		
 		<Exec Command="libde265.bat x64 $(Configuration)" WorkingDirectory="$(ThirdPartyDir)/../build" />
-		<Copy SourceFiles="$(ThirdPartyDir)/libde265-x64/libde265/libde265.dll" DestinationFolder="runtimes/win-x86/native" />
+		<Copy SourceFiles="$(ThirdPartyDir)/libde265-x64/libde265/libde265.dll" DestinationFolder="runtimes/win-x64/native" />
 		<Copy SourceFiles="$(ThirdPartyDir)/libde265-x64/libde265/de265.lib" DestinationFiles="$(ThirdPartyDir)/libde265-x64/libde265/libde265.lib" />
 		<Copy SourceFiles="$(ThirdPartyDir)/libde265-x64/libde265/de265.exp" DestinationFiles="$(ThirdPartyDir)/libde265-x64/libde265/libde265.exp" />
 	</Target>
