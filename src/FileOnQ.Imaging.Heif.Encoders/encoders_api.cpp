@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <libheif/heif.h>
+#include <libheif/api/libheif/heif.h>
 
 #include "encoders_api.h"
 #include "encoder.h"
