@@ -30,7 +30,7 @@
 #include <cstddef>
 #include <cstdio>
 
-#include <jpeglib.h>
+#include <libjpeg-turbo/jpeglib.h>
 
 #include <string>
 
